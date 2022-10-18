@@ -1,4 +1,4 @@
-# Weather Journal App Project
+# Capstone Travel App PLACEHOLDER TITLE
 
 ## Table of Contents
 ---
