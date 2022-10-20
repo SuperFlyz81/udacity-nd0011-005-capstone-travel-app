@@ -1,48 +1,59 @@
 /*
+Server server.js
+*/
+
+/*
 Global variables
 */
-let projectData = {}; // Empty JS object that acts as an API endpoint for all your Express server routes
+let projectData = {}; // Empty JS object that acts as an API endpoint for all your Express server routes.
 
 /*
 Express server setup
 */
-// Express to run server and routes
+// Express to run server and routes.
 const express = require('express');
 
-// Start up an instance of the app
+// Start up an instance of the app.
 const app = express();
 
 /*
 Dependencies and middleware
 */
-// Here we are configuring Express to use body-parser as middleware
+// Here we are configuring Express to use body-parser as middleware.
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-// Cors for cross-origin allowance
+// Cors for cross-origin allowance.
 const cors = require('cors');
 app.use(cors());
 
 /*
 Global code
 */
-// Initialize the main project folder
-app.use(express.static('website'));
+// Initialize the main project folder.
+app.use(express.static('dist'));
 
-// Set the Express server port
-const port = 3000;
+// Set the Express server port.
+const port = 8081;
 
-// Spin up the Express server
+// Spin up the Express server.
 const server = app.listen(port, () => console.log(`Listening on port: ${port}`));
 
-// GET route - returns projectData API endpoint object's key/value pairs
+/*
+Routes
+*/
+app.get('/', (req, res) => {
+  res.sendFile('dist/index.html');
+})
+
+// GET route - returns projectData API endpoint object's key/value pairs.
 app.get('/getdata', (request, response) => {
   response.send(projectData);
-  // console.log('Got', projectData); // Debug code
+  // console.log('Got', projectData); // Debug code.
 });
 
-// POST route - sets projectData API endpoint object's key/value pairs
+// POST route - sets projectData API endpoint object's key/value pairs.
 app.post('/postdata', (request, response) => {
   const data = request.body;
 
@@ -60,5 +71,5 @@ app.post('/postdata', (request, response) => {
   For more details, see the following post from someone who had a similar issue:
   https://stackoverflow.com/questions/55754725/express-not-accepting-post-requests-after-6-requests */
   response.send(projectData);
-  // console.log('Posted', projectData); // Debug code
+  // console.log('Posted', projectData); // Debug code.
 });

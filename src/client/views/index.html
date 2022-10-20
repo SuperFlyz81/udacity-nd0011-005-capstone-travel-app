@@ -2,20 +2,27 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Weather Journal</title>
+    <title>Travel App</title>
     <!-- For details on what the following viewport meta tag and its related values do, see https://www.w3schools.com/css/css_rwd_viewport.asp
     Also, AND VERY IMPORTANTLY, note that the viewport meta tag below is required for responsive layout @media breakpoints to work properly in your CSS files.
     Without this viewport meta tag, response layouts won't update in Chrome DevTools' device toolbar.
     So, in summary, you won't be able to test different sized devices in Chrome DevTools without the viewport meta tag below. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+
+    <!-- My external style sheets -->
+    <!-- Uncomment the minified main.css stylesheet line below when deploying to production.
+    And then comment out the the "slow performing" inline stylesheets imports in the /src/client/index.js file when deploying to production.
+    This will mean that the minified, "better performing" main.css file will be used for production.
+    Side note: main.css is not available/built when WebPack is running in development mode, so inline stylesheets have to be used in development mode. 
+    These inline stylesheets also works when Webpack is run in production mode, but the minified stylesheet below is preferred for production from a performance point of view. -->
+    <!-- <link rel="stylesheet" href="/main.css"> -->
   </head>
 
   <body>
     <div id="app">
       <div class="holder-headline">
-        Weather Journal App
+        Travel App
       </div>
       <div class="holder-zip">
         <label for="zip">ZIP code</label>
@@ -35,7 +42,5 @@
         </div>
       </div>
     </div>
-
-    <script src="app.js" type="text/javascript"></script>
   </body>
 </html>
