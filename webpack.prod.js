@@ -18,8 +18,8 @@ module.exports = {
   optimization: {
     /* Old Webpack v4 optimize-css-assets-webpack-plugin code commented out below.
     Now replaced with the css-minimizer-webpack-plugin in Webpack v5. */
-    // minimizer: [new TerserPlugin({}), new OptimizeCSSAssetsPlugin({})],
-    minimizer: [new TerserPlugin({}), new CssMinimizerPlugin({})],
+    // minimizer: [new TerserPlugin({}), new OptimizeCSSAssetsPlugin({})]
+    minimizer: [new TerserPlugin({}), new CssMinimizerPlugin({})]
   },
   module: {
     rules: [
@@ -30,14 +30,14 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
       }
     ]
   },
   plugins: [
     new HtmlWebPackPlugin({
       template: './src/client/views/index.html',
-      filename: './index.html',
+      filename: './index.html'
     }),
     new MiniCssExtractPlugin({filename: '[name].css'})
   ]
