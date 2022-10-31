@@ -13,7 +13,7 @@ body {
   display: grid;
   grid-template-areas:
   "headline"
-  "zip"
+  "placename"
   "feel"
   "entry";
   padding: 24px;
@@ -29,8 +29,8 @@ body {
   font-size: 54px;
 }
 
-.holder-zip {
-  grid-area: zip;
+.holder-place-name {
+  grid-area: placename;
 }
 
 .holder-feel {
@@ -67,7 +67,7 @@ input {
   border: none;
 }
 
-#zip {
+#place-name {
   height: 60px;
   width: 316px;
   padding-left: 8px;
@@ -133,7 +133,7 @@ button:focus {
   #app {
     grid-template-areas:
     "headline headline"
-    "zip entry"
+    "placename entry"
     "feel entry";
   }
 }

@@ -6,21 +6,34 @@ Client app.js
 Global variables
 */
 // Nothing here.
+let geoNamesAPIKey = '';
+
 
 /*
 Function expressions
 */
-// Function expression - Get weather data for a US ZIP code from the OpenWeatherMap web API.
-const getWeatherData = async (baseURL, zipCode, key) => {
+// Function expression - Get weather data for a US place name from the OpenWeatherMap web API.
+const getWeatherData = async (placeName) => {
   // console.log('Running getWeatherData function (i.e. OpenWeatherMap web API GET request)'); // Debug code.
+
+    /* See https://openweathermap.org/current#zip for the OpenWeatherMap web API documentation and a place name based web API call example.
+  The country code API parameter is set to "us", so we are targeting United States place names only.
+  The units API parameter is set to "imperial", so temperature data will be returned in Fahrenheit.
+  Also had to register for a free OpenWeatherMap account to receive the API key below to use with this project. */
+  const baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip=';
+  //const apikey = ',us&units=imperial&appid=45d0d4c373300ea5deb886984cee74e4';
+
+  /* One liner to perform an Express server route get using the fetch browser API, async JavaScript code, and JavaScript promises.
+  See the following URL for more details: https://stackoverflow.com/questions/61814037/fetch-request-and-convert-it-to-json-in-a-single-line */
+  const apiKey = await (await fetch('http://localhost:8081/getapikey')).text();
   
-  // Validate that a numeric ZIP code was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
-  if (!zipCode || isNaN(zipCode)) {
-    throw new Error(`Non numeric ZIP code entered.\n\nPlease enter a valid ZIP code and then try again.`);
+  // Validate that a numeric place name was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
+  if (!placeName || isNaN(placeName)) {
+    throw new Error(`Non numeric place name entered.\n\nPlease enter a valid place name and then try again.`);
   }
 
   // Try to get weather data using the fetch browser API.
-  const response = await fetch(baseURL + zipCode + key);
+  const response = await fetch(baseURL + placeName + apiKey);
 
   // Assign the fetched weather data (in JSON format) to a variable.
   const data = await response.json();
@@ -34,9 +47,9 @@ const getWeatherData = async (baseURL, zipCode, key) => {
   }
 
   /* Otherwise, if code execution has reached this point, it means that data was returned back from the OpenWeatherMap web API, but it was invalid data.
-  This can happen if, for example, the user enters a numeric ZIP code that doesn't exist (so, if they just enter a random number).
+  This can happen if, for example, the user enters a numeric place name that doesn't exist (so, if they just enter a random number).
   If this is the case, then throw an error to reject this async function's return promise (returning an error object). */
-  throw new Error(`Error code ${data.cod} - ${data.message}.\n\nPlease ensure that you have entered a valid ZIP code and then try again.`);
+  throw new Error(`Error code ${data.cod} - ${data.message}.\n\nPlease ensure that you have entered a valid place name and then try again.`);
 }
 
 // Function expression - Post data to the Express server's POST route.
@@ -61,12 +74,6 @@ const sendData = async (url, newData) => {
 };
 
 // Function expression - Get data from the Express server's GET route and then update the UI.
-/* Note that the try/catch statements has been removed from the Udacity project rubric sample code below.
-And I'm not using try/catch statements in any of my other async functions either.
-This was done since catching an error in an async function DOES NOT reject the promise returned by that async function!
-To clarify, with a try/catch statement present in an async function, the promise returned by that async function will still resolve even if an error occurs and is caught in that async function (and not reject as you might think).
-Our weather journal app calls for a sequence of asynchronous tasks to be performed one after another, but only if the preceding asynchronous task executed successfully.
-To facilitate this, instead of using try/catch statements in my async functions, I'm using proper promise chaining resolved/rejected based error handling callbacks in the calling function instead. */
 const retrieveData = async () => {
   // console.log('Running retrieveData function (i.e. Express server GET request)'); // Debug code.
 
@@ -87,15 +94,8 @@ Main functions
 */
 // Function - Main button click event handler function that performs all the actions, calls all the functions, and handles all the promises in our code.
 function performActions(event) {
-  /* See https://openweathermap.org/current#zip for the OpenWeatherMap web API documentation and a ZIP code based web API call example.
-  The country code API parameter is set to "us", so we are targeting United States ZIP codes only.
-  The units API parameter is set to "imperial", so temperature data will be returned in Fahrenheit.
-  Also had to register for a free OpenWeatherMap account to receive the API key below to use with this project. */
-  const baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip=';
-  const apiKey = ',us&units=imperial&appid=45d0d4c373300ea5deb886984cee74e4';
-
   // Call a function to get weather data from the OpenWeatherMap web API.
-  getWeatherData(baseURL, document.getElementById('zip').value, apiKey)
+  getWeatherData(document.getElementById('place-name').value)
 
     // Then post the data retrieved from the OpenWeatherMap web API along with the data entered by user to the Express server's POST route.
     /* Note the use of chained promises below by using .then().
