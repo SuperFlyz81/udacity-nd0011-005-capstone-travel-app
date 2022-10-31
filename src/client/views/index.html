@@ -24,21 +24,25 @@
       <div class="holder-headline">
         Travel App
       </div>
-      <div class="holder-place-name">
-        <label for="place-name">Place name</label>
-        <input id="place-name" type="text" placeholder="Enter a place's name">
+      <div class="holder-location-name">
+        <label for="location-name">Location</label>
+        <input id="location-name" type="text" placeholder="Enter a location's name">
       </div>
-      <div class="holder-feel">
-        <label for="feelings">How are you feeling today?</label>
-        <textarea id="feelings" class="myInput" placeholder="Enter your feelings here" rows="9"></textarea>
+      <div class="holder-leaving-date">
+        <label for="leaving-date">Date</label>
+        <textarea id="leaving-date" class="myInput" placeholder="Leaving date" rows="9"></textarea>
         <button id="generate" type="submit">Generate</button>
       </div>
-      <div class="holder-entry">
-        <div class="title">Most Recent Entry</div>
-        <div id="entry-holder" class="entry">
-          <div id="date"></div> 
-          <div id="temp"></div>
-          <div id="content"></div>
+      <div class="holder-result">
+        <div class="title">Results</div>
+        <div class="result">
+          <div id="location-name-result"></div>
+          <div id="leaving-date-result"></div>
+          <div id="region-name-result"></div>
+          <div id="country-name-result"></div>
+          <div id="latitude-result"></div>
+          <div id="longitude-result"></div>
+          <div id="population-result"></div>
         </div>
       </div>
     </div>

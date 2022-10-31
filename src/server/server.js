@@ -54,8 +54,9 @@ app.get('/', (req, res) => {
 
 // GET route - returns the requested web API key.
 app.get('/getapikey', (req, res) => {
-  console.log(process.env.API_KEY);
-  res.send(process.env.API_KEY);
+  // Note the use of bracket notation below to reference a specific dotenv key/value pair in the process.env object (as loaded from the .env file).
+  res.send(process.env[req.query.dotenv]);
+  // console.log('Got', process.env[req.query.dotenv]); // Debug code.
 })
 
 // GET route - returns projectData API endpoint object's key/value pairs.
@@ -69,9 +70,13 @@ app.post('/postdata', (req, res) => {
   const data = req.body;
 
   // Use dot notation to add key/value pairs from our POST request's body to our endpoint object.
-  projectData.temp = data.temp;
-  projectData.date = data.date;
-  projectData.feel = data.feel;
+  projectData.locationName = data.locationName;
+  projectData.leavingDate = data.leavingDate;
+  projectData.regionName = data.regionName;
+  projectData.countryName = data.countryName;
+  projectData.latitude = data.latitude;
+  projectData.longitude = data.longitude;
+  projectData.population = data.population;
 
   res.send(projectData);
   // console.log('Posted', projectData); // Debug code.

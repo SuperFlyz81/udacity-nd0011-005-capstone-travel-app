@@ -6,51 +6,56 @@ Client app.js
 Global variables
 */
 // Nothing here.
-let geoNamesAPIKey = '';
-
 
 /*
 Function expressions
 */
-// Function expression - Get weather data for a US place name from the OpenWeatherMap web API.
-const getWeatherData = async (placeName) => {
-  // console.log('Running getWeatherData function (i.e. OpenWeatherMap web API GET request)'); // Debug code.
+// Function expression - Get geo data for a location from the GeoNames web API.
+const getGeoData = async (locationName) => {
+  // console.log('Running getGeoData function (i.e. GeoNames web API GET request)'); // Debug code.
 
-    /* See https://openweathermap.org/current#zip for the OpenWeatherMap web API documentation and a place name based web API call example.
-  The country code API parameter is set to "us", so we are targeting United States place names only.
-  The units API parameter is set to "imperial", so temperature data will be returned in Fahrenheit.
-  Also had to register for a free OpenWeatherMap account to receive the API key below to use with this project. */
-  const baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip=';
-  //const apikey = ',us&units=imperial&appid=45d0d4c373300ea5deb886984cee74e4';
-
-  /* One liner to perform an Express server route get using the fetch browser API, async JavaScript code, and JavaScript promises.
-  See the following URL for more details: https://stackoverflow.com/questions/61814037/fetch-request-and-convert-it-to-json-in-a-single-line */
-  const apiKey = await (await fetch('http://localhost:8081/getapikey')).text();
-  
-  // Validate that a numeric place name was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
-  if (!placeName || isNaN(placeName)) {
-    throw new Error(`Non numeric place name entered.\n\nPlease enter a valid place name and then try again.`);
+  // Validate that a location was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
+  if (!locationName) {
+    throw `Blank location entered.\n\nPlease enter a valid location name and then try again.`;
   }
 
-  // Try to get weather data using the fetch browser API.
-  const response = await fetch(baseURL + placeName + apiKey);
+  /* See https://www.geonames.org/export/geonames-search.html for the GeoNames web API documentation and a location based search web API call example.
+  Had to register for a free GeoNames account to receive the API key below to use with this project.
+  Note, all API keys are retrieved using an Express server route via the dotenv Node module to keep API keys locally and not expose/upload them to version control on the Internet. */
+  const baseURL = 'http://api.geonames.org/searchJSON?q=';
+  // const apikey = 'API key goes here'; // Debug code.
 
-  // Assign the fetched weather data (in JSON format) to a variable.
+  let apiKey = '&maxRows=1&username='; // Note that we are only fetching one row (maxRows=1), i.e. the top result, from the GeoNames web API.
+  try {
+    /* One liner below to perform an Express server route get using the fetch browser API, async JavaScript code, and JavaScript promises.
+    See the following URL for more details: https://stackoverflow.com/questions/61814037/fetch-request-and-convert-it-to-json-in-a-single-line */
+    apiKey += await (await fetch('http://localhost:8081/getapikey?dotenv=GEONAMES_API_USERNAME')).text();
+    // console.log(apiKey); // Debug code.
+  }
+  catch(err) {
+    throw `Could not retrieve the GeoNames API key from the Express server.\n\nPlease ensure that the Express server is running and then try again.`;
+  }
+
+  // Try to get geo data using the fetch browser API.
+  const response = await fetch(baseURL + locationName + apiKey);
+
+  // Assign the fetched geo data (in JSON format) to a variable.
   const data = await response.json();
   // console.log(data); // Debug code.
-  // console.log(data.cod); // Debug code.
+  console.log(data['geonames'][0]); // Debug code.
 
-  // If valid weather data was received back from the OpenWeatherMap web API, then resolve this async function's return promise (by returning the retrieved data).
-  if (response.status === 200) {
-    // Return the valid fetched weather data.
-    return data;
+  // If valid geo data was received back from the GeoNames web API, then resolve this async function's return promise (by returning the retrieved data).
+  if (data.totalResultsCount !== 0) {
+    /* Return the valid fetched geo data.
+    GeoNames can return a JSON object containing multiple arrays with results, but we are only fetching and then returning the top result (by setting maxRows=1 in the query above to the GeoNames web API). */
+    return data['geonames'][0];
   }
 
-  /* Otherwise, if code execution has reached this point, it means that data was returned back from the OpenWeatherMap web API, but it was invalid data.
-  This can happen if, for example, the user enters a numeric place name that doesn't exist (so, if they just enter a random number).
-  If this is the case, then throw an error to reject this async function's return promise (returning an error object). */
-  throw new Error(`Error code ${data.cod} - ${data.message}.\n\nPlease ensure that you have entered a valid place name and then try again.`);
-}
+  /* Otherwise, if code execution has reached this point, it means that data was returned back from the GeoNames web API, but it was invalid data.
+  This happens, for example, when a location could not be located by the GeoNames web API.
+  In this case, throw an error to reject this async function's return promise (returning an error object). */
+  throw `Could not find a location matching the name you entered.\n\nPlease ensure that you have entered a valid location name and then try again.`;
+};
 
 // Function expression - Post data to the Express server's POST route.
 const sendData = async (url, newData) => {
@@ -84,42 +89,37 @@ const retrieveData = async () => {
   const data = await response.json();
 
   // Update the UI by assigning the fetched data to DOM elements.
-  document.getElementById('temp').innerHTML = Math.round(data.temp) + ' degrees';
-  document.getElementById('content').innerHTML = data.feel;
-  document.getElementById('date').innerHTML = data.date;
- }
+  document.getElementById('location-name-result').innerHTML = data.locationName;
+  document.getElementById('leaving-date-result').innerHTML = data.leavingDate;
+  document.getElementById('region-name-result').innerHTML = data.regionName;
+  document.getElementById('country-name-result').innerHTML = data.countryName;
+  document.getElementById('latitude-result').innerHTML = data.latitude;
+  document.getElementById('longitude-result').innerHTML = data.longitude;
+  document.getElementById('population-result').innerHTML = data.population;
+};
 
 /*
 Main functions
 */
 // Function - Main button click event handler function that performs all the actions, calls all the functions, and handles all the promises in our code.
 function performActions(event) {
-  // Call a function to get weather data from the OpenWeatherMap web API.
-  getWeatherData(document.getElementById('place-name').value)
-
-    // Then post the data retrieved from the OpenWeatherMap web API along with the data entered by user to the Express server's POST route.
+  /// Call a function to get geo data from the GeoNames web API.
+  getGeoData(document.getElementById('location-name').value)
+    // Then post the data retrieved from the GeoNames web API along with the data entered by the user to the Express server's POST route.
     /* Note the use of chained promises below by using .then().
-    This handles the fulfilled and rejected states of the promise returned by the getWeatherData async function */
+    This handles the fulfilled and rejected states of the promise returned by the getGeoData async function. */
     .then(result => {
-      // This arrow callback function runs when the getWeatherData async function returns a resolved promise with a result.
+      // This arrow callback function runs when the getGeoData async function returns a resolved promise with a result.
 
-      // Prepare data to be posted.
-      /* Convert Unix, UTC timestamp returned by the OpenWeatherMap web API to a date string.
-      See the following URL for more details on JavaScript date conversion:
-      https://timestamp.online/article/how-to-convert-timestamp-to-datetime-in-javascript */
-      const d = new Date(result.dt * 1000);
-      /* Note that date format below is in American format, so m/d/yyyy.
-      Also note that I had to add 1 to the value returned by the getMonth() method below.
-      This is because some of JavaScript's date functions/methods are zero-based (but not all of them).
-      For example, the The date.getMonth() method returns the month in the specified date as a zero-based value (where zero indicates the first month of the year).
-      So, months returned by the getMonth() method run from 0 to 11 instead of 1 to 12. */
-      const dateString = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
-
-      // Build data object.
+      // Build the data object.
       const newData = {
-        temp: result.main.temp,
-        date: dateString,
-        feel: document.getElementById('feelings').value
+        locationName: result.name,
+        leavingDate: document.getElementById('leaving-date').value,
+        regionName: result.adminName1,
+        countryName: result.countryName,
+        latitude: result.lat,
+        longitude: result.lng,
+        population: result.population
       };
     
       // Post data to the Express server's POST route.
@@ -132,20 +132,20 @@ function performActions(event) {
           // This arrow callback function runs when the sendData async function returns a rejected promise with an error (side note, it runs the retrieveData async function above if sendData returns a resolved promise with a result).
           /* Appropriately handle any errors that might occur during the post (for example, when the Express server is not running or is inaccessible)
           Catches errors in both fetch() and response.json() in the sendData async function, as well as any other errors that might occur in the that function. */
-          alert(`The following error occurred while sending data to the Express server:\n${error.message}`);
+          alert(`The following error occurred while sending data to the Express server:\n${error}`);
         })
           .catch(error => {
             // This arrow callback function runs when the retrieveData async function returns a rejected promise with an error (side note, for the receiveData async function, we are only interested in errors, hence the use of .catch() instead of .then() above).
             /* Appropriately handle any errors that might occur during the get (for example, when the Express server is not running or is inaccessible)
             Catches errors in both fetch() and response.json() in the retrieveData async function, as well as any other errors that might occur in the that function. */
-            alert(`The following error occurred while retrieving data from the Express server:\n${error.message}`);
+            alert(`The following error occurred while retrieving data from the Express server:\n${error}`);
           });
-  
+
     }, error => {
-      // This arrow callback function runs when the getWeatherData async function returns a rejected promise with an error.
-      /* Appropriately handle any errors that might occur when fetching weather data (for example, when an Internet connection is not available).
-      Catches errors in both fetch() and response.json() in the getWeatherData async function, as well as any other errors that might occur in that function. */
-      alert(`The following error occurred while fetching weather data from OpenWeatherMap:\n${error.message}`);
+      // This arrow callback function runs when the getGeoData async function returns a rejected promise with an error.
+      /* Appropriately handle any errors that might occur when fetching geo data (for example, when an Internet connection is not available).
+      Catches errors in both fetch() and response.json() in the getGeoData async function, as well as any other errors that might occur in that function. */
+      alert(`The following error occurred:\n${error}`);
     });
 }
 

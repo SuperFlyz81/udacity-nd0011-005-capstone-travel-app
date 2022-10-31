@@ -13,9 +13,9 @@ body {
   display: grid;
   grid-template-areas:
   "headline"
-  "placename"
-  "feel"
-  "entry";
+  "locationname"
+  "leavingdate"
+  "result";
   padding: 24px;
   color: #f0d43a;
   justify-content: center;
@@ -29,19 +29,19 @@ body {
   font-size: 54px;
 }
 
-.holder-place-name {
-  grid-area: placename;
+.holder-location-name {
+  grid-area: locationname;
 }
 
-.holder-feel {
-  grid-area: feel;
+.holder-leaving-date {
+  grid-area: leavingdate;
 }
 
-.holder-entry {
-  grid-area: entry;
+.holder-result {
+  grid-area: result;
 }
 
-.entry {
+.result {
   background: rgba(59, 74, 107, .4);
   width: 320px;
   min-height: 382px;
@@ -67,7 +67,7 @@ input {
   border: none;
 }
 
-#place-name {
+#location-name {
   height: 60px;
   width: 316px;
   padding-left: 8px;
@@ -133,7 +133,7 @@ button:focus {
   #app {
     grid-template-areas:
     "headline headline"
-    "placename entry"
-    "feel entry";
+    "locationname result"
+    "leavingdate result";
   }
 }
