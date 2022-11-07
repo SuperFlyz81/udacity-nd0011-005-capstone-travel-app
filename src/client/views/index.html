@@ -29,9 +29,9 @@
         <input id="location-name" type="text" placeholder="Enter a location's name">
       </div>
       <div class="holder-leaving-date">
-        <label for="leaving-date">Date</label>
-        <textarea id="leaving-date" class="myInput" placeholder="Leaving date" rows="9"></textarea>
-        <button id="generate" type="submit">Generate</button>
+        <label for="leaving-date">Leaving Date</label>
+        <input type="date" id="leaving-date" class="myInput" onfocus="this.min = new Date().toISOString().split('T')[0];"> <!-- Bit of inline JavaScript to block out the selection of past dates using this HTML date element -->
+        <button id="submit-button" type="submit">Submit</button>
       </div>
       <div class="holder-result">
         <div class="title">Results</div>
@@ -43,6 +43,7 @@
           <div id="latitude-result"></div>
           <div id="longitude-result"></div>
           <div id="population-result"></div>
+          <div id="leaving-date-countdown-result"></div>
         </div>
       </div>
     </div>

@@ -8,15 +8,40 @@ Global variables
 // Nothing here.
 
 /*
-Function expressions
+Helper functions and function expressions
+*/
+// Function expression - Calculate the difference, in days, between two date strings. Note, the fromDate parameter defaults to today's date (new Date()) if no from date is passed to this function expression (i.e., if undefined is passed as the fromDate argument).
+const calcDayDifference = (fromDate = new Date(), toDate) => {
+  const difference = new Date(toDate).getTime() - new Date(fromDate).getTime();
+  const totalDays = Math.ceil(difference / (1000 * 3600 * 24));
+  return totalDays;
+}
+
+// Function expression - Calculate the difference, in days, between two dates.
+const isValidDate = (testDate) => {
+  const newTestDate = new Date(testDate);
+  return newTestDate instanceof Date && !isNaN(newTestDate);
+}
+
+/*
+Main function expressions
 */
 // Function expression - Get geo data for a location from the GeoNames web API.
-const getGeoData = async (locationName) => {
+const getGeoData = async (locationName, leavingDate) => {
   // console.log('Running getGeoData function (i.e. GeoNames web API GET request)'); // Debug code.
 
+  // Preform some input validation before continuing.
   // Validate that a location was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
   if (!locationName) {
     throw `Blank location entered.\n\nPlease enter a valid location name and then try again.`;
+  }
+  // Also validate that a valid, future-dated leaving date was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
+  if (!isValidDate(leavingDate)) {
+    // If not a valid date.
+    throw `Blank or invalid leaving date entered.\n\nPlease enter a valid leaving date and then try again.`;
+  } else if (calcDayDifference(undefined, leavingDate) < 0) {
+    // A valid date has been entered, but it is in the past.
+    throw `The leaving date entered is in the past.\n\nPlease enter a valid, current or future-dated leaving date and then try again.`;
   }
 
   /* See https://www.geonames.org/export/geonames-search.html for the GeoNames web API documentation and a location based search web API call example.
@@ -68,7 +93,7 @@ const sendData = async (url, newData) => {
   headers: {
       'Content-Type': 'application/json',
   },
-  body: JSON.stringify(newData) // Body data type must match "Content-Type" header.     
+  body: JSON.stringify(newData) // Body data type must match "Content-Type" header.
   });
 
   // Assign the response to the post (in JSON format) to a variable.
@@ -96,6 +121,7 @@ const retrieveData = async () => {
   document.getElementById('latitude-result').innerHTML = data.latitude;
   document.getElementById('longitude-result').innerHTML = data.longitude;
   document.getElementById('population-result').innerHTML = data.population;
+  document.getElementById('leaving-date-countdown-result').innerHTML = calcDayDifference(undefined, data.leavingDate) + ' day(s) until your trip';
 };
 
 /*
@@ -104,7 +130,7 @@ Main functions
 // Function - Main button click event handler function that performs all the actions, calls all the functions, and handles all the promises in our code.
 function performActions(event) {
   /// Call a function to get geo data from the GeoNames web API.
-  getGeoData(document.getElementById('location-name').value)
+  getGeoData(document.getElementById('location-name').value, document.getElementById('leaving-date').value)
     // Then post the data retrieved from the GeoNames web API along with the data entered by the user to the Express server's POST route.
     /* Note the use of chained promises below by using .then().
     This handles the fulfilled and rejected states of the promise returned by the getGeoData async function. */
@@ -152,11 +178,24 @@ function performActions(event) {
 /*
 Events
 */
-/* The addEventListener line below was wrapped inside a function (createGenerateButtonEventListener) which is exported below and then imported into the main client index.js file (/src/client/index.js).
-The imported createGenerateButtonEventListener function is then exported again inside an IIFE (immediately invoked function expression) at the end of the client index.js file.
+/* The addEventListener line below was wrapped inside a function (createSubmitButtonEventListener) which is exported below and then imported into the main client index.js file (/src/client/index.js).
+The imported createSubmitButtonEventListener function is then exported again inside an IIFE (immediately invoked function expression) at the end of the client index.js file.
 See the IIFE code and comments at the end of the client index.js file (/src/client/index.js) as to why this was done. */
-function createGenerateButtonEventListener() {
-  document.getElementById('generate').addEventListener('click', performActions);
+function createSubmitButtonEventListener() {
+  document.getElementById('submit-button').addEventListener('click', performActions);
+}
+
+// The same wrapped EventListener function in conjunction with export and IIFE pattern as described above is used below.
+function createEnterKeyEventListener() {
+  document.addEventListener("keypress", event => {
+    // If the user presses the "Enter" key on the keyboard.
+    if (event.key === "Enter") {
+      // Cancel the default action, if needed.
+      event.preventDefault();
+      // Trigger the button element with a click.
+      document.getElementById("submit-button").click();
+    }
+  });
 }
 
 /*
@@ -170,5 +209,6 @@ Exports
 // See https://www.w3schools.com/js/js_modules.asp for details on JavaScript module exports and import.
 export {
   performActions,
-  createGenerateButtonEventListener
+  createSubmitButtonEventListener,
+  createEnterKeyEventListener
 };
