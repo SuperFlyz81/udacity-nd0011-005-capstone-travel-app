@@ -27,7 +27,7 @@ const isValidDate = (testDate) => {
 Main function expressions
 */
 // Function expression - Get geo data for a location from the GeoNames web API.
-const getGeoData = async (locationName, leavingDate) => {
+const getGeoData = async (locationName, departureDate) => {
   // console.log('Running getGeoData function (i.e. GeoNames web API GET request)'); // Debug code.
 
   // Preform some input validation before continuing.
@@ -35,13 +35,13 @@ const getGeoData = async (locationName, leavingDate) => {
   if (!locationName) {
     throw `Blank location entered.\n\nPlease enter a valid location name and then try again.`;
   }
-  // Also validate that a valid, future-dated leaving date was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
-  if (!isValidDate(leavingDate)) {
+  // Also validate that a valid, future-dated departure date was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
+  if (!isValidDate(departureDate)) {
     // If not a valid date.
-    throw `Blank or invalid leaving date entered.\n\nPlease enter a valid leaving date and then try again.`;
-  } else if (calcDayDifference(undefined, leavingDate) < 0) {
+    throw `Blank or invalid departure date entered.\n\nPlease enter a valid departure date and then try again.`;
+  } else if (calcDayDifference(undefined, departureDate) < 0) {
     // A valid date has been entered, but it is in the past.
-    throw `The leaving date entered is in the past.\n\nPlease enter a valid, current or future-dated leaving date and then try again.`;
+    throw `The departure date entered is in the past.\n\nPlease enter a present or future-dated departure date and then try again.`;
   }
 
   /* See https://www.geonames.org/export/geonames-search.html for the GeoNames web API documentation and a location based search web API call example.
@@ -115,13 +115,13 @@ const retrieveData = async () => {
 
   // Update the UI by assigning the fetched data to DOM elements.
   document.getElementById('location-name-result').innerHTML = data.locationName;
-  document.getElementById('leaving-date-result').innerHTML = data.leavingDate;
+  document.getElementById('departure-date-result').innerHTML = data.departureDate;
   document.getElementById('region-name-result').innerHTML = data.regionName;
   document.getElementById('country-name-result').innerHTML = data.countryName;
   document.getElementById('latitude-result').innerHTML = data.latitude;
   document.getElementById('longitude-result').innerHTML = data.longitude;
   document.getElementById('population-result').innerHTML = data.population;
-  document.getElementById('leaving-date-countdown-result').innerHTML = calcDayDifference(undefined, data.leavingDate) + ' day(s) until your trip';
+  document.getElementById('departure-date-countdown-result').innerHTML = calcDayDifference(undefined, data.departureDate) + ' day(s) until your trip';
 };
 
 /*
@@ -130,7 +130,7 @@ Main functions
 // Function - Main button click event handler function that performs all the actions, calls all the functions, and handles all the promises in our code.
 function performActions(event) {
   /// Call a function to get geo data from the GeoNames web API.
-  getGeoData(document.getElementById('location-name').value, document.getElementById('leaving-date').value)
+  getGeoData(document.getElementById('location-name').value, document.getElementById('departure-date').value)
     // Then post the data retrieved from the GeoNames web API along with the data entered by the user to the Express server's POST route.
     /* Note the use of chained promises below by using .then().
     This handles the fulfilled and rejected states of the promise returned by the getGeoData async function. */
@@ -140,7 +140,7 @@ function performActions(event) {
       // Build the data object.
       const newData = {
         locationName: result.name,
-        leavingDate: document.getElementById('leaving-date').value,
+        departureDate: document.getElementById('departure-date').value,
         regionName: result.adminName1,
         countryName: result.countryName,
         latitude: result.lat,

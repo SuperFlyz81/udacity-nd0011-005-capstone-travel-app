@@ -26,24 +26,24 @@
       </div>
       <div class="holder-location-name">
         <label for="location-name">Location</label>
-        <input id="location-name" type="text" placeholder="Enter a location's name">
+        <input id="location-name" type="text" autofocus="autofocus" placeholder="Enter a location's name">
       </div>
-      <div class="holder-leaving-date">
-        <label for="leaving-date">Leaving Date</label>
-        <input type="date" id="leaving-date" class="myInput" onfocus="this.min = new Date().toISOString().split('T')[0];"> <!-- Bit of inline JavaScript to block out the selection of past dates using this HTML date element -->
+      <div class="holder-departure-date">
+        <label for="departure-date">Departure Date</label>
+        <input type="date" id="departure-date" class="myInput" onfocus="this.min = new Date().toISOString().split('T')[0];"> <!-- Bit of inline JavaScript to block out the selection of past dates using this HTML date element -->
         <button id="submit-button" type="submit">Submit</button>
       </div>
       <div class="holder-result">
         <div class="title">Results</div>
         <div class="result">
           <div id="location-name-result"></div>
-          <div id="leaving-date-result"></div>
+          <div id="departure-date-result"></div>
           <div id="region-name-result"></div>
           <div id="country-name-result"></div>
           <div id="latitude-result"></div>
           <div id="longitude-result"></div>
           <div id="population-result"></div>
-          <div id="leaving-date-countdown-result"></div>
+          <div id="departure-date-countdown-result"></div>
         </div>
       </div>
     </div>
