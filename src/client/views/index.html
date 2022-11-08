@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Travel App</title>
+    <title>Travel Planner</title>
     <!-- For details on what the following viewport meta tag and its related values do, see https://www.w3schools.com/css/css_rwd_viewport.asp
     Also, AND VERY IMPORTANTLY, note that the viewport meta tag below is required for responsive layout @media breakpoints to work properly in your CSS files.
     Without this viewport meta tag, response layouts won't update in Chrome DevTools' device toolbar.
@@ -21,16 +21,23 @@
 
   <body>
     <div id="app">
-      <div class="holder-headline">
-        Travel App
-      </div>
+      <div class="holder-headline">Travel Planner</div>
       <div class="holder-location-name">
         <label for="location-name">Location</label>
         <input id="location-name" type="text" autofocus="autofocus" placeholder="Enter a location's name">
       </div>
       <div class="holder-departure-date">
         <label for="departure-date">Departure Date</label>
-        <input type="date" id="departure-date" class="myInput" onfocus="this.min = new Date().toISOString().split('T')[0];"> <!-- Bit of inline JavaScript to block out the selection of past dates using this HTML date element -->
+        <!-- A bit of inline JavaScript below to block out the selection of past dates,
+        and only allow 16 days in the future to be selected using the HTML date element below
+        (since the Weatherbit web API only supports 16 day weather forcasts from the present date).
+        See the following URL for more info on adding days to a date (including the addDays prototype function below):
+        https://stackoverflow.com/questions/563406/how-to-add-days-to-date -->
+        <input type="date" id="departure-date" class="myInput" onfocus="
+          this.min = new Date().toISOString().split('T')[0];
+          Date.prototype.addDays = function(d){return new Date(this.valueOf()+864E5*d);};
+          this.max = new Date().addDays(16).toISOString().split('T')[0];
+          ">
         <button id="submit-button" type="submit">Submit</button>
       </div>
       <div class="holder-result">

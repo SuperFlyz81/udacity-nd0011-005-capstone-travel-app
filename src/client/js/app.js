@@ -35,13 +35,16 @@ const getGeoData = async (locationName, departureDate) => {
   if (!locationName) {
     throw `Blank location entered.\n\nPlease enter a valid location name and then try again.`;
   }
-  // Also validate that a valid, future-dated departure date was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
+  // Also validate that a valid, future-dated, "within 16 days" departure date was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
   if (!isValidDate(departureDate)) {
     // If not a valid date.
     throw `Blank or invalid departure date entered.\n\nPlease enter a valid departure date and then try again.`;
   } else if (calcDayDifference(undefined, departureDate) < 0) {
     // A valid date has been entered, but it is in the past.
     throw `The departure date entered is in the past.\n\nPlease enter a present or future-dated departure date and then try again.`;
+  } else if (calcDayDifference(undefined, departureDate) > 16) {
+    // A valid date has been entered, but it is more than 16 days in the future (so more than the Weatherbit web API supports for future forecasts).
+    throw `The departure date entered is more than 16 days in the future. We can only provide weather forecasts for 16 days from the present date.\n\nPlease enter a departure date within 16 days from today's date and then try again.`;
   }
 
   /* See https://www.geonames.org/export/geonames-search.html for the GeoNames web API documentation and a location based search web API call example.
