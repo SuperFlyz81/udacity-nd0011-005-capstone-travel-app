@@ -90,17 +90,13 @@ const getGeoData = async (locationName, departureDate) => {
   throw `Could not find a location matching the name you entered.\n\nPlease ensure that you have entered a valid location name and then try again.`;
 };
 
-// Function expression - Get weather data from the Weatherbit web API and image data from the Pixabay web API.
+// Function expression - Get the current and forecast weather data from the Weatherbit web API and the location image data from the Pixabay web API.
 const getWeatherAndImageData = async (geoData) => {
   // console.log('Running getWeatherAndImageData function (i.e. Weatherbit and Pixabay web API GET requests)'); // Debug code.
 
-  /* See https://www.weatherbit.io/api/weather-forecast-16-day for the Weatherbit 16 Day Weather Forecast (1 day interval) web API documentation and an example request and response.
-  Note that the Weatherbit 16 Day Weather Forecast web API only returns 7 days worth of forecast when using the free Weatherbit plan.
-  Had to register for a free Weatherbit account to receive an API key to use with this project.
+  // Get Weatherbit web API key from Express server.
+  /* Had to register for a free Weatherbit account to receive an API key to use with this project.
   Note, all API keys are retrieved using an Express server route via the dotenv Node module to keep API keys locally and not expose/upload them to version control on the Internet (i.e. to GitHub). */
-  const baseURL = 'https://api.weatherbit.io/v2.0/forecast/daily?lat=' + geoData.latitude + '&lon=' + geoData.longitude;
-  // const apikey = 'API key goes here'; // Debug code.
-
   let apiKey = '&key=';
   try {
     /* One liner below to perform an Express server route get using the fetch browser API, async JavaScript code, and JavaScript promises.
@@ -112,28 +108,97 @@ const getWeatherAndImageData = async (geoData) => {
     throw `Could not retrieve the Weatherbit API key from the Express server.\n\nPlease ensure that the Express server is running and then try again.`;
   }
 
+  // Get current weather data.
+  // See https://www.weatherbit.io/api/weather-current for the Weatherbit Current Weather web API documentation and an example request and response.
+  let baseURL = 'https://api.weatherbit.io/v2.0/current?lat=' + geoData.latitude + '&lon=' + geoData.longitude;
+
   // Try to get weather data using the fetch browser API.
-  const response = await fetch(baseURL + apiKey);
+  const responseWeatherCurrent = await fetch(baseURL + apiKey);
 
   // Assign the fetched weather data (in JSON format) to a variable.
-  const weatherData = await response.json();
-  // console.log(weatherData); // Debug code.
-  console.log(weatherData.data[0]); // Debug code.
-  console.log(weatherData.data[6]); // Debug code.
-  console.log(weatherData.data[calcDayDifference(undefined, geoData.departureDate)]); // Debug code.
+  const dataWeatherCurrent = await responseWeatherCurrent.json();
+  // console.log(dataWeatherCurrent); // Debug code.
+  console.log(dataWeatherCurrent.data[0]); // Debug code.
 
+  /* Check if any errors occurred while fetching data from the Weatherbit web API.
+  This happens, for example, when a the daily limit of requests using the Weatherbit free plan of 50 calls per day has been exceeded.
+  In this case, throw an error to reject this async function's return promise (returning an error object). */
+  if (dataWeatherCurrent.hasOwnProperty('error')) {
+    throw `Could not retrieve current weather data for the location you entered.\n\nError details:\n${dataWeatherCurrent.error}\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
+  } else if (!dataWeatherCurrent.hasOwnProperty('data')) {
+    throw `Could not retrieve current weather data for the location you entered.\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
+  }
+
+  // Get forecast weather data.
+  /* See https://www.weatherbit.io/api/weather-forecast-16-day for the Weatherbit 16 Day Weather Forecast (1 day interval) web API documentation and an example request and response.
+  Note that the Weatherbit 16 Day Weather Forecast web API only returns 7 days worth of forecast when using the free Weatherbit plan. */
+  baseURL = 'https://api.weatherbit.io/v2.0/forecast/daily?lat=' + geoData.latitude + '&lon=' + geoData.longitude + '&days=' + calcDayDifference(undefined, geoData.departureDate) + 1;
+  console.log(baseURL);
+
+  // Try to get weather data using the fetch browser API.
+  const responseWeatherForecast = await fetch(baseURL + apiKey);
+
+  // Assign the fetched weather data (in JSON format) to a variable.
+  const dataWeatherForecast = await responseWeatherForecast.json();
+  console.log(dataWeatherForecast); // Debug code.
+  // console.log(dataWeatherForecast.data[0]); // Debug code.
+  // console.log(dataWeatherForecast.data[6]); // Debug code.
+  // console.log(dataWeatherForecast.data[calcDayDifference(undefined, geoData.departureDate)]); // Debug code.
+
+  /* Check if any errors occurred while fetching data from the Weatherbit web API.
+  This happens, for example, when a the daily limit of requests using the Weatherbit free plan of 50 calls per day has been exceeded.
+  In this case, throw an error to reject this async function's return promise (returning an error object). */
+  if (dataWeatherForecast.hasOwnProperty('error')) {
+    throw `Could not retrieve forecast weather data for the location you entered.\n\nError details:\n${dataWeatherForecast.error}\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
+  } else if (!dataWeatherForecast.hasOwnProperty('data')) {
+    throw `Could not retrieve forecast weather data for the location you entered.\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
+  }
+
+  // Get Pixabay web API key from Express server.
+  /* Had to register for a free Pixabay account to receive an API key to use with this project.
+  Note, all API keys are retrieved using an Express server route via the dotenv Node module to keep API keys locally and not expose/upload them to version control on the Internet (i.e. to GitHub). */
+  apiKey = '&key=';
+  try {
+    /* One liner below to perform an Express server route get using the fetch browser API, async JavaScript code, and JavaScript promises.
+    See the following URL for more details: https://stackoverflow.com/questions/61814037/fetch-request-and-convert-it-to-json-in-a-single-line */
+    apiKey += await (await fetch('http://localhost:8081/getapikey?dotenv=PIXABAY_API_KEY')).text();
+    // console.log(apiKey); // Debug code.
+  }
+  catch(err) {
+    throw `Could not retrieve the Pixabay API key from the Express server.\n\nPlease ensure that the Express server is running and then try again.`;
+  }
+
+  // Get image data.
+  // See https://pixabay.com/api/docs/ for the Pixabay web API documentation and an example request and response.
+  baseURL = 'https://pixabay.com/api/?image_type=photo&safesearch=true&per_page=3&q=' + encodeURIComponent(geoData.locationName);
+
+  let locationImageURL = '';
+
+  try {
+    // Try to get image data using the fetch browser API.
+    const responseImage = await fetch(baseURL + apiKey);
+
+    // Assign the fetched image data (in JSON format) to a variable.
+    const dataImage = await responseImage.json();
+    // console.log(dataImage); // Debug code.
+    // console.log(dataImage.hits[0]); // Debug code.
+    
+    locationImageURL = dataImage.total > 0 ? dataImage.hits[0].webformatURL : '';
+  } catch(err) {
+    /* If an error occurs while fetching image data from Pixabay (let's say the Pixabay site or web API is down), then just set the locationImageURL to blank.
+    We don't explicitly need a location image for our travel planner website to work. So, no need to throw an error if we can't find an image for our location. */
+    locationImageURL = '';
+  }
+  console.log(locationImageURL); // Debug code.
+
+  // TODO - Create and return a new data object using the previously retrieved geo data and the newly retrieved current weather data, forecast weather data, and location image data.
   // If valid weather data was received back from the Weatherbit web API, then resolve this async function's return promise (by returning the retrieved data).
-  if (weatherData.hasOwnProperty('data')) {
+  if (dataWeatherForecast.hasOwnProperty('data')) {
     /* Return the valid fetched weather data.
     The Weatherbit 16 Day Weather Forecast (1 day interval) web API returns a JSON object containing multiple days' weather forecasts.
     But we are only returning the weather data for the current date and the departure date (which could be the same date as the current date if the user selected today's date in the UI). */
     return geoData; // TODO - Just returning the data received by the function for now. This needs to return the data received by the function + data from Weatherbit and Pixabay
   }
-
-  /* Otherwise, if code execution has reached this point, it means that data was returned back from the Weatherbit web API, but it was invalid data.
-  This happens, for example, when a the daily limit of requests using the Weatherbit free plan of 50 calls per day has been exceeded.
-  In this case, throw an error to reject this async function's return promise (returning an error object). */
-  throw `Could not retrieve weather data for the location you entered\n\nPlease ensure that that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
 };
 
 // Function expression - Post data to the Express server's POST route.
@@ -194,7 +259,7 @@ function performActions(event) {
         .then(result => {
           // This arrow callback function runs when the getGeoData async function returns a resolved promise with a result.
 
-          // Build the data object.
+          // Build the geo data object.
           const geoData = {
             locationName: result.name,
             departureDate: document.getElementById('departure-date').value,
@@ -226,9 +291,11 @@ function performActions(event) {
                   });
             }, error => {
               // This arrow callback function runs when the getWeatherAndImageData async function returns a rejected promise with an error.
-              /* Appropriately handle any errors that might occur when fetching weather and location image data (for example, when the Weatherbit or Pixabay web APIs are down or not reachable).
-              Catches errors in both fetch() and response.json() in the getWeatherAndImageData async function, as well as any other errors that might occur in that function. */
-              alert(`The following error occurred while retrieving data from the Weatherbit or Pixabay web APIs:\n${error}`);
+              /* Appropriately handle any errors that might occur when fetching weather data (for example, when the Weatherbit web API is down or not reachable).
+              Catches errors in both fetch() and response.json() in the getWeatherAndImageData async function, as well as any other errors that might occur in that function.
+              Note that we are not worried about errors that might occur when fetching image data from the Pixabay web API since we don't explicitly need a location image for our travel planner website to work. 
+              So, the getWeatherAndImageData function will just return a blank location image URL if it can't connect to the Pixabay web API or if it can't find an image for our location. */
+              alert(`The following error occurred while retrieving data from the Weatherbit web API:\n${error}`);
             })
         }, error => {
           // This arrow callback function runs when the getGeoData async function returns a rejected promise with an error.
