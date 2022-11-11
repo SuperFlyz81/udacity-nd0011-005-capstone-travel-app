@@ -52,7 +52,7 @@ app.get('/', (req, res) => {
   res.sendFile('dist/index.html');
 })
 
-// GET route - returns the requested web API key.
+// GET route - returns the requested API key.
 app.get('/getapikey', (req, res) => {
   // Note the use of bracket notation below to reference a specific dotenv key/value pair in the process.env object (as loaded from the .env file).
   res.send(process.env[req.query.dotenv]);
@@ -77,6 +77,9 @@ app.post('/postdata', (req, res) => {
   projectData.latitude = data.latitude;
   projectData.longitude = data.longitude;
   projectData.population = data.population;
+  projectData.departureCountdown = data.departureCountdown;
+  projectData.weatherData = data.weatherData;
+  projectData.locationImageURL = data.locationImageURL;
 
   res.send(projectData);
   // console.log('Posted', projectData); // Debug code.

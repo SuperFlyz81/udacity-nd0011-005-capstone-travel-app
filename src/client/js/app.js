@@ -23,6 +23,25 @@ const isValidDate = (testDate) => {
   return newTestDate instanceof Date && !isNaN(newTestDate);
 }
 
+// Function expression - Convert Unix timestamp to time in hh:mm format.
+const convertUnixTimestampToTime = (unixTimestamp) => {
+  /* Code adapted from: https://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
+  Create a new JavaScript Date object based on the Unix timestamp.
+  Then multiply it by 1000 so that the argument is in milliseconds, not seconds. */
+  const date = new Date(unixTimestamp * 1000);
+  // Hours part from the timestamp.
+  const hours = date.getHours();
+  // Minutes part from the timestamp.
+  const minutes = "0" + date.getMinutes();
+  // Seconds part from the timestamp.
+  //const seconds = "0" + date.getSeconds();
+
+  // Will display the ime in hh:mm format.
+  const formattedTime = ("0" + hours).slice(-2) + ':' + ("0" + minutes).slice(-2); // + ':' + ("0" + seconds).slice(-2);
+
+  return formattedTime;
+}
+
 /*
 Main function expressions
 */
@@ -42,22 +61,22 @@ const validateInput = async (locationName, departureDate) => {
     // A valid date has been entered, but it is in the past.
     throw `The departure date entered is in the past.\n\nPlease enter a present or future-dated departure date and then try again.`;
   } else if (calcDayDifference(undefined, departureDate) > 6) {
-    // A valid date has been entered, but it is more than 7 days in the future (so more than the Weatherbit web API supports for future forecasts).
+    // A valid date has been entered, but it is more than 7 days in the future (so more than the Weatherbit API supports for future forecasts).
     throw `The departure date entered is more than 7 days in the future. We can only provide weather forecasts for 7 days from the present date.\n\nPlease enter a departure date within 7 days from today's date and then try again.`;
   }
 }
 
-// Function expression - Get geo data for a location from the GeoNames web API.
+// Function expression - Get geo data for a location from the GeoNames API.
 const getGeoData = async (locationName, departureDate) => {
-  // console.log('Running getGeoData function (i.e. GeoNames web API GET request)'); // Debug code.
+  // console.log('Running getGeoData function (i.e. GeoNames API GET request)'); // Debug code.
 
-  /* See https://www.geonames.org/export/geonames-search.html for the GeoNames web API documentation and a location based search web API call example.
+  /* See https://www.geonames.org/export/geonames-search.html for the GeoNames API documentation and a location based search API call example.
   Had to register for a free GeoNames account to receive an API key to use with this project.
   Note, all API keys are retrieved using an Express server route via the dotenv Node module to keep API keys locally and not expose/upload them to version control on the Internet (i.e. to GitHub). */
   const baseURL = 'http://api.geonames.org/searchJSON?q=';
   // const apikey = 'API key goes here'; // Debug code.
 
-  let apiKey = '&maxRows=1&username='; // Note that we are only fetching one row (maxRows=1), i.e. the top result, from the GeoNames web API.
+  let apiKey = '&maxRows=1&username='; // Note that we are only fetching one row (maxRows=1), i.e. the top result, from the GeoNames API.
   try {
     /* One liner below to perform an Express server route get using the fetch browser API, async JavaScript code, and JavaScript promises.
     See the following URL for more details: https://stackoverflow.com/questions/61814037/fetch-request-and-convert-it-to-json-in-a-single-line */
@@ -74,27 +93,28 @@ const getGeoData = async (locationName, departureDate) => {
   // Assign the fetched geo data (in JSON format) to a variable.
   const data = await response.json();
   // console.log(data); // Debug code.
-  console.log(data['geonames'][0]); // Debug code.
+  // console.log(data['geonames'][0]); // Debug code.
 
-  // If valid geo data was received back from the GeoNames web API, then resolve this async function's return promise (by returning the retrieved data).
+  // If valid geo data was received back from the GeoNames API, then resolve this async function's return promise (by returning the retrieved data).
   if (data.totalResultsCount !== 0) {
     /* Return the valid fetched geo data.
-    The GeoNames web API can return a JSON object containing multiple arrays with results.
-    But we are only fetching and then returning the top result (by setting maxRows=1 in the query above to the GeoNames web API). */
+    The GeoNames API can return a JSON object containing multiple arrays with results.
+    But we are only fetching and then returning the top result (by setting maxRows=1 in the query above to the GeoNames API). */
     return data['geonames'][0];
   }
 
-  /* Otherwise, if code execution has reached this point, it means that data was returned back from the GeoNames web API, but it was invalid data.
-  This happens, for example, when a location could not be located by the GeoNames web API.
+  /* Otherwise, if code execution has reached this point, it means that data was returned back from the GeoNames API, but it was invalid data.
+  This happens, for example, when a location could not be located by the GeoNames API.
   In this case, throw an error to reject this async function's return promise (returning an error object). */
   throw `Could not find a location matching the name you entered.\n\nPlease ensure that you have entered a valid location name and then try again.`;
 };
 
-// Function expression - Get the current and forecast weather data from the Weatherbit web API and the location image data from the Pixabay web API.
+// Function expression - Get the current and forecast weather data from the Weatherbit API and the location image data from the Pixabay API.
 const getWeatherAndImageData = async (geoData) => {
-  // console.log('Running getWeatherAndImageData function (i.e. Weatherbit and Pixabay web API GET requests)'); // Debug code.
+  // console.log('Running getWeatherAndImageData function (i.e. Weatherbit and Pixabay API GET requests)'); // Debug code.
+  const departureDayIndex = geoData.departureCountdown;
 
-  // Get Weatherbit web API key from Express server.
+  // Get Weatherbit API key from Express server.
   /* Had to register for a free Weatherbit account to receive an API key to use with this project.
   Note, all API keys are retrieved using an Express server route via the dotenv Node module to keep API keys locally and not expose/upload them to version control on the Internet (i.e. to GitHub). */
   let apiKey = '&key=';
@@ -109,7 +129,7 @@ const getWeatherAndImageData = async (geoData) => {
   }
 
   // Get current weather data.
-  // See https://www.weatherbit.io/api/weather-current for the Weatherbit Current Weather web API documentation and an example request and response.
+  // See https://www.weatherbit.io/api/weather-current for the Weatherbit Current Weather API documentation and an example request and response.
   let baseURL = 'https://api.weatherbit.io/v2.0/current?lat=' + geoData.latitude + '&lon=' + geoData.longitude;
 
   // Try to get weather data using the fetch browser API.
@@ -118,9 +138,9 @@ const getWeatherAndImageData = async (geoData) => {
   // Assign the fetched weather data (in JSON format) to a variable.
   const dataWeatherCurrent = await responseWeatherCurrent.json();
   // console.log(dataWeatherCurrent); // Debug code.
-  console.log(dataWeatherCurrent.data[0]); // Debug code.
+  // console.log(dataWeatherCurrent.data[0]); // Debug code.
 
-  /* Check if any errors occurred while fetching data from the Weatherbit web API.
+  /* Check if any errors occurred while fetching data from the Weatherbit API.
   This happens, for example, when a the daily limit of requests using the Weatherbit free plan of 50 calls per day has been exceeded.
   In this case, throw an error to reject this async function's return promise (returning an error object). */
   if (dataWeatherCurrent.hasOwnProperty('error')) {
@@ -130,22 +150,21 @@ const getWeatherAndImageData = async (geoData) => {
   }
 
   // Get forecast weather data.
-  /* See https://www.weatherbit.io/api/weather-forecast-16-day for the Weatherbit 16 Day Weather Forecast (1 day interval) web API documentation and an example request and response.
-  Note that the Weatherbit 16 Day Weather Forecast web API only returns 7 days worth of forecast when using the free Weatherbit plan. */
-  baseURL = 'https://api.weatherbit.io/v2.0/forecast/daily?lat=' + geoData.latitude + '&lon=' + geoData.longitude + '&days=' + calcDayDifference(undefined, geoData.departureDate) + 1;
-  console.log(baseURL);
+  /* See https://www.weatherbit.io/api/weather-forecast-16-day for the Weatherbit 16 Day Weather Forecast (1 day interval) API documentation and an example request and response.
+  Note that the Weatherbit 16 Day Weather Forecast API only returns 7 days worth of forecast when using the free Weatherbit plan. */
+  baseURL = 'https://api.weatherbit.io/v2.0/forecast/daily?lat=' + geoData.latitude + '&lon=' + geoData.longitude + '&days=' + (departureDayIndex + 1);
 
   // Try to get weather data using the fetch browser API.
   const responseWeatherForecast = await fetch(baseURL + apiKey);
 
   // Assign the fetched weather data (in JSON format) to a variable.
   const dataWeatherForecast = await responseWeatherForecast.json();
-  console.log(dataWeatherForecast); // Debug code.
+  // console.log(dataWeatherForecast); // Debug code.
   // console.log(dataWeatherForecast.data[0]); // Debug code.
   // console.log(dataWeatherForecast.data[6]); // Debug code.
-  // console.log(dataWeatherForecast.data[calcDayDifference(undefined, geoData.departureDate)]); // Debug code.
+  // console.log(dataWeatherForecast.data[departureDayIndex]); // Debug code.
 
-  /* Check if any errors occurred while fetching data from the Weatherbit web API.
+  /* Check if any errors occurred while fetching data from the Weatherbit API.
   This happens, for example, when a the daily limit of requests using the Weatherbit free plan of 50 calls per day has been exceeded.
   In this case, throw an error to reject this async function's return promise (returning an error object). */
   if (dataWeatherForecast.hasOwnProperty('error')) {
@@ -154,7 +173,7 @@ const getWeatherAndImageData = async (geoData) => {
     throw `Could not retrieve forecast weather data for the location you entered.\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
   }
 
-  // Get Pixabay web API key from Express server.
+  // Get Pixabay API key from Express server.
   /* Had to register for a free Pixabay account to receive an API key to use with this project.
   Note, all API keys are retrieved using an Express server route via the dotenv Node module to keep API keys locally and not expose/upload them to version control on the Internet (i.e. to GitHub). */
   apiKey = '&key=';
@@ -169,8 +188,8 @@ const getWeatherAndImageData = async (geoData) => {
   }
 
   // Get image data.
-  // See https://pixabay.com/api/docs/ for the Pixabay web API documentation and an example request and response.
-  baseURL = 'https://pixabay.com/api/?image_type=photo&safesearch=true&per_page=3&q=' + encodeURIComponent(geoData.locationName);
+  // See https://pixabay.com/api/docs/ for the Pixabay API documentation and an example request and response.
+  baseURL = 'https://pixabay.com/api/?safesearch=true&per_page=3&q=' + encodeURIComponent(geoData.locationName);
 
   let locationImageURL = '';
 
@@ -185,20 +204,67 @@ const getWeatherAndImageData = async (geoData) => {
     
     locationImageURL = dataImage.total > 0 ? dataImage.hits[0].webformatURL : '';
   } catch(err) {
-    /* If an error occurs while fetching image data from Pixabay (let's say the Pixabay site or web API is down), then just set the locationImageURL to blank.
+    // Catches http, connection, and other errors.
+    /* If an error occurs while fetching image data from Pixabay (let's say the Pixabay site or API is down), then just set the locationImageURL to blank.
     We don't explicitly need a location image for our travel planner website to work. So, no need to throw an error if we can't find an image for our location. */
     locationImageURL = '';
   }
-  console.log(locationImageURL); // Debug code.
+  // console.log(locationImageURL); // Debug code.
 
-  // TODO - Create and return a new data object using the previously retrieved geo data and the newly retrieved current weather data, forecast weather data, and location image data.
-  // If valid weather data was received back from the Weatherbit web API, then resolve this async function's return promise (by returning the retrieved data).
-  if (dataWeatherForecast.hasOwnProperty('data')) {
-    /* Return the valid fetched weather data.
-    The Weatherbit 16 Day Weather Forecast (1 day interval) web API returns a JSON object containing multiple days' weather forecasts.
-    But we are only returning the weather data for the current date and the departure date (which could be the same date as the current date if the user selected today's date in the UI). */
-    return geoData; // TODO - Just returning the data received by the function for now. This needs to return the data received by the function + data from Weatherbit and Pixabay
+  // Build a new object using the previously retrieved geo data and the newly retrieved current weather data, forecast weather data, and location image data.
+  const allData = {
+    locationName: geoData.locationName,
+    departureDate: geoData.departureDate,
+    regionName: geoData.regionName,
+    countryName: geoData.countryName,
+    latitude: geoData.latitude,
+    longitude: geoData.longitude,
+    population: geoData.population,
+    departureCountdown: departureDayIndex,
+    weatherData: [
+      // Current weather object (inside the all data object).
+      {
+        icon: dataWeatherCurrent.data[0].weather.icon,
+        description: dataWeatherCurrent.data[0].weather.description,
+        temp: dataWeatherCurrent.data[0].temp,
+        feelslikeTemp: dataWeatherCurrent.data[0].app_temp,
+        maxTemp: dataWeatherForecast.data[departureDayIndex].max_temp,
+        minTemp: dataWeatherForecast.data[departureDayIndex].min_temp,
+        chanceOfRain: dataWeatherForecast.data[departureDayIndex].pop,
+        windSpeed: dataWeatherCurrent.data[0].wind_spd,
+        windGustSpeed: dataWeatherCurrent.data[0].gust,
+        windDirection: dataWeatherCurrent.data[0].wind_cdir_full,
+        cloudCoverage: dataWeatherCurrent.data[0].clouds,
+        uvIndex: dataWeatherCurrent.data[0].uv,
+        humidity: dataWeatherCurrent.data[0].rh,
+        sunriseTime: dataWeatherCurrent.data[0].sunrise,
+        sunsetTime: dataWeatherCurrent.data[0].sunset
+      },
+      // Forecase weather object (inside the all data object).
+      {
+        icon: dataWeatherForecast.data[departureDayIndex].weather.icon,
+        description: dataWeatherForecast.data[departureDayIndex].weather.description,
+        temp: dataWeatherForecast.data[departureDayIndex].temp,
+        feelslikeTemp: '',
+        maxTemp: dataWeatherForecast.data[departureDayIndex].max_temp,
+        minTemp: dataWeatherForecast.data[departureDayIndex].min_temp,
+        chanceOfRain: dataWeatherForecast.data[departureDayIndex].pop,
+        windSpeed: dataWeatherForecast.data[departureDayIndex].wind_spd,
+        windGustSpeed: dataWeatherForecast.data[departureDayIndex].wind_gust_spd,
+        windDirection: dataWeatherForecast.data[departureDayIndex].wind_cdir_full,
+        cloudCoverage: dataWeatherForecast.data[departureDayIndex].clouds,
+        uvIndex: dataWeatherForecast.data[departureDayIndex].uv,
+        humidity: dataWeatherForecast.data[departureDayIndex].rh,
+        sunriseTime: convertUnixTimestampToTime(dataWeatherForecast.data[departureDayIndex].sunrise_ts),
+        sunsetTime: convertUnixTimestampToTime(dataWeatherForecast.data[departureDayIndex].sunset_ts)
+      }
+    ],
+    locationImageURL: locationImageURL
   }
+  // console.log(allData); // Debug code.
+
+  // Return the newly built object containing all our geo, current weather, forecast weather, and location image data.
+  return allData;
 };
 
 // Function expression - Post data to the Express server's POST route.
@@ -240,7 +306,41 @@ const retrieveData = async () => {
   document.getElementById('latitude-result').innerHTML = data.latitude;
   document.getElementById('longitude-result').innerHTML = data.longitude;
   document.getElementById('population-result').innerHTML = data.population;
-  document.getElementById('departure-date-countdown-result').innerHTML = calcDayDifference(undefined, data.departureDate) + ' day(s) until your trip';
+  document.getElementById('departure-date-countdown-result').innerHTML = data.departureCountdown + ' day(s) until your trip';
+  
+  document.getElementById('current-icon-result').innerHTML = data.weatherData[0].icon;
+  document.getElementById('current-description-result').innerHTML = data.weatherData[0].description;
+  document.getElementById('current-temp-result').innerHTML = data.weatherData[0].temp;
+  document.getElementById('current-feels-like-temp-result').innerHTML = data.weatherData[0].feelslikeTemp;
+  document.getElementById('current-max-temp-result').innerHTML = data.weatherData[0].maxTemp;
+  document.getElementById('current-min-temp-result').innerHTML = data.weatherData[0].minTemp;
+  document.getElementById('current-chance-of-rain-result').innerHTML = data.weatherData[0].chanceOfRain;
+  document.getElementById('current-wind-speed-result').innerHTML = data.weatherData[0].windSpeed;
+  document.getElementById('current-wind-gust-speed-result').innerHTML = data.weatherData[0].windGustSpeed;
+  document.getElementById('current-wind-direction-result').innerHTML = data.weatherData[0].windDirection;
+  document.getElementById('current-cloud-coverage-result').innerHTML = data.weatherData[0].cloudCoverage;
+  document.getElementById('current-uv-index-result').innerHTML = data.weatherData[0].uvIndex;
+  document.getElementById('current-humidity-result').innerHTML = data.weatherData[0].humidity;
+  document.getElementById('current-sunrise-time-result').innerHTML = data.weatherData[0].sunriseTime;
+  document.getElementById('current-sunset-time-result').innerHTML = data.weatherData[0].sunsetTime;
+
+  document.getElementById('departure-icon-result').innerHTML = data.weatherData[1].icon;
+  document.getElementById('departure-description-result').innerHTML = data.weatherData[1].description;
+  document.getElementById('departure-temp-result').innerHTML = data.weatherData[1].temp;
+  document.getElementById('departure-feels-like-temp-result').innerHTML = data.weatherData[1].feelslikeTemp;
+  document.getElementById('departure-max-temp-result').innerHTML = data.weatherData[1].maxTemp;
+  document.getElementById('departure-min-temp-result').innerHTML = data.weatherData[1].minTemp;
+  document.getElementById('departure-chance-of-rain-result').innerHTML = data.weatherData[1].chanceOfRain;
+  document.getElementById('departure-wind-speed-result').innerHTML = data.weatherData[1].windSpeed;
+  document.getElementById('departure-wind-gust-speed-result').innerHTML = data.weatherData[1].windGustSpeed;
+  document.getElementById('departure-wind-direction-result').innerHTML = data.weatherData[1].windDirection;
+  document.getElementById('departure-cloud-coverage-result').innerHTML = data.weatherData[1].cloudCoverage;
+  document.getElementById('departure-uv-index-result').innerHTML = data.weatherData[1].uvIndex;
+  document.getElementById('departure-humidity-result').innerHTML = data.weatherData[1].humidity;
+  document.getElementById('departure-sunrise-time-result').innerHTML = data.weatherData[1].sunriseTime;
+  document.getElementById('departure-sunset-time-result').innerHTML = data.weatherData[1].sunsetTime;
+
+  document.getElementById('location-image-url-result').innerHTML = data.locationImageURL;
 };
 
 /*
@@ -251,23 +351,26 @@ function performActions(event) {
   // Call a function to validate the user input from your UI.
   validateInput(document.getElementById('location-name').value, document.getElementById('departure-date').value)
     .then(result => {
-      // Call a function to get geo data from the GeoNames web API.
+      // Call a function to get geo data from the GeoNames API.
       getGeoData(document.getElementById('location-name').value, document.getElementById('departure-date').value)
-        // Then post the data retrieved from the GeoNames web API along with the data entered by the user to the Express server's POST route.
+        // Then post the data retrieved from the GeoNames API along with the data entered by the user to the Express server's POST route.
         /* Note the use of chained promises below by using .then().
         This handles the fulfilled and rejected states of the promise returned by the getGeoData async function. */
         .then(result => {
           // This arrow callback function runs when the getGeoData async function returns a resolved promise with a result.
 
           // Build the geo data object.
+          const departureDate = document.getElementById('departure-date').value;
+
           const geoData = {
             locationName: result.name,
-            departureDate: document.getElementById('departure-date').value,
+            departureDate: departureDate,
             regionName: result.adminName1,
             countryName: result.countryName,
             latitude: result.lat,
             longitude: result.lng,
-            population: result.population
+            population: result.population,
+            departureCountdown: calcDayDifference(undefined, departureDate)
           };
         
           getWeatherAndImageData(geoData)
@@ -291,17 +394,17 @@ function performActions(event) {
                   });
             }, error => {
               // This arrow callback function runs when the getWeatherAndImageData async function returns a rejected promise with an error.
-              /* Appropriately handle any errors that might occur when fetching weather data (for example, when the Weatherbit web API is down or not reachable).
+              /* Appropriately handle any errors that might occur when fetching weather data (for example, when the Weatherbit API is down or not reachable).
               Catches errors in both fetch() and response.json() in the getWeatherAndImageData async function, as well as any other errors that might occur in that function.
-              Note that we are not worried about errors that might occur when fetching image data from the Pixabay web API since we don't explicitly need a location image for our travel planner website to work. 
-              So, the getWeatherAndImageData function will just return a blank location image URL if it can't connect to the Pixabay web API or if it can't find an image for our location. */
-              alert(`The following error occurred while retrieving data from the Weatherbit web API:\n${error}`);
+              Note that we are not worried about errors that might occur when fetching image data from the Pixabay API since we don't explicitly need a location image for our travel planner website to work. 
+              So, the getWeatherAndImageData function will just return a blank location image URL if it can't connect to the Pixabay API or if it can't find an image for our location. */
+              alert(`The following error occurred while retrieving data from the Weatherbit API:\n${error}\n\nPlease ensure that you have not exceeded your free daily quota of 50 calls per day to the Weatherbit API and if so, please try again tomorrow.\n\nAlso ensure that the Weatherbit API is operational at https://status.weatherbit.io.`);
             })
         }, error => {
           // This arrow callback function runs when the getGeoData async function returns a rejected promise with an error.
-          /* Appropriately handle any errors that might occur when fetching geo data (for example, when an GeoNames web API is down or not reachable).
+          /* Appropriately handle any errors that might occur when fetching geo data (for example, when an GeoNames API is down or not reachable).
           Catches errors in both fetch() and response.json() in the getGeoData async function, as well as any other errors that might occur in that function. */
-          alert(`The following error occurred while retrieving data from the GeoNames web API:\n${error}`);
+          alert(`The following error occurred while retrieving data from the GeoNames API:\n${error}`);
         })
     }, error => {
       // This arrow callback function runs when the validateInput async function returns a rejected promise with an error.

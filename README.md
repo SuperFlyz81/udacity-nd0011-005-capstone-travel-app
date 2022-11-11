@@ -19,7 +19,7 @@ The goal of this project was to give us practice with:
   * Service workers.
   * Using APIs and creating requests to external urls.
 
-We were tasked with creating a client/server web app that uses the MeaningCloud Sentiment Analysis web API to evaluate the text in any website address entered by the user. Our web app should then analyse the text in that website and determine if the sentiment of that text is strongly positive, positive, strongly negative, negative, or neutral. The app also evaluates if the subjectivity of the text is objective or subjective. And we also display a text snippet (the first 10 sentences) or the text that was evaluated.
+We were tasked with creating a client/server web app that uses the MeaningCloud Sentiment Analysis API to evaluate the text in any website address entered by the user. Our web app should then analyse the text in that website and determine if the sentiment of that text is strongly positive, positive, strongly negative, negative, or neutral. The app also evaluates if the subjectivity of the text is objective or subjective. And we also display a text snippet (the first 10 sentences) or the text that was evaluated.
 
 Our web app uses the Webpack build tool to package our website for development and production purposes. Additionally, our web app uses Jest for JavaScript code testing purposes. And finally, we use service workers for offline website functionality.
 
@@ -70,7 +70,7 @@ Our web app uses the Webpack build tool to package our website for development a
     ```
   * Note that the dependency files installation can take a couple of minutes to complete.
 
-* **Obtain a MeaningCloud Sentiment Analysis web API key**
+* **Obtain a MeaningCloud Sentiment Analysis API key**
   * Register for a free MeaningCloud account at: https://www.meaningcloud.com/developer/create-account
   * Create a new file named ".env" in the root of your project folder.
   * Then copy your MeaningCloud license key from https://www.meaningcloud.com/developer/account/subscriptions
