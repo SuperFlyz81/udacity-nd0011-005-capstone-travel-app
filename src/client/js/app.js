@@ -46,28 +46,28 @@ const convertUnixTimestampToTime = (unixTimestamp) => {
 Main function expressions
 */
 // Function expression - Preform some input validation before continuing.
-const validateInput = async (locationName, departureDate) => {
+const validateInput = async (locationName, arrivalDate) => {
   // console.log('Running validateInput function; // Debug code.
 
   // Validate that a location was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
   if (!locationName) {
     throw `Blank location entered.\n\nPlease enter a valid location name and then try again.`;
   }
-  // Also validate that a valid, future-dated, "within 7 days" departure date was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
-  if (!isValidDate(departureDate)) {
+  // Also validate that a valid, future-dated, "within 7 days" arrival date was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
+  if (!isValidDate(arrivalDate)) {
     // If not a valid date.
-    throw `Blank or invalid departure date entered.\n\nPlease enter a valid departure date and then try again.`;
-  } else if (calcDayDifference(undefined, departureDate) < 0) {
+    throw `Blank or invalid arrival date entered.\n\nPlease enter a valid arrival date and then try again.`;
+  } else if (calcDayDifference(undefined, arrivalDate) < 0) {
     // A valid date has been entered, but it is in the past.
-    throw `The departure date entered is in the past.\n\nPlease enter a present or future-dated departure date and then try again.`;
-  } else if (calcDayDifference(undefined, departureDate) > 6) {
+    throw `The arrival date entered is in the past.\n\nPlease enter a present or future-dated arrival date and then try again.`;
+  } else if (calcDayDifference(undefined, arrivalDate) > 6) {
     // A valid date has been entered, but it is more than 7 days in the future (so more than the Weatherbit API supports for future forecasts).
-    throw `The departure date entered is more than 7 days in the future. We can only provide weather forecasts for 7 days from the present date.\n\nPlease enter a departure date within 7 days from today's date and then try again.`;
+    throw `The arrival date entered is more than 7 days in the future. We can only provide weather forecasts for 7 days from the present date.\n\nPlease enter a arrival date within 7 days from today's date and then try again.`;
   }
 }
 
 // Function expression - Get geo data for a location from the GeoNames API.
-const getGeoData = async (locationName, departureDate) => {
+const getGeoData = async (locationName, arrivalDate) => {
   // console.log('Running getGeoData function (i.e. GeoNames API GET request)'); // Debug code.
 
   /* See https://www.geonames.org/export/geonames-search.html for the GeoNames API documentation and a location based search API call example.
@@ -112,7 +112,7 @@ const getGeoData = async (locationName, departureDate) => {
 // Function expression - Get the current and forecast weather data from the Weatherbit API and the location image data from the Pixabay API.
 const getWeatherAndImageData = async (geoData) => {
   // console.log('Running getWeatherAndImageData function (i.e. Weatherbit and Pixabay API GET requests)'); // Debug code.
-  const departureDayIndex = geoData.departureCountdown;
+  const arrivalDayIndex = geoData.arrivalCountdown;
 
   // Get Weatherbit API key from Express server.
   /* Had to register for a free Weatherbit account to receive an API key to use with this project.
@@ -152,7 +152,7 @@ const getWeatherAndImageData = async (geoData) => {
   // Get forecast weather data.
   /* See https://www.weatherbit.io/api/weather-forecast-16-day for the Weatherbit 16 Day Weather Forecast (1 day interval) API documentation and an example request and response.
   Note that the Weatherbit 16 Day Weather Forecast API only returns 7 days worth of forecast when using the free Weatherbit plan. */
-  baseURL = 'https://api.weatherbit.io/v2.0/forecast/daily?lat=' + geoData.latitude + '&lon=' + geoData.longitude + '&days=' + (departureDayIndex + 1);
+  baseURL = 'https://api.weatherbit.io/v2.0/forecast/daily?lat=' + geoData.latitude + '&lon=' + geoData.longitude + '&days=' + (arrivalDayIndex + 1);
 
   // Try to get weather data using the fetch browser API.
   const responseWeatherForecast = await fetch(baseURL + apiKey);
@@ -162,7 +162,7 @@ const getWeatherAndImageData = async (geoData) => {
   // console.log(dataWeatherForecast); // Debug code.
   // console.log(dataWeatherForecast.data[0]); // Debug code.
   // console.log(dataWeatherForecast.data[6]); // Debug code.
-  // console.log(dataWeatherForecast.data[departureDayIndex]); // Debug code.
+  // console.log(dataWeatherForecast.data[arrivalDayIndex]); // Debug code.
 
   /* Check if any errors occurred while fetching data from the Weatherbit API.
   This happens, for example, when a the daily limit of requests using the Weatherbit free plan of 50 calls per day has been exceeded.
@@ -214,13 +214,13 @@ const getWeatherAndImageData = async (geoData) => {
   // Build a new object using the previously retrieved geo data and the newly retrieved current weather data, forecast weather data, and location image data.
   const allData = {
     locationName: geoData.locationName,
-    departureDate: geoData.departureDate,
+    arrivalDate: geoData.arrivalDate,
     regionName: geoData.regionName,
     countryName: geoData.countryName,
     latitude: geoData.latitude,
     longitude: geoData.longitude,
     population: geoData.population,
-    departureCountdown: departureDayIndex,
+    arrivalCountdown: arrivalDayIndex,
     weatherData: [
       // Current weather object (inside the all data object).
       {
@@ -228,9 +228,9 @@ const getWeatherAndImageData = async (geoData) => {
         description: dataWeatherCurrent.data[0].weather.description,
         temp: dataWeatherCurrent.data[0].temp,
         feelslikeTemp: dataWeatherCurrent.data[0].app_temp,
-        maxTemp: dataWeatherForecast.data[departureDayIndex].max_temp,
-        minTemp: dataWeatherForecast.data[departureDayIndex].min_temp,
-        chanceOfRain: dataWeatherForecast.data[departureDayIndex].pop,
+        maxTemp: dataWeatherForecast.data[arrivalDayIndex].max_temp,
+        minTemp: dataWeatherForecast.data[arrivalDayIndex].min_temp,
+        chanceOfRain: dataWeatherForecast.data[arrivalDayIndex].pop,
         windSpeed: dataWeatherCurrent.data[0].wind_spd,
         windGustSpeed: dataWeatherCurrent.data[0].gust,
         windDirection: dataWeatherCurrent.data[0].wind_cdir_full,
@@ -242,21 +242,21 @@ const getWeatherAndImageData = async (geoData) => {
       },
       // Forecase weather object (inside the all data object).
       {
-        icon: dataWeatherForecast.data[departureDayIndex].weather.icon,
-        description: dataWeatherForecast.data[departureDayIndex].weather.description,
-        temp: dataWeatherForecast.data[departureDayIndex].temp,
+        icon: dataWeatherForecast.data[arrivalDayIndex].weather.icon,
+        description: dataWeatherForecast.data[arrivalDayIndex].weather.description,
+        temp: dataWeatherForecast.data[arrivalDayIndex].temp,
         feelslikeTemp: '',
-        maxTemp: dataWeatherForecast.data[departureDayIndex].max_temp,
-        minTemp: dataWeatherForecast.data[departureDayIndex].min_temp,
-        chanceOfRain: dataWeatherForecast.data[departureDayIndex].pop,
-        windSpeed: dataWeatherForecast.data[departureDayIndex].wind_spd,
-        windGustSpeed: dataWeatherForecast.data[departureDayIndex].wind_gust_spd,
-        windDirection: dataWeatherForecast.data[departureDayIndex].wind_cdir_full,
-        cloudCoverage: dataWeatherForecast.data[departureDayIndex].clouds,
-        uvIndex: dataWeatherForecast.data[departureDayIndex].uv,
-        humidity: dataWeatherForecast.data[departureDayIndex].rh,
-        sunriseTime: convertUnixTimestampToTime(dataWeatherForecast.data[departureDayIndex].sunrise_ts),
-        sunsetTime: convertUnixTimestampToTime(dataWeatherForecast.data[departureDayIndex].sunset_ts)
+        maxTemp: dataWeatherForecast.data[arrivalDayIndex].max_temp,
+        minTemp: dataWeatherForecast.data[arrivalDayIndex].min_temp,
+        chanceOfRain: dataWeatherForecast.data[arrivalDayIndex].pop,
+        windSpeed: dataWeatherForecast.data[arrivalDayIndex].wind_spd,
+        windGustSpeed: dataWeatherForecast.data[arrivalDayIndex].wind_gust_spd,
+        windDirection: dataWeatherForecast.data[arrivalDayIndex].wind_cdir_full,
+        cloudCoverage: dataWeatherForecast.data[arrivalDayIndex].clouds,
+        uvIndex: dataWeatherForecast.data[arrivalDayIndex].uv,
+        humidity: dataWeatherForecast.data[arrivalDayIndex].rh,
+        sunriseTime: convertUnixTimestampToTime(dataWeatherForecast.data[arrivalDayIndex].sunrise_ts),
+        sunsetTime: convertUnixTimestampToTime(dataWeatherForecast.data[arrivalDayIndex].sunset_ts)
       }
     ],
     locationImageURL: locationImageURL
@@ -299,48 +299,48 @@ const retrieveData = async () => {
   const data = await response.json();
 
   // Update the UI by assigning the fetched data to DOM elements.
-  document.getElementById('location-name-result').innerHTML = data.locationName;
-  document.getElementById('departure-date-result').innerHTML = data.departureDate;
-  document.getElementById('region-name-result').innerHTML = data.regionName;
-  document.getElementById('country-name-result').innerHTML = data.countryName;
-  document.getElementById('latitude-result').innerHTML = data.latitude;
-  document.getElementById('longitude-result').innerHTML = data.longitude;
-  document.getElementById('population-result').innerHTML = data.population;
-  document.getElementById('departure-date-countdown-result').innerHTML = data.departureCountdown + ' day(s) until your trip';
+  document.getElementById('location-name').innerHTML = data.locationName;
+  document.getElementById('arrival-date').innerHTML = data.arrivalDate;
+  document.getElementById('region-name').innerHTML = data.regionName;
+  document.getElementById('country-name').innerHTML = data.countryName;
+  document.getElementById('latitude').innerHTML = data.latitude;
+  document.getElementById('longitude').innerHTML = data.longitude;
+  document.getElementById('population').innerHTML = data.population;
+  document.getElementById('arrival-date-countdown').innerHTML = data.arrivalCountdown + ' day(s) until your trip';
   
-  document.getElementById('current-icon-result').innerHTML = data.weatherData[0].icon;
-  document.getElementById('current-description-result').innerHTML = data.weatherData[0].description;
-  document.getElementById('current-temp-result').innerHTML = data.weatherData[0].temp;
-  document.getElementById('current-feels-like-temp-result').innerHTML = data.weatherData[0].feelslikeTemp;
-  document.getElementById('current-max-temp-result').innerHTML = data.weatherData[0].maxTemp;
-  document.getElementById('current-min-temp-result').innerHTML = data.weatherData[0].minTemp;
-  document.getElementById('current-chance-of-rain-result').innerHTML = data.weatherData[0].chanceOfRain;
-  document.getElementById('current-wind-speed-result').innerHTML = data.weatherData[0].windSpeed;
-  document.getElementById('current-wind-gust-speed-result').innerHTML = data.weatherData[0].windGustSpeed;
-  document.getElementById('current-wind-direction-result').innerHTML = data.weatherData[0].windDirection;
-  document.getElementById('current-cloud-coverage-result').innerHTML = data.weatherData[0].cloudCoverage;
-  document.getElementById('current-uv-index-result').innerHTML = data.weatherData[0].uvIndex;
-  document.getElementById('current-humidity-result').innerHTML = data.weatherData[0].humidity;
-  document.getElementById('current-sunrise-time-result').innerHTML = data.weatherData[0].sunriseTime;
-  document.getElementById('current-sunset-time-result').innerHTML = data.weatherData[0].sunsetTime;
+  document.getElementById('current-icon').innerHTML = data.weatherData[0].icon;
+  document.getElementById('current-description').innerHTML = data.weatherData[0].description;
+  document.getElementById('current-temp').innerHTML = data.weatherData[0].temp;
+  document.getElementById('current-feels-like-temp').innerHTML = data.weatherData[0].feelslikeTemp;
+  document.getElementById('current-max-temp').innerHTML = data.weatherData[0].maxTemp;
+  document.getElementById('current-min-temp').innerHTML = data.weatherData[0].minTemp;
+  document.getElementById('current-chance-of-rain').innerHTML = data.weatherData[0].chanceOfRain;
+  document.getElementById('current-wind-speed').innerHTML = data.weatherData[0].windSpeed;
+  document.getElementById('current-wind-gust-speed').innerHTML = data.weatherData[0].windGustSpeed;
+  document.getElementById('current-wind-direction').innerHTML = data.weatherData[0].windDirection;
+  document.getElementById('current-cloud-coverage').innerHTML = data.weatherData[0].cloudCoverage;
+  document.getElementById('current-uv-index').innerHTML = data.weatherData[0].uvIndex;
+  document.getElementById('current-humidity').innerHTML = data.weatherData[0].humidity;
+  document.getElementById('current-sunrise-time').innerHTML = data.weatherData[0].sunriseTime;
+  document.getElementById('current-sunset-time').innerHTML = data.weatherData[0].sunsetTime;
 
-  document.getElementById('departure-icon-result').innerHTML = data.weatherData[1].icon;
-  document.getElementById('departure-description-result').innerHTML = data.weatherData[1].description;
-  document.getElementById('departure-temp-result').innerHTML = data.weatherData[1].temp;
-  document.getElementById('departure-feels-like-temp-result').innerHTML = data.weatherData[1].feelslikeTemp;
-  document.getElementById('departure-max-temp-result').innerHTML = data.weatherData[1].maxTemp;
-  document.getElementById('departure-min-temp-result').innerHTML = data.weatherData[1].minTemp;
-  document.getElementById('departure-chance-of-rain-result').innerHTML = data.weatherData[1].chanceOfRain;
-  document.getElementById('departure-wind-speed-result').innerHTML = data.weatherData[1].windSpeed;
-  document.getElementById('departure-wind-gust-speed-result').innerHTML = data.weatherData[1].windGustSpeed;
-  document.getElementById('departure-wind-direction-result').innerHTML = data.weatherData[1].windDirection;
-  document.getElementById('departure-cloud-coverage-result').innerHTML = data.weatherData[1].cloudCoverage;
-  document.getElementById('departure-uv-index-result').innerHTML = data.weatherData[1].uvIndex;
-  document.getElementById('departure-humidity-result').innerHTML = data.weatherData[1].humidity;
-  document.getElementById('departure-sunrise-time-result').innerHTML = data.weatherData[1].sunriseTime;
-  document.getElementById('departure-sunset-time-result').innerHTML = data.weatherData[1].sunsetTime;
+  document.getElementById('arrival-icon').innerHTML = data.weatherData[1].icon;
+  document.getElementById('arrival-description').innerHTML = data.weatherData[1].description;
+  document.getElementById('arrival-temp').innerHTML = data.weatherData[1].temp;
+  document.getElementById('arrival-feels-like-temp').innerHTML = data.weatherData[1].feelslikeTemp;
+  document.getElementById('arrival-max-temp').innerHTML = data.weatherData[1].maxTemp;
+  document.getElementById('arrival-min-temp').innerHTML = data.weatherData[1].minTemp;
+  document.getElementById('arrival-chance-of-rain').innerHTML = data.weatherData[1].chanceOfRain;
+  document.getElementById('arrival-wind-speed').innerHTML = data.weatherData[1].windSpeed;
+  document.getElementById('arrival-wind-gust-speed').innerHTML = data.weatherData[1].windGustSpeed;
+  document.getElementById('arrival-wind-direction').innerHTML = data.weatherData[1].windDirection;
+  document.getElementById('arrival-cloud-coverage').innerHTML = data.weatherData[1].cloudCoverage;
+  document.getElementById('arrival-uv-index').innerHTML = data.weatherData[1].uvIndex;
+  document.getElementById('arrival-humidity').innerHTML = data.weatherData[1].humidity;
+  document.getElementById('arrival-sunrise-time').innerHTML = data.weatherData[1].sunriseTime;
+  document.getElementById('arrival-sunset-time').innerHTML = data.weatherData[1].sunsetTime;
 
-  document.getElementById('location-image-url-result').innerHTML = data.locationImageURL;
+  document.getElementById('location-image-url').innerHTML = data.locationImageURL;
 };
 
 /*
@@ -349,10 +349,10 @@ Main functions
 // Function - Main button click event handler function that performs all the actions, calls all the functions, and handles all the promises in our code.
 function performActions(event) {
   // Call a function to validate the user input from your UI.
-  validateInput(document.getElementById('location-name').value, document.getElementById('departure-date').value)
+  validateInput(document.getElementById('location-name-input').value, document.getElementById('arrival-date-input').value)
     .then(result => {
       // Call a function to get geo data from the GeoNames API.
-      getGeoData(document.getElementById('location-name').value, document.getElementById('departure-date').value)
+      getGeoData(document.getElementById('location-name-input').value, document.getElementById('arrival-date-input').value)
         // Then post the data retrieved from the GeoNames API along with the data entered by the user to the Express server's POST route.
         /* Note the use of chained promises below by using .then().
         This handles the fulfilled and rejected states of the promise returned by the getGeoData async function. */
@@ -360,17 +360,17 @@ function performActions(event) {
           // This arrow callback function runs when the getGeoData async function returns a resolved promise with a result.
 
           // Build the geo data object.
-          const departureDate = document.getElementById('departure-date').value;
+          const arrivalDate = document.getElementById('arrival-date-input').value;
 
           const geoData = {
             locationName: result.name,
-            departureDate: departureDate,
+            arrivalDate: arrivalDate,
             regionName: result.adminName1,
             countryName: result.countryName,
             latitude: result.lat,
             longitude: result.lng,
             population: result.population,
-            departureCountdown: calcDayDifference(undefined, departureDate)
+            arrivalCountdown: calcDayDifference(undefined, arrivalDate)
           };
         
           getWeatherAndImageData(geoData)

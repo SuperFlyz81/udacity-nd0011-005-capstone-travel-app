@@ -14,7 +14,7 @@ body {
   grid-template-areas:
   "headline"
   "locationname"
-  "departuredate"
+  "arrivaldate"
   "result";
   padding: 24px;
   color: #f0d43a;
@@ -29,12 +29,12 @@ body {
   font-size: 54px;
 }
 
-.holder-location-name {
+.holder-location-name-input {
   grid-area: locationname;
 }
 
-.holder-departure-date {
-  grid-area: departuredate;
+.holder-arrival-date-input {
+  grid-area: arrivaldate;
 }
 
 .holder-result {
@@ -67,7 +67,7 @@ input {
   border: none;
 }
 
-#location-name {
+#location-name-input {
   height: 60px;
   width: 316px;
   padding-left: 8px;
@@ -134,6 +134,6 @@ button:focus {
     grid-template-areas:
     "headline headline"
     "locationname result"
-    "departuredate result";
+    "arrivaldate result";
   }
 }
