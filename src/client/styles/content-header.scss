@@ -1,0 +1,12 @@
+/*
+Header content CSS styles
+*/
+#header-container {
+  grid-area: header;
+  display: flex;
+  background-color: var(--primary-container);
+  color: var(--on-primary-container);
+  width: auto;
+  height: auto;
+  padding: 1rem;
+}

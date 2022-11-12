@@ -2,138 +2,69 @@
 Global CSS styles
 */
 body {
-  background: #fffff8;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #f23557;
-  min-height: 100vh;
   margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  font-family: 'Roboto Condensed', sans-serif;
 }
 
-#app {
+#page-container {
+    /* Responsive design for narrow displays (e.g. mobile phones) */
   display: grid;
+  grid-template-columns: auto; /* Grid with one columns. */
+  grid-template-rows: auto auto auto auto; /* And four rows. */
   grid-template-areas:
-  "headline"
-  "locationname"
-  "arrivaldate"
-  "result";
-  padding: 24px;
-  color: #f0d43a;
-  justify-content: center;
-  grid-gap: 1em;
-  font-size: 20px;
-  font-family: 'Oswald', sans-serif;
+  "header"
+  "location"
+  "weather-current"
+  "weather-arival";
+  min-height: 100vh; /* Important CSS rule. The "min-height: 100vh" rule stretches your page containter to always fill the entire height of your viewport. */
+  column-gap: 2rem;
+  row-gap: 2rem;
 }
 
-.holder-headline {
-  grid-area: headline;
-  font-size: 54px;
+/* IMPORTANT - Change all the 0px border width values below to 1px to see all your grid and flex boxes.
+This is very handy for element positioning and alignment. */
+.box1 {
+  border: 1px solid yellow;
 }
 
-.holder-location-name-input {
-  grid-area: locationname;
+.box2 {
+  border: 1px solid red;
 }
 
-.holder-arrival-date-input {
-  grid-area: arrivaldate;
+.box3 {
+  border: 1px solid green;
 }
 
-.holder-result {
-  grid-area: result;
+.box4 {
+  border: 1px solid blue;
 }
 
-.result {
-  background: rgba(59, 74, 107, .4);
-  width: 320px;
-  min-height: 382px;
-  padding: 8px;
+.box5 {
+  border: 1px solid cyan;
 }
 
-/*  Basic styling to override default for basic HTML elements. */
-label {
-  display: block;
-  font-size: 27px;
-}
-
-.title {
-  font-size: 27px;
-}
-
-input {
-  display: block;
-  background:#22b2da;
-  color: #f0d43a;
-  font-size: 20px;
-  font-family: 'Oswald', sans-serif;
-  border: none;
-}
-
-#location-name-input {
-  height: 60px;
-  width: 316px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-button {
-  display: block;
-  width: 332px;
-  height: 100px;
-  background: #3b4a6b;
-  color: #f0d43a;
-  font-size: 26px;
-  font-family: 'Oswald', sans-serif;
-  border: none;
-  box-shadow: 2px 4px 5px #444;
-}
-
-h1 {
-  font-size: 36px;
-}
-
-textarea {
-  background:#22b2da;
-  color: #f0d43a;
-  font-size: 20px;
-  font-family: 'Oswald', sans-serif;
-}
-
-.myInput {
-  width: 314px;
-  resize: none;
-  padding: 9px;
-  margin-bottom: 120px;
-}
-
-/* Reset style for HTML element on active to have no border. */
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-  outline: none;
-}
-
-/* Style for placeholder text. */
-::placeholder { /* Firefox, Chrome, Opera. */ 
-  color: #f0d43a; 
-  font-family: 'Oswald', sans-serif;
-}
-  
-:-ms-input-placeholder { /* Internet Explorer 10-11. */ 
-  color: #f0d43a; 
-  font-family: 'Oswald', sans-serif;
-}
-  
-::-ms-input-placeholder { /* Microsoft Edge. */ 
-  color: #f0d43a; 
-  font-family: 'Oswald', sans-serif;
-}
-
-/* Responsive page layout for wider screens, i.e. for tablets and monitors. */
-@media(min-width: 720px) {
-  #app {
+/* Responsive design for wider displays (e.g. tablets) */
+@media(min-width: 540px) {
+  #page-container {
+    grid-template-columns: auto auto; /* Grid with two columns. */
+    grid-template-rows: auto auto auto; /* And three rows. */
     grid-template-areas:
-    "headline headline"
-    "locationname result"
-    "arrivaldate result";
+    "header header"
+    "location location"
+    "weather-current weather-arival";
+  }
+}
+
+/* Responsive design for the widest displays (e.g. monitors and laptop screens) */
+@media(min-width: 1080px) {
+  #page-container {
+    grid-template-columns: auto auto; /* Grid with two columns. */
+    grid-template-rows: auto auto auto; /* And three rows. */
+    grid-template-areas:
+    "header location"
+    "weather-current location"
+    "weather-arival location";
   }
 }

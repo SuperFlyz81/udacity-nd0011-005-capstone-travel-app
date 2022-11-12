@@ -1,0 +1,12 @@
+/*
+Location content CSS styles
+*/
+#location-container {
+  grid-area: location;
+  display: flex;
+  background-color: var(--secondary-container);
+  color: var(--on-secondary-container);
+  width: auto;
+  height: auto;
+  padding: 1rem;
+}

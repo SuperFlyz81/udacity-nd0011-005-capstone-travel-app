@@ -13,8 +13,13 @@ import {createEnterKeyEventListener} from './js/app';
 /* Comment out the inline JavaScript stylesheets imports below when deploying to production,
 and uncomment the main.css stylesheet line at the top of the src/client/views/index.html file
 to use the minified main.css stylesheet for production rather than the "slow performing" inline stylesheets below. */
+import './styles/theme.scss';
 import './styles/style.scss';
-
+import './styles/content-header.scss';
+import './styles/content-location.scss';
+import './styles/content-weather.scss';
+import './styles/content-weather-current.scss';
+import './styles/content-weather-arrival.scss';
 /*
 Exports
 */
