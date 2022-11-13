@@ -1,27 +1,48 @@
 /*
 Global CSS styles
 */
+/* * Below refers to all elements. */
+* {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
 body {
   margin: 0;
   padding: 0;
   background-color: var(--background);
-  font-family: 'Roboto Condensed', sans-serif;
 }
 
 #page-container {
-    /* Responsive design for narrow displays (e.g. mobile phones) */
+  /* Responsive design for narrow displays (e.g. mobile phones). */
   display: grid;
-  grid-template-columns: auto; /* Grid with one columns. */
-  grid-template-rows: auto auto auto auto; /* And four rows. */
   grid-template-areas:
   "header"
   "location"
   "weather-current"
   "weather-arival";
-  min-height: 100vh; /* Important CSS rule. The "min-height: 100vh" rule stretches your page containter to always fill the entire height of your viewport. */
-  column-gap: 2rem;
-  row-gap: 2rem;
+  gap: 2rem;
 }
+
+h1 {
+  font-size: var(--font-size-xxxl);
+  margin: 0;
+}
+
+h2 {
+  font-size: var(--font-size-xxl);
+  margin: 0;
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+  margin: 0;
+}
+
+h4 {
+  font-size: var(--font-size-large);
+  margin: 0;
+}
+
 
 /* IMPORTANT - Change all the 0px border width values below to 1px to see all your grid and flex boxes.
 This is very handy for element positioning and alignment. */
@@ -45,11 +66,9 @@ This is very handy for element positioning and alignment. */
   border: 1px solid cyan;
 }
 
-/* Responsive design for wider displays (e.g. tablets) */
+/* Responsive design for wider displays (e.g. tablets). */
 @media(min-width: 540px) {
   #page-container {
-    grid-template-columns: auto auto; /* Grid with two columns. */
-    grid-template-rows: auto auto auto; /* And three rows. */
     grid-template-areas:
     "header header"
     "location location"
@@ -57,11 +76,9 @@ This is very handy for element positioning and alignment. */
   }
 }
 
-/* Responsive design for the widest displays (e.g. monitors and laptop screens) */
+/* Responsive design for the widest displays (e.g. monitors and laptop screens). */
 @media(min-width: 1080px) {
   #page-container {
-    grid-template-columns: auto auto; /* Grid with two columns. */
-    grid-template-rows: auto auto auto; /* And three rows. */
     grid-template-areas:
     "header location"
     "weather-current location"
