@@ -70,7 +70,7 @@ app.post('/postdata', (req, res) => {
   const data = req.body;
 
   // Use dot notation to add key/value pairs from our POST request's body to our endpoint object.
-  projectData.locationName = data.locationName;
+  projectData.destinationName = data.destinationName;
   projectData.arrivalDate = data.arrivalDate;
   projectData.regionName = data.regionName;
   projectData.countryName = data.countryName;
@@ -79,7 +79,7 @@ app.post('/postdata', (req, res) => {
   projectData.population = data.population;
   projectData.arrivalCountdown = data.arrivalCountdown;
   projectData.weatherData = data.weatherData;
-  projectData.locationImageURL = data.locationImageURL;
+  projectData.destinationImageURL = data.destinationImageURL;
 
   res.send(projectData);
   // console.log('Posted', projectData); // Debug code.

@@ -46,12 +46,12 @@ const convertUnixTimestampToTime = (unixTimestamp) => {
 Main function expressions
 */
 // Function expression - Preform some input validation before continuing.
-const validateInput = async (locationName, arrivalDate) => {
+const validateInput = async (destinationName, arrivalDate) => {
   // console.log('Running validateInput function; // Debug code.
 
-  // Validate that a location was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
-  if (!locationName) {
-    throw `Blank location entered.\n\nPlease enter a valid location name and then try again.`;
+  // Validate that a destination was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
+  if (!destinationName) {
+    throw `Blank destination entered.\n\nPlease enter a valid destination name and then try again.`;
   }
   // Also validate that a valid, future-dated, "within 7 days" arrival date was entered, and reject this async function's return promise immediately if it wasn't (by throwing an error).
   if (!isValidDate(arrivalDate)) {
@@ -66,11 +66,11 @@ const validateInput = async (locationName, arrivalDate) => {
   }
 }
 
-// Function expression - Get geo data for a location from the GeoNames API.
-const getGeoData = async (locationName, arrivalDate) => {
+// Function expression - Get geo data for a destination from the GeoNames API.
+const getGeoData = async (destinationName, arrivalDate) => {
   // console.log('Running getGeoData function (i.e. GeoNames API GET request)'); // Debug code.
 
-  /* See https://www.geonames.org/export/geonames-search.html for the GeoNames API documentation and a location based search API call example.
+  /* See https://www.geonames.org/export/geonames-search.html for the GeoNames API documentation and a destination based search API call example.
   Had to register for a free GeoNames account to receive an API key to use with this project.
   Note, all API keys are retrieved using an Express server route via the dotenv Node module to keep API keys locally and not expose/upload them to version control on the Internet (i.e. to GitHub). */
   const baseURL = 'http://api.geonames.org/searchJSON?q=';
@@ -88,7 +88,7 @@ const getGeoData = async (locationName, arrivalDate) => {
   }
 
   // Try to get geo data using the fetch browser API.
-  const response = await fetch(baseURL + locationName + apiKey);
+  const response = await fetch(baseURL + destinationName + apiKey);
 
   // Assign the fetched geo data (in JSON format) to a variable.
   const data = await response.json();
@@ -104,12 +104,12 @@ const getGeoData = async (locationName, arrivalDate) => {
   }
 
   /* Otherwise, if code execution has reached this point, it means that data was returned back from the GeoNames API, but it was invalid data.
-  This happens, for example, when a location could not be located by the GeoNames API.
+  This happens, for example, when a destination could not be located by the GeoNames API.
   In this case, throw an error to reject this async function's return promise (returning an error object). */
-  throw `Could not find a location matching the name you entered.\n\nPlease ensure that you have entered a valid location name and then try again.`;
+  throw `Could not find a destination matching the name you entered.\n\nPlease ensure that you have entered a valid destination name and then try again.`;
 };
 
-// Function expression - Get the current and forecast weather data from the Weatherbit API and the location image data from the Pixabay API.
+// Function expression - Get the current and forecast weather data from the Weatherbit API and the destination image data from the Pixabay API.
 const getWeatherAndImageData = async (geoData) => {
   // console.log('Running getWeatherAndImageData function (i.e. Weatherbit and Pixabay API GET requests)'); // Debug code.
   const arrivalDayIndex = geoData.arrivalCountdown;
@@ -144,9 +144,9 @@ const getWeatherAndImageData = async (geoData) => {
   This happens, for example, when a the daily limit of requests using the Weatherbit free plan of 50 calls per day has been exceeded.
   In this case, throw an error to reject this async function's return promise (returning an error object). */
   if (dataWeatherCurrent.hasOwnProperty('error')) {
-    throw `Could not retrieve current weather data for the location you entered.\n\nError details:\n${dataWeatherCurrent.error}\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
+    throw `Could not retrieve current weather data for the destination you entered.\n\nError details:\n${dataWeatherCurrent.error}\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
   } else if (!dataWeatherCurrent.hasOwnProperty('data')) {
-    throw `Could not retrieve current weather data for the location you entered.\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
+    throw `Could not retrieve current weather data for the destination you entered.\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
   }
 
   // Get forecast weather data.
@@ -168,9 +168,9 @@ const getWeatherAndImageData = async (geoData) => {
   This happens, for example, when a the daily limit of requests using the Weatherbit free plan of 50 calls per day has been exceeded.
   In this case, throw an error to reject this async function's return promise (returning an error object). */
   if (dataWeatherForecast.hasOwnProperty('error')) {
-    throw `Could not retrieve forecast weather data for the location you entered.\n\nError details:\n${dataWeatherForecast.error}\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
+    throw `Could not retrieve forecast weather data for the destination you entered.\n\nError details:\n${dataWeatherForecast.error}\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
   } else if (!dataWeatherForecast.hasOwnProperty('data')) {
-    throw `Could not retrieve forecast weather data for the location you entered.\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
+    throw `Could not retrieve forecast weather data for the destination you entered.\n\nPlease ensure that the Weatherbit API is operational at https://status.weatherbit.io and then try again.`;
   }
 
   // Get Pixabay API key from Express server.
@@ -189,9 +189,9 @@ const getWeatherAndImageData = async (geoData) => {
 
   // Get image data.
   // See https://pixabay.com/api/docs/ for the Pixabay API documentation and an example request and response.
-  baseURL = 'https://pixabay.com/api/?safesearch=true&per_page=3&q=' + encodeURIComponent(geoData.locationName);
+  baseURL = 'https://pixabay.com/api/?safesearch=true&per_page=3&q=' + encodeURIComponent(geoData.destinationName);
 
-  let locationImageURL = '';
+  let destinationImageURL = '';
 
   try {
     // Try to get image data using the fetch browser API.
@@ -202,18 +202,18 @@ const getWeatherAndImageData = async (geoData) => {
     // console.log(dataImage); // Debug code.
     // console.log(dataImage.hits[0]); // Debug code.
     
-    locationImageURL = dataImage.total > 0 ? dataImage.hits[0].webformatURL : '';
+    destinationImageURL = dataImage.total > 0 ? dataImage.hits[0].webformatURL : '';
   } catch(err) {
     // Catches http, connection, and other errors.
-    /* If an error occurs while fetching image data from Pixabay (let's say the Pixabay site or API is down), then just set the locationImageURL to blank.
-    We don't explicitly need a location image for our travel planner website to work. So, no need to throw an error if we can't find an image for our location. */
-    locationImageURL = '';
+    /* If an error occurs while fetching image data from Pixabay (let's say the Pixabay site or API is down), then just set the destinationImageURL to blank.
+    We don't explicitly need a destination image for our travel planner website to work. So, no need to throw an error if we can't find an image for our destination. */
+    destinationImageURL = '';
   }
-  // console.log(locationImageURL); // Debug code.
+  // console.log(destinationImageURL); // Debug code.
 
-  // Build a new object using the previously retrieved geo data and the newly retrieved current weather data, forecast weather data, and location image data.
+  // Build a new object using the previously retrieved geo data and the newly retrieved current weather data, forecast weather data, and destination image data.
   const allData = {
-    locationName: geoData.locationName,
+    destinationName: geoData.destinationName,
     arrivalDate: geoData.arrivalDate,
     regionName: geoData.regionName,
     countryName: geoData.countryName,
@@ -259,11 +259,11 @@ const getWeatherAndImageData = async (geoData) => {
         sunsetTime: convertUnixTimestampToTime(dataWeatherForecast.data[arrivalDayIndex].sunset_ts)
       }
     ],
-    locationImageURL: locationImageURL
+    destinationImageURL: destinationImageURL
   }
   // console.log(allData); // Debug code.
 
-  // Return the newly built object containing all our geo, current weather, forecast weather, and location image data.
+  // Return the newly built object containing all our geo, current weather, forecast weather, and destination image data.
   return allData;
 };
 
@@ -299,7 +299,7 @@ const retrieveData = async () => {
   const data = await response.json();
 
   // Update the UI by assigning the fetched data to DOM elements.
-  document.getElementById('location-name').innerHTML = data.locationName;
+  document.getElementById('destination-name').innerHTML = data.destinationName;
   document.getElementById('arrival-date').innerHTML = data.arrivalDate;
   document.getElementById('region-name').innerHTML = data.regionName;
   document.getElementById('country-name').innerHTML = data.countryName;
@@ -340,7 +340,7 @@ const retrieveData = async () => {
   document.getElementById('arrival-sunrise-time').innerHTML = data.weatherData[1].sunriseTime;
   document.getElementById('arrival-sunset-time').innerHTML = data.weatherData[1].sunsetTime;
 
-  document.getElementById('location-image-url').innerHTML = data.locationImageURL;
+  document.getElementById('destination-image-url').innerHTML = data.destinationImageURL;
 };
 
 /*
@@ -349,10 +349,10 @@ Main functions
 // Function - Main button click event handler function that performs all the actions, calls all the functions, and handles all the promises in our code.
 function performActions(event) {
   // Call a function to validate the user input from your UI.
-  validateInput(document.getElementById('location-name-input').value, document.getElementById('arrival-date-input').value)
+  validateInput(document.getElementById('destination-name-input').value, document.getElementById('arrival-date-input').value)
     .then(result => {
       // Call a function to get geo data from the GeoNames API.
-      getGeoData(document.getElementById('location-name-input').value, document.getElementById('arrival-date-input').value)
+      getGeoData(document.getElementById('destination-name-input').value, document.getElementById('arrival-date-input').value)
         // Then post the data retrieved from the GeoNames API along with the data entered by the user to the Express server's POST route.
         /* Note the use of chained promises below by using .then().
         This handles the fulfilled and rejected states of the promise returned by the getGeoData async function. */
@@ -363,7 +363,7 @@ function performActions(event) {
           const arrivalDate = document.getElementById('arrival-date-input').value;
 
           const geoData = {
-            locationName: result.name,
+            destinationName: result.name,
             arrivalDate: arrivalDate,
             regionName: result.adminName1,
             countryName: result.countryName,
@@ -396,8 +396,8 @@ function performActions(event) {
               // This arrow callback function runs when the getWeatherAndImageData async function returns a rejected promise with an error.
               /* Appropriately handle any errors that might occur when fetching weather data (for example, when the Weatherbit API is down or not reachable).
               Catches errors in both fetch() and response.json() in the getWeatherAndImageData async function, as well as any other errors that might occur in that function.
-              Note that we are not worried about errors that might occur when fetching image data from the Pixabay API since we don't explicitly need a location image for our travel planner website to work. 
-              So, the getWeatherAndImageData function will just return a blank location image URL if it can't connect to the Pixabay API or if it can't find an image for our location. */
+              Note that we are not worried about errors that might occur when fetching image data from the Pixabay API since we don't explicitly need a destination image for our travel planner website to work. 
+              So, the getWeatherAndImageData function will just return a blank destination image URL if it can't connect to the Pixabay API or if it can't find an image for our destination. */
               alert(`The following error occurred while retrieving data from the Weatherbit API:\n${error}\n\nPlease ensure that you have not exceeded your free daily quota of 50 calls per day to the Weatherbit API and if so, please try again tomorrow.\n\nAlso ensure that the Weatherbit API is operational at https://status.weatherbit.io.`);
             })
         }, error => {

@@ -8,7 +8,7 @@
     <meta name="author" content="Pieter Smith"/>
     <meta name="keywords" content="Travel Planner, Travel Weather"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- For details on what this viewport meta tag and its related values do, see https://www.w3schools.com/css/css_rwd_viewport.asp -->
-    <meta name="theme-color" content="#4b9b69" /> <!-- Sets the color of the header bar and address bar in Android mobile browsers. -->
+    <meta name="theme-color" content="#fbfdf8" /> <!-- Sets the color of the header bar and address bar in Android mobile browsers. -->
 
     <!-- Use fonts from Google Fonts - https://fonts.google.com/ -->
     <!-- Roboto Condensed for all body and element text, Lobster for titles. -->
@@ -54,7 +54,7 @@
           <h1><span id="header-text" >Travel Planner</span></h1>
         </div>
 
-        <input id="location-name-input" type="text"class="header-input" autofocus="autofocus" placeholder="Travel to">
+        <input id="destination-name-input" type="text"class="header-input" autofocus="autofocus" placeholder="Travel to">
         
         <!-- A bit of inline JavaScript below to block out the selection of past dates,
         and only allow 7 days (including the current date) in the future to be selected using the HTML date element below
@@ -70,8 +70,11 @@
         <button id="submit-button" type="submit">Submit</button>
       </div>
 
-      <!-- Location -->
-      <div id="location-container" class="box3">
+      <!-- Destination -->
+      <div id="destination-container" class="box3">
+        <div id="destination-image-container" class="box4" style="background-image: url(https://pixabay.com/get/g0566af9ad3e0bfce315c7bc70eb440a085024d3aa4bb91a4cbe66ba0f1c0f600641ccfd4a768e37c6c090f372330af91_1280.jpg);">
+          <div id="destination-name" class="box5">Kalahari Gemsbok park</div>
+        </div>
       </div>      
 
       <!-- Current weather -->

@@ -13,7 +13,7 @@ body {
   display: grid;
   grid-template-areas:
   "headline"
-  "locationname"
+  "destinationname"
   "arrivaldate"
   "result";
   padding: 24px;
@@ -29,8 +29,8 @@ body {
   font-size: 54px;
 }
 
-.holder-location-name-input {
-  grid-area: locationname;
+.holder-destination-name-input {
+  grid-area: destinationname;
 }
 
 .holder-arrival-date-input {
@@ -67,7 +67,7 @@ input {
   border: none;
 }
 
-#location-name-input {
+#destination-name-input {
   height: 60px;
   width: 316px;
   padding-left: 8px;
@@ -133,7 +133,7 @@ button:focus {
   #app {
     grid-template-areas:
     "headline headline"
-    "locationname result"
+    "destinationname result"
     "arrivaldate result";
   }
 }

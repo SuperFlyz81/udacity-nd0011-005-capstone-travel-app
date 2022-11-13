@@ -16,7 +16,7 @@ to use the minified main.css stylesheet for production rather than the "slow per
 import './styles/theme.scss';
 import './styles/style.scss';
 import './styles/content-header.scss';
-import './styles/content-location.scss';
+import './styles/content-destination.scss';
 import './styles/content-weather.scss';
 import './styles/content-weather-current.scss';
 import './styles/content-weather-arrival.scss';

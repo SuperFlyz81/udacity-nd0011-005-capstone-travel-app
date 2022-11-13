@@ -22,9 +22,9 @@
   <body>
     <div id="app">
       <div class="holder-headline">Travel Planner</div>
-      <div class="holder-location-name-input">
-        <label for="location-name-input">Location</label>
-        <input id="location-name-input" type="text" autofocus="autofocus" placeholder="Enter a location's name">
+      <div class="holder-destination-name-input">
+        <label for="destination-name-input">Destination</label>
+        <input id="destination-name-input" type="text" autofocus="autofocus" placeholder="Enter a destination's name">
       </div>
       <div class="holder-arrival-date-input">
         <label for="arrival-date-input">Arrival Date</label>
@@ -43,7 +43,7 @@
       <div class="holder-result">
         <div class="title">Results</div>
         <div class="result">
-          <div id="location-name"></div>
+          <div id="destination-name"></div>
           <div id="arrival-date"></div>
           <div id="region-name"></div>
           <div id="country-name"></div>
@@ -87,7 +87,7 @@
           <div id="arrival-sunset-time"></div>
           <div id="spacer3">&nbsp;</div>
 
-          <div id="location-image-url"></div>
+          <div id="destination-image-url"></div>
           <div id="spacer4">&nbsp;</div>
         </div>
       </div>

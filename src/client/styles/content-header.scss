@@ -55,5 +55,14 @@ Header content CSS styles
   margin-top: 1rem;
   padding: 1rem;
   border-radius: 2rem;
-  border: 0;
+  border : 0;
+}
+
+#submit-button:focus {
+  outline-width: 0;
+}
+
+#submit-button:hover {
+  color: var(--surface);
+  background-color: var(--on-surface-variant);
 }

@@ -17,10 +17,10 @@ body {
   display: grid;
   grid-template-areas:
   "header"
-  "location"
+  "destination"
   "weather-current"
   "weather-arival";
-  gap: 2rem;
+  gap: 1rem;
 }
 
 h1 {
@@ -71,7 +71,7 @@ This is very handy for element positioning and alignment. */
   #page-container {
     grid-template-areas:
     "header header"
-    "location location"
+    "destination destination"
     "weather-current weather-arival";
   }
 }
@@ -80,8 +80,8 @@ This is very handy for element positioning and alignment. */
 @media(min-width: 1080px) {
   #page-container {
     grid-template-areas:
-    "header location"
-    "weather-current location"
-    "weather-arival location";
+    "header destination"
+    "weather-current destination"
+    "weather-arival destination";
   }
 }
