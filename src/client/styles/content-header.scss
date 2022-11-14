@@ -17,13 +17,13 @@ Header content CSS styles
 }
 
 #logo {
-  filter: drop-shadow(0.1875rem 0.1875rem 0 var(--on-primary-container));
+  filter: drop-shadow(0.125rem 0.125rem 0 var(--on-primary-container));
 }
 
 #header-text {
   font-family: 'Lobster', cursive;
   color: var(--primary);
-  text-shadow: 0.1875rem 0.1875rem var(--on-primary-container);
+  text-shadow: 0.125rem 0.125rem var(--on-primary-container);
 }
 
 .header-input {

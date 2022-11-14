@@ -10,37 +10,47 @@ Destination content CSS styles
 }
 
 #destination-image-container {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: right;
+  /* Position text over image method adapted from:
+  https://www.w3schools.com/howto/howto_css_image_text.asp */
+  position: relative;
+  text-align: right;
+  overflow: hidden;
+}
 
-  border-radius: 8rem;
-
-  /* Background (i.e. destination image) size auto adjusted according to this post:
-  https://stackoverflow.com/questions/600743/how-to-get-div-height-to-auto-adjust-to-background-size */ 
-  background-size: contain;
-  background-repeat: no-repeat;
+#destination-image {
   width: 100%;
-  height: 0;
-  padding-top: 66.667%; /* img-height / img-width * container-width, e.g. (854 / 1280) * 100 */
+  border-radius: 8rem;
 }
 
 #destination-name {
-  display: flex;
-  flex-direction: row;
-  text-align: right;
+  position: absolute;
+  bottom: 0.25em;
+  left: 64px;
+  right: 64px;
+  padding-bottom: 0.25em;
+  padding-right: 0.5em;
+  /*line-height: 2.2em;*/
+  overflow: hidden;
   font-family: 'Lobster', cursive;
-  font-size: 13vw; /* Automatic resize the destination name text according to the viewport's width. */
-  width: min-content;
   color: var(--primary);
   text-shadow: 0.1875rem 0.1875rem var(--on-primary-container);
-  padding: 1rem 3.5rem 1rem 1rem;
+  /* Default responsive design for narrow displays (e.g. mobile phones). */
+  /* Text auto-resize method below taken from: https://css-tricks.com/simplified-fluid-typography */
+  font-size: clamp(16px, 9vw, 200px);
+}
+
+/* Responsive design for wider displays (e.g. tablets). */
+@media(min-width: 540px) {
+  #destination-name {
+    /* Text auto-resize method below taken from: https://css-tricks.com/simplified-fluid-typography */
+    font-size: clamp(16px, 11vw, 200px);
+  }
 }
 
 /* Responsive design for the widest displays (e.g. monitors and laptop screens). */
 @media(min-width: 1080px) {
   #destination-name {
-    font-size: 6vw; /* Automatic resize the destination name text according to the viewport's width. */
+    /* Text auto-resize method below taken from: https://css-tricks.com/simplified-fluid-typography */
+    font-size: clamp(16px, 6.5vw, 200px);
   }
 }

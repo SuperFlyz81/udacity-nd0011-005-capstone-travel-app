@@ -13,14 +13,15 @@ body {
 }
 
 #page-container {
-  /* Responsive design for narrow displays (e.g. mobile phones). */
+  
   display: grid;
+  gap: 1rem;
+  /* Default responsive design for narrow displays (e.g. mobile phones). */
   grid-template-areas:
   "header"
   "destination"
   "weather-current"
   "weather-arival";
-  gap: 1rem;
 }
 
 h1 {
@@ -47,23 +48,23 @@ h4 {
 /* IMPORTANT - Change all the 0px border width values below to 1px to see all your grid and flex boxes.
 This is very handy for element positioning and alignment. */
 .box1 {
-  border: 1px solid yellow;
+  border: 0px solid yellow;
 }
 
 .box2 {
-  border: 1px solid red;
+  border: 0px solid red;
 }
 
 .box3 {
-  border: 1px solid green;
+  border: 0px solid green;
 }
 
 .box4 {
-  border: 1px solid blue;
+  border: 0px solid blue;
 }
 
 .box5 {
-  border: 1px solid cyan;
+  border: 0px solid cyan;
 }
 
 /* Responsive design for wider displays (e.g. tablets). */
@@ -83,5 +84,6 @@ This is very handy for element positioning and alignment. */
     "header destination"
     "weather-current destination"
     "weather-arival destination";
+    grid-template-columns: auto 55vw;
   }
 }
