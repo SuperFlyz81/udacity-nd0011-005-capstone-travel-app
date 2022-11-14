@@ -33,7 +33,7 @@
       <div id="header-container" class="box3">
         <div id="logo-container" class="box4">
           <!-- SVG logo taken from https://www.svgrepo.com/svg/58117/airplane-travelling-around-earth and used under creative commons license. -->
-          <svg id="logo" width="96" height="96" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 46.184 46.184" style="enable-background:new 0 0 46.184 46.184;" xml:space="preserve">
+          <svg id="logo" class="box5" width="96" height="96" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 46.184 46.184" style="enable-background:new 0 0 46.184 46.184;" xml:space="preserve">
             <path fill="#4b9b69" d="M7.746,32.708c-1.244-2.01-2.152-5.084-2.152-8.371c0-9.856,8.019-17.875,17.873-17.875c2.029,0,3.975,0.357,5.793,0.982
               l-2.17-2.635c-1.177-0.219-2.385-0.348-3.623-0.348c-10.958,0-19.873,8.916-19.873,19.875c0,3.659,1.013,7.08,2.434,9.387
               L7.746,32.708z"/>
@@ -51,17 +51,17 @@
               C30.677,20.252,30.283,19.026,29.617,18.401z"/>
           </svg>
 
-          <h1><span id="header-text" >Travel Planner</span></h1>
+          <h1><span id="header-text" class="box5">Travel Planner</span></h1>
         </div>
 
-        <input id="destination-name-input" type="text"class="header-input" autofocus="autofocus" placeholder="Travel to">
+        <input id="destination-name-input" class="header-input" type="text" autofocus="autofocus" placeholder="Travel to">
         
         <!-- A bit of inline JavaScript below to block out the selection of past dates,
         and only allow 7 days (including the current date) in the future to be selected using the HTML date element below
         (since the Weatherbit API only supports 7 day weather forcasts from the present date using their free plan).
         See the following URL for more info on adding days to a date (including the addDays prototype function below):
         https://stackoverflow.com/questions/563406/how-to-add-days-to-date -->
-        <input id="arrival-date-input" type="text" class="header-input" placeholder="Arrival date" onfocus="
+        <input id="arrival-date-input" class="header-input" type="text" placeholder="Arrival date" onfocus="
           this.type='date';
           this.min = new Date().toISOString().split('T')[0];
           Date.prototype.addDays = function(d){return new Date(this.valueOf()+864E5*d);};
@@ -73,17 +73,23 @@
       <!-- Destination -->
       <div id="destination-container" class="box3">
         <div id="destination-image-container" class="box4">
-          <img id="destination-image" src="https://pixabay.com/get/g28ce1c669f8fad98aab8a40dbd813c5bff56f9169798673a21d84fbd0b3f58d982b60e14b187317831a4dffcf737534f_1280.jpg" title="Destination" alt="Destination">
+          <!-- A bit of inline JavaScript below to display a blank placeholder image from placeholder.com
+          if a destination image from Pixabay could not be found or was not set by our code. -->
+          <img id="destination-image" title="Destination" alt="Destination" src="https://pixabay.com/get/g3646bca1de82fc7665d883775be8181a773b4369ad874ced07bd712b7b82e5f9bbf3f6fa6451a5e0739155b6b348543_1280.jpg" onerror=" 
+            this.src = 'https://via.placeholder.com/1280x854.png/beeaf7/d8f6ff?text=Image not available';
+          ">
           <div id="destination-name" class="box5">London</div>
         </div>
       </div>      
 
       <!-- Current weather -->
       <div id="weather-current-container" class="box3">
+        Current weather
       </div>
 
       <!-- Arrival weather -->
       <div id="weather-arrival-container" class="box3">
+        Weather on arrival
       </div>
     </div>
   </body>
