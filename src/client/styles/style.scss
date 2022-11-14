@@ -13,9 +13,8 @@ body {
 }
 
 #page-container {
-  
   display: grid;
-  gap: 1rem;
+  gap: 1.25rem;
   /* Default responsive design for narrow displays (e.g. mobile phones). */
   grid-template-areas:
   "header"
@@ -25,50 +24,64 @@ body {
 }
 
 h1 {
-  font-size: var(--font-size-xxxl);
+  font-size: var(--font-size-super);
   margin: 0;
 }
 
 h2 {
-  font-size: var(--font-size-xxl);
+  font-size: var(--font-size-xxxl);
   margin: 0;
 }
 
 h3 {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-xxl);
   margin: 0;
 }
 
 h4 {
+  font-size: var(--font-size-xl);
+  margin: 0;
+}
+
+h5 {
   font-size: var(--font-size-large);
   margin: 0;
 }
 
+h6 {
+  font-size: var(--font-size-medium);
+  margin: 0;
+}
 
-/* IMPORTANT - Change all the 0px border width values below to 1px to see all your grid and flex boxes.
+h7 {
+  font-size: var(--font-size-normal);
+  margin: 0;
+}
+
+/* IMPORTANT - Change all the 0px border width values below to 0px to see all your grid and flex boxes.
 This is very handy for element positioning and alignment. */
 .box1 {
-  border: 1px solid yellow;
+  border: 0px solid yellow;
 }
 
 .box2 {
-  border: 1px solid red;
+  border: 0px solid red;
 }
 
 .box3 {
-  border: 1px solid green;
+  border: 0px solid green;
 }
 
 .box4 {
-  border: 1px solid blue;
+  border: 0px solid blue;
 }
 
 .box5 {
-  border: 1px solid cyan;
+  border: 0px solid cyan;
 }
 
 /* Responsive design for wider displays (e.g. tablets). */
-@media(min-width: 540px) {
+@media(min-width: 720px) {
   #page-container {
     grid-template-areas:
     "header header"
@@ -78,7 +91,7 @@ This is very handy for element positioning and alignment. */
 }
 
 /* Responsive design for the widest displays (e.g. monitors and laptop screens). */
-@media(min-width: 1080px) {
+@media(min-width: 1280px) {
   #page-container {
     grid-template-areas:
     "header destination"

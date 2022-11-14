@@ -75,10 +75,16 @@
         <div id="destination-image-container" class="box4">
           <!-- A bit of inline JavaScript below to display a blank placeholder image from placeholder.com
           if a destination image from Pixabay could not be found or was not set by our code. -->
-          <img id="destination-image" title="Destination" alt="Destination" src="https://pixabay.com/get/g3646bca1de82fc7665d883775be8181a773b4369ad874ced07bd712b7b82e5f9bbf3f6fa6451a5e0739155b6b348543_1280.jpg" onerror=" 
-            this.src = 'https://via.placeholder.com/1280x854.png/beeaf7/d8f6ff?text=Image not available';
+          <img id="destination-image" title="Destination" alt="Destination" src="https://pixbay.com/get/gade2868e4c693755fd4abb9c7b30681e434f7c2e20a3e3287e94ccc7cfb187402a5f90ab21f46d790311cee07495d4c4_1280.jpg" onerror="
+            this.src = encodeURI('https://via.placeholder.com/1280x854.png/7cda9c/97f7b6?text=Image not available');
           ">
           <div id="destination-name" class="box5">London</div>
+        </div>
+        <div id="geo-container" class="box4">
+          <h5 id="region-name" class="box5">England</h5>
+          <h4 id="country-name" class="box5">United Kingdom</h4>
+          <h6 id="population" class="box5">Population: 56000000</h6>
+          <div id="arrival-date-countdown" class="box5">You will arrive in London, United Kingdom in X day(s).</div>
         </div>
       </div>      
 

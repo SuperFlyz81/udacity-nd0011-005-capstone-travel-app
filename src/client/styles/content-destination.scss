@@ -5,8 +5,8 @@ Destination content CSS styles
   grid-area: destination;
   display: flex;
   flex-direction: column;
-  color: var(--on-secondary-container);
-  padding: 1rem;
+  color: var(--on-tertiary-container);
+  padding: 1.25rem;
 }
 
 #destination-image-container {
@@ -25,33 +25,76 @@ Destination content CSS styles
 
 #destination-name {
   position: absolute;
-  bottom: 0.25em;
-  left: 64px;
-  right: 64px;
-  padding-bottom: 0.25em;
-  padding-right: 0.5em;
-  /*line-height: 2.2em;*/
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: 0.125em;
+  padding-right: 0.375em;
   overflow: hidden;
   font-family: 'Lobster', cursive;
-  color: var(--tertiary);
-  text-shadow: 0.1875rem 0.1875rem var(--on-tertiary-container);
+  color: var(--primary);
+  text-shadow: 0.1875rem 0.1875rem var(--on-primary-container);
   /* Default responsive design for narrow displays (e.g. mobile phones). */
-  /* Text auto-resize method below taken from: https://css-tricks.com/simplified-fluid-typography */
-  font-size: clamp(16px, 9vw, 200px);
+  /* No longer used - Text auto-resize method below taken from: https://css-tricks.com/simplified-fluid-typography */
+  /* font-size: clamp(16px, 9vw, 200px); */
+  font-size: var(--font-size-xxxl);
+}
+
+#geo-container {
+  display: grid;
+  grid-template-areas:
+  "countdown regionname"
+  "countdown countryname"
+  "countdown population";
+  grid-template-columns: fit-content auto;
+  justify-items: right;
+  align-items: center;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  column-gap: 1.25rem;
+}
+
+#region-name {
+  grid-area: regionname;
+  font-weight: lighter;
+  text-align: right;
+}
+
+#country-name {
+  grid-area: countryname;
+  font-weight: bold;
+  text-align: right;
+}
+
+#population {
+  grid-area: population;
+  font-weight: lighter;
+  text-align: right;
+}
+
+#arrival-date-countdown {
+  grid-area: countdown;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: var(--font-size-medium);
+  background-color: var(--tertiary-container);
+  color: var(--on-tertiary-container);
+  padding: 1rem;
+  border-radius: 2rem;
 }
 
 /* Responsive design for wider displays (e.g. tablets). */
-@media(min-width: 540px) {
+@media(min-width: 720px) {
   #destination-name {
-    /* Text auto-resize method below taken from: https://css-tricks.com/simplified-fluid-typography */
-    font-size: clamp(16px, 11vw, 200px);
+    font-size: var(--font-size-superultra);
   }
 }
 
 /* Responsive design for the widest displays (e.g. monitors and laptop screens). */
-@media(min-width: 1080px) {
+@media(min-width: 1280px) {
   #destination-name {
-    /* Text auto-resize method below taken from: https://css-tricks.com/simplified-fluid-typography */
-    font-size: clamp(16px, 6.5vw, 200px);
+    font-size: var(--font-size-humongous);
   }
 }
