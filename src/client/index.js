@@ -18,8 +18,6 @@ import './styles/style.scss';
 import './styles/content-header.scss';
 import './styles/content-destination.scss';
 import './styles/content-weather.scss';
-import './styles/content-weather-current.scss';
-import './styles/content-weather-arrival.scss';
 /*
 Exports
 */

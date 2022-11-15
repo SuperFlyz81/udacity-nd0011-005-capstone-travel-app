@@ -28,16 +28,16 @@ Destination content CSS styles
   bottom: 0;
   left: 0;
   right: 0;
-  padding-bottom: 0.125em;
-  padding-right: 0.375em;
   overflow: hidden;
   font-family: 'Lobster', cursive;
   color: var(--primary);
   text-shadow: 0.1875rem 0.1875rem var(--on-primary-container);
+  padding: 0 0.075em 0.075em 0; /* Fixes Lobster font getting cut off on the right and bottom edges. */
   /* Default responsive design for narrow displays (e.g. mobile phones). */
   /* No longer used - Text auto-resize method below taken from: https://css-tricks.com/simplified-fluid-typography */
   /* font-size: clamp(16px, 9vw, 200px); */
-  font-size: var(--font-size-xxxl);
+  font-size: var(--font-size-xxl);
+  margin: 0 1.25em 0.45em 1.25em;
 }
 
 #geo-container {
@@ -46,11 +46,9 @@ Destination content CSS styles
   "countdown regionname"
   "countdown countryname"
   "countdown population";
-  grid-template-columns: fit-content auto;
-  justify-items: right;
+  justify-items: left right;
   align-items: center;
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
+  padding: 1.25rem 2.5rem 1.25rem 2.5rem;
   column-gap: 1.25rem;
 }
 
@@ -88,7 +86,8 @@ Destination content CSS styles
 /* Responsive design for wider displays (e.g. tablets). */
 @media(min-width: 720px) {
   #destination-name {
-    font-size: var(--font-size-superultra);
+    font-size: var(--font-size-humongous);
+    margin: 0 0.55em 0.2em 0.55em;
   }
 }
 
@@ -96,5 +95,6 @@ Destination content CSS styles
 @media(min-width: 1280px) {
   #destination-name {
     font-size: var(--font-size-humongous);
+    margin: 0 0.55em 0.2em 0.55em;
   }
 }

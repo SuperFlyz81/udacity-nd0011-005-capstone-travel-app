@@ -1,4 +1,31 @@
 /*
 Weather content CSS styles
 */
-/* color: var(--on-tertiary-container); */
+#weather-current-container {
+  grid-area: weather-current;
+  display: flex;
+  background-color: var(--tertiary-container);
+  color: var(--on-tertiary-container);
+  width: auto;
+  height: auto;
+  padding: 1.25rem;
+}
+
+
+
+
+
+
+
+
+
+
+#weather-arrival-container {
+  grid-area: weather-arival;
+  display: flex;
+  background-color: var(--tertiary-container);
+  color: var(--on-tertiary-container);
+  width: auto;
+  height: auto;
+  padding: 1.25rem;
+}
