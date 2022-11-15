@@ -33,7 +33,7 @@
       <div id="header-container" class="box3">
         <div id="logo-container" class="box4">
           <!-- SVG logo taken from https://www.svgrepo.com/svg/58117/airplane-travelling-around-earth and used under creative commons license. -->
-          <svg id="logo" class="box5" width="96" height="96" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 46.184 46.184" style="enable-background:new 0 0 46.184 46.184;" xml:space="preserve">
+          <svg id="logo" class="box5" width="78" height="78" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 46.184 46.184" style="enable-background:new 0 0 46.184 46.184;" xml:space="preserve">
             <path fill="#4b9b69" d="M7.746,32.708c-1.244-2.01-2.152-5.084-2.152-8.371c0-9.856,8.019-17.875,17.873-17.875c2.029,0,3.975,0.357,5.793,0.982
               l-2.17-2.635c-1.177-0.219-2.385-0.348-3.623-0.348c-10.958,0-19.873,8.916-19.873,19.875c0,3.659,1.013,7.08,2.434,9.387
               L7.746,32.708z"/>
@@ -51,11 +51,11 @@
               C30.677,20.252,30.283,19.026,29.617,18.401z"/>
           </svg>
 
-          <h1><span id="header-text" class="box5">Travel Planner</span></h1>
+          <h1><span id="header-title" class="box5">Travel Planner</span></h1>
         </div>
 
         <input id="destination-name-input" class="header-input" type="text" autofocus="autofocus" placeholder="Travel to">
-        
+
         <!-- A bit of inline JavaScript below to block out the selection of past dates,
         and only allow 7 days (including the current date) in the future to be selected using the HTML date element below
         (since the Weatherbit API only supports 7 day weather forcasts from the present date using their free plan).
@@ -75,27 +75,33 @@
         <div id="destination-image-container" class="box4">
           <!-- A bit of inline JavaScript below to display a blank placeholder image from placeholder.com
           if a destination image from Pixabay could not be found or was not set by our code. -->
-          <img id="destination-image" title="Destination" alt="Destination" src="https://pixbay.com/get/gade2868e4c693755fd4abb9c7b30681e434f7c2e20a3e3287e94ccc7cfb187402a5f90ab21f46d790311cee07495d4c4_1280.jpg" onerror="
-            this.src = encodeURI('https://via.placeholder.com/1280x854.png/7cda9c/97f7b6?text=Image not available');
+          <img id="destination-image" title="" alt="Destination" src="https://pixbay.com/get/gade2868e4c693755fd4abb9c7b30681e434f7c2e20a3e3287e94ccc7cfb187402a5f90ab21f46d790311cee07495d4c4_1280.jpg" onerror="
+            this.src = encodeURI('https://via.placeholder.com/1280x854.png/7cda9c/97f7b6?text= ');
           ">
           <div id="destination-name" class="box5">London</div>
         </div>
         <div id="geo-container" class="box4">
           <h5 id="region-name" class="box5">England</h5>
-          <h4 id="country-name" class="box5">United Kingdom</h4>
+          <h4 id="country-name" class="box5">United Kingdommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm</h4>
           <h6 id="population" class="box5">Population: 56000000</h6>
-          <div id="arrival-date-countdown" class="box5">You will arrive in London, United Kingdom in X day(s).</div>
+          <div id="arrival-date-countdown" class="box5"><span>You will arrive in London, United Kingdom in <strong>200</strong> days.</span></div>
         </div>
       </div>      
 
       <!-- Current weather -->
-      <div id="weather-current-container" class="box3">
-        Current weather
+      <div id="weather-current-container" class="weather-container box3">
+        <h4 id="weather-current-title" class="weather-title box4">Current weather</h4>
+        <div class="weather-main-grid box4">
+
+        </div>
       </div>
 
       <!-- Arrival weather -->
-      <div id="weather-arrival-container" class="box3">
-        Weather on arrival
+      <div id="weather-arrival-container" class="weather-container box3">
+        <h4 id="weather-arrival-title" class="weather-title box4">Weather on arrival</h4>
+        <div class="weather-main-grid box4">
+
+        </div>
       </div>
     </div>
   </body>

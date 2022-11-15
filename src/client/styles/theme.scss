@@ -54,6 +54,8 @@ Theme CSS styles
   --scrim: #000000;
 
   /* My additions below. */
+  --spacing: 1.25rem; /* 20px based on the default root element value of 16px in most browsers. */
+
   --font-size-small: 0.75rem; /* 12px */
   --font-size-normal: 1rem; /* 16px */
   --font-size-medium: 1.5rem; /* 24px */

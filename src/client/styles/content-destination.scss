@@ -6,7 +6,7 @@ Destination content CSS styles
   display: flex;
   flex-direction: column;
   color: var(--on-tertiary-container);
-  padding: 1.25rem;
+  padding: var(--spacing);
 }
 
 #destination-image-container {
@@ -36,38 +36,41 @@ Destination content CSS styles
   /* Default responsive design for narrow displays (e.g. mobile phones). */
   /* No longer used - Text auto-resize method below taken from: https://css-tricks.com/simplified-fluid-typography */
   /* font-size: clamp(16px, 9vw, 200px); */
-  font-size: var(--font-size-xxl);
-  margin: 0 1.25em 0.45em 1.25em;
+  font-size: var(--font-size-xl);
+  margin: 0 1.5em 0.45em 1.5em;
 }
 
 #geo-container {
   display: grid;
   grid-template-areas:
-  "countdown regionname"
-  "countdown countryname"
-  "countdown population";
-  justify-items: left right;
-  align-items: center;
-  padding: 1.25rem 2.5rem 1.25rem 2.5rem;
-  column-gap: 1.25rem;
+  "regionname"
+  "countryname"
+  "population"
+  "countdown";
+  justify-items: right;
+  padding: var(--spacing) 2.5rem var(--spacing) 2.5rem;
+  overflow: hidden;
 }
 
 #region-name {
   grid-area: regionname;
   font-weight: lighter;
   text-align: right;
+  overflow: hidden;
 }
 
 #country-name {
   grid-area: countryname;
   font-weight: bold;
   text-align: right;
+  overflow: hidden;
 }
 
 #population {
   grid-area: population;
   font-weight: lighter;
   text-align: right;
+  overflow: hidden;
 }
 
 #arrival-date-countdown {
@@ -79,8 +82,9 @@ Destination content CSS styles
   font-size: var(--font-size-medium);
   background-color: var(--tertiary-container);
   color: var(--on-tertiary-container);
-  padding: 1rem;
   border-radius: 2rem;
+  padding: var(--spacing);
+  margin-top: var(--spacing);
 }
 
 /* Responsive design for wider displays (e.g. tablets). */
@@ -89,12 +93,21 @@ Destination content CSS styles
     font-size: var(--font-size-humongous);
     margin: 0 0.55em 0.2em 0.55em;
   }
+
+  #geo-container {
+    grid-template-areas:
+    "countdown regionname"
+    "countdown countryname"
+    "countdown population";
+    column-gap: 2.5rem;
+  }
+
+  #arrival-date-countdown {
+    margin-top: 0;
+  }
 }
 
 /* Responsive design for the widest displays (e.g. monitors and laptop screens). */
-@media(min-width: 1280px) {
-  #destination-name {
-    font-size: var(--font-size-humongous);
-    margin: 0 0.55em 0.2em 0.55em;
-  }
-}
+/* @media(min-width: 1280px) {
+    Note, This is inherited from the 720px media query above since this layout works for both display sizes.
+} */

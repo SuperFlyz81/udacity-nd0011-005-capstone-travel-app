@@ -3,29 +3,30 @@ Weather content CSS styles
 */
 #weather-current-container {
   grid-area: weather-current;
-  display: flex;
-  background-color: var(--tertiary-container);
-  color: var(--on-tertiary-container);
-  width: auto;
-  height: auto;
-  padding: 1.25rem;
 }
-
-
-
-
-
-
-
-
-
 
 #weather-arrival-container {
-  grid-area: weather-arival;
-  display: flex;
-  background-color: var(--tertiary-container);
-  color: var(--on-tertiary-container);
-  width: auto;
-  height: auto;
-  padding: 1.25rem;
+  grid-area: weather-arrival;
 }
+
+.weather-container {
+  display: flex;
+  flex-direction: column;
+  color: var(--on-tertiary-container);
+  padding: var(--spacing);
+}
+
+.weather-title {
+  font-family: 'Lobster', cursive;
+  color: var(--tertiary);
+  text-shadow: 0.125rem 0.125rem var(--on-tertiary-container);
+}
+
+.weather-main-grid {
+  display: grid;
+  color: var(--on-tertiary-container);
+  padding: var(--spacing);
+  background-color: var(--tertiary-container);
+  border-radius: 2rem;
+}
+

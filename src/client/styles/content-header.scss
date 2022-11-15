@@ -6,21 +6,23 @@ Header content CSS styles
   display: flex;
   flex-direction: column;
   color: var(--on-primary-container);
-  padding: 1.25rem;
+  padding: var(--spacing);
 }
 
 #logo-container {
   display: grid;
   grid-template-columns: min-content auto;
   align-items: center;
-  column-gap: 1.25rem;
+  column-gap: var(--spacing);
+  padding-top: var(--spacing);
+  padding-bottom: var(--spacing);
 }
 
 #logo {
   filter: drop-shadow(0.125rem 0.125rem 0 var(--on-primary-container));
 }
 
-#header-text {
+#header-title {
   font-family: 'Lobster', cursive;
   color: var(--primary);
   text-shadow: 0.125rem 0.125rem var(--on-primary-container);
@@ -29,7 +31,7 @@ Header content CSS styles
 .header-input {
   font-size: var(--font-size-medium);
   -webkit-text-fill-color: var(--on-primary-container); /* Fixed the input type date with min and max placeholder color as per: https://stackoverflow.com/questions/72089144/how-to-change-color-of-input-type-date-with-min-and-max-locked-month-or-year-o */
-  margin-top: 1rem;
+  margin-top: var(--spacing);
   padding: 1rem;  
   border-radius: 2rem;
   border-color: var(--primary);
@@ -52,8 +54,8 @@ Header content CSS styles
   font-weight: bold;
   color: var(--on-primary);
   background-color: var(--primary);
-  margin-top: 1rem;
-  padding: 1rem;
+  margin-top: var(--spacing);
+  padding: 1rem 1.75rem 1rem 1.75rem;
   border-radius: 2rem;
   border : 0;
 }
