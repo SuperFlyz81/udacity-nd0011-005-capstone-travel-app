@@ -14,7 +14,7 @@ body {
 
 #page-container {
   display: grid;
-  gap: var(--spacing);
+  column-gap: var(--spacing);
   /* Default responsive design for narrow displays (e.g. mobile phones). */
   grid-template-areas:
   "header"

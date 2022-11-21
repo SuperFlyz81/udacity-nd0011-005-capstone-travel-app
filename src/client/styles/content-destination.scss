@@ -48,7 +48,7 @@ Destination content CSS styles
   "population"
   "countdown";
   justify-items: right;
-  padding: var(--spacing) 2.5rem var(--spacing) 2.5rem;
+  padding: var(--spacing);
   overflow: hidden;
 }
 
@@ -79,15 +79,15 @@ Destination content CSS styles
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: var(--font-size-medium);
   background-color: var(--tertiary-container);
   color: var(--on-tertiary-container);
+  font-size: var(--font-size-medium);
   border-radius: 2rem;
   padding: var(--spacing);
   margin-top: var(--spacing);
 }
 
-/* Responsive design for wider displays (e.g. tablets). */
+/* Responsive design for wider and the widest displays (e.g. tablets, monitors, and laptop screens). */
 @media(min-width: 720px) {
   #destination-name {
     font-size: var(--font-size-humongous);
@@ -106,8 +106,3 @@ Destination content CSS styles
     margin-top: 0;
   }
 }
-
-/* Responsive design for the widest displays (e.g. monitors and laptop screens). */
-/* @media(min-width: 1280px) {
-    Note, This is inherited from the 720px media query above since this layout works for both display sizes.
-} */

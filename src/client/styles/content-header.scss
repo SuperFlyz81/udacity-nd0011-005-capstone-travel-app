@@ -14,8 +14,7 @@ Header content CSS styles
   grid-template-columns: min-content auto;
   align-items: center;
   column-gap: var(--spacing);
-  padding-top: var(--spacing);
-  padding-bottom: var(--spacing);
+  margin-top: var(--spacing);
 }
 
 #logo {

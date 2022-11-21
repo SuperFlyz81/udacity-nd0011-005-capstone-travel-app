@@ -75,14 +75,14 @@
         <div id="destination-image-container" class="box4">
           <!-- A bit of inline JavaScript below to display a blank placeholder image from placeholder.com
           if a destination image from Pixabay could not be found or was not set by our code. -->
-          <img id="destination-image" title="" alt="Destination" src="https://pixbay.com/get/gade2868e4c693755fd4abb9c7b30681e434f7c2e20a3e3287e94ccc7cfb187402a5f90ab21f46d790311cee07495d4c4_1280.jpg" onerror="
+          <img id="destination-image" title="" alt="Destination" src="https://pixabay.com/get/g67ca432d141ce9f5e2ac9323c1b756f24f383e584f859a826a9debccfad02ecb1a1b491c9e58efd6e0de015e2d39ca01_1280.jpg" onerror="
             this.src = encodeURI('https://via.placeholder.com/1280x854.png/7cda9c/97f7b6?text= ');
           ">
           <div id="destination-name" class="box5">London</div>
         </div>
         <div id="geo-container" class="box4">
           <h5 id="region-name" class="box5">England</h5>
-          <h4 id="country-name" class="box5">United Kingdommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm</h4>
+          <h4 id="country-name" class="box5">United Kingdom</h4>
           <h6 id="population" class="box5">Population: 56000000</h6>
           <div id="arrival-date-countdown" class="box5"><span>You will arrive in London, United Kingdom in <strong>200</strong> days.</span></div>
         </div>
@@ -90,17 +90,46 @@
 
       <!-- Current weather -->
       <div id="weather-current-container" class="weather-container box3">
-        <h4 id="weather-current-title" class="weather-title box4">Current weather</h4>
-        <div class="weather-main-grid box4">
-
+        <h5 id="weather-current-title" class="weather-title box4">Current weather in London</h5>
+        <div id="weather-current-main-grid" class="box4">
+          <div id="weather-current-temp-grid" class="box5">
+            <div id="current-minmax-temp">Max 10° Min 6°</div>
+            <h1 id="current-temp">9°C</h1>
+            <div id="current-feels-like-temp">Feels like 4°</div>
+          </div>
+          <div id="weather-current-icon-grid" class="box5">
+            <img id="current-icon" title="" alt="Weather" src="https://www.weatherbit.io/static/img/icons/t04d.png">
+            <div id="current-description">Thunderstorm with heavy drizzle</div>
+          </div>
+          <div id="weather-current-details-grid" class="box5">
+            <div><strong>Details</strong></div>
+            <div>&nbsp;</div>
+            <div>Chance of rain</div>
+            <div id="current-chance-of-rain"><strong>50%</strong></div>
+            <div>Wind speed</div>
+            <div id="current-wind-speed"><strong>15 km/h</strong></div>
+            <div>Wind gust speed</div>
+            <div id="current-wind-gust-speed"><strong>30 km/h</strong></div>
+            <div>Wind direction</div>
+            <div id="current-wind-direction"><strong>South west</strong></div>
+            <div>Cloud coverage</div>
+            <div id="current-cloud-coverage"><strong>80%</strong></div>
+            <div>UV index (0-11+)</div>
+            <div id="current-uv-index"><strong>2</strong></div>
+            <div>Humidity</div>
+            <div id="current-humidity"><strong>60%</strong></div>
+            <div>Sunrise time</div>
+            <div id="current-sunrise-time"><strong>06:30</strong></div>
+            <div>Sunset time</div>
+            <div id="current-sunset-time"><strong>18:30</strong></div>
+          </div>
         </div>
       </div>
 
       <!-- Arrival weather -->
       <div id="weather-arrival-container" class="weather-container box3">
-        <h4 id="weather-arrival-title" class="weather-title box4">Weather on arrival</h4>
+        <h5 id="weather-arrival-title" class="weather-title box4">Weather on arrival in London</h5>
         <div class="weather-main-grid box4">
-
         </div>
       </div>
     </div>
