@@ -1,7 +1,7 @@
 /*
 Global CSS styles
 */
-/* * Below refers to all elements. */
+/* The "*" below refers to all elements. */
 * {
   font-family: 'Roboto Condensed', sans-serif;
 }
@@ -14,7 +14,7 @@ body {
 
 #page-container {
   display: grid;
-  column-gap: var(--spacing);
+  gap: var(--spacing);
   /* Default responsive design for narrow displays (e.g. mobile phones). */
   grid-template-areas:
   "header"
@@ -97,6 +97,5 @@ This is very handy for element positioning and alignment. */
     "header destination"
     "weather-current destination"
     "weather-arrival destination";
-    grid-template-columns: auto 55vw;
   }
 }

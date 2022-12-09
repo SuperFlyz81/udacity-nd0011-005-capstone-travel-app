@@ -48,7 +48,7 @@ Destination content CSS styles
   "population"
   "countdown";
   justify-items: right;
-  padding: var(--spacing);
+  padding: var(--spacing) var(--spacing) 0 var(--spacing);
   overflow: hidden;
 }
 
@@ -79,8 +79,8 @@ Destination content CSS styles
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: var(--tertiary-container);
-  color: var(--on-tertiary-container);
+  background-color: var(--error-container);
+  color: var(--on-error-container);
   font-size: var(--font-size-medium);
   border-radius: 2rem;
   padding: var(--spacing);

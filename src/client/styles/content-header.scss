@@ -48,6 +48,13 @@ Header content CSS styles
   opacity: 1; /* Firefox */
 }
 
+#datesubmit-container {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto auto;
+  column-gap: var(--spacing);
+}
+
 #submit-button {
   font-size: var(--font-size-medium);
   font-weight: bold;
@@ -57,6 +64,7 @@ Header content CSS styles
   padding: 1rem 1.75rem 1rem 1.75rem;
   border-radius: 2rem;
   border : 0;
+  min-width: 240px;
 }
 
 #submit-button:focus {
@@ -66,4 +74,12 @@ Header content CSS styles
 #submit-button:hover {
   color: var(--surface);
   background-color: var(--on-surface-variant);
+}
+
+/* Responsive design for wider and the widest displays (e.g. tablets, monitors, and laptop screens). */
+@media(min-width: 720px) {
+  #datesubmit-container {
+    grid-template-columns: auto min-content;
+    grid-template-rows: auto;
+  }
 }

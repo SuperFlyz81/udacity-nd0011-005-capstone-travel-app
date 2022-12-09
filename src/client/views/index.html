@@ -55,19 +55,21 @@
         </div>
 
         <input id="destination-name-input" class="header-input" type="text" autofocus="autofocus" placeholder="Travel to">
-
-        <!-- A bit of inline JavaScript below to block out the selection of past dates,
-        and only allow 7 days (including the current date) in the future to be selected using the HTML date element below
-        (since the Weatherbit API only supports 7 day weather forcasts from the present date using their free plan).
-        See the following URL for more info on adding days to a date (including the addDays prototype function below):
-        https://stackoverflow.com/questions/563406/how-to-add-days-to-date -->
-        <input id="arrival-date-input" class="header-input" type="text" placeholder="Arrival date" onfocus="
-          this.type='date';
-          this.min = new Date().toISOString().split('T')[0];
-          Date.prototype.addDays = function(d){return new Date(this.valueOf()+864E5*d);};
-          this.max = new Date().addDays(6).toISOString().split('T')[0];
-        ">
-        <button id="submit-button" type="submit">Submit</button>
+        
+        <div id="datesubmit-container" class="box4">
+          <!-- A bit of inline JavaScript below to block out the selection of past dates,
+          and only allow 7 days (including the current date) in the future to be selected using the HTML date element below
+          (since the Weatherbit API only supports 7 day weather forcasts from the present date using their free plan).
+          See the following URL for more info on adding days to a date (including the addDays prototype function below):
+          https://stackoverflow.com/questions/563406/how-to-add-days-to-date -->
+          <input id="arrival-date-input" class="header-input" type="text" placeholder="Arrival date" onfocus="
+            this.type='date';
+            this.min = new Date().toISOString().split('T')[0];
+            Date.prototype.addDays = function(d){return new Date(this.valueOf()+864E5*d);};
+            this.max = new Date().addDays(6).toISOString().split('T')[0];
+          ">
+          <button id="submit-button" type="submit">Submit</button>
+        </div>
       </div>
 
       <!-- Destination -->
@@ -75,7 +77,7 @@
         <div id="destination-image-container" class="box4">
           <!-- A bit of inline JavaScript below to display a blank placeholder image from placeholder.com
           if a destination image from Pixabay could not be found or was not set by our code. -->
-          <img id="destination-image" title="" alt="Destination" src="https://pixabay.com/get/g67ca432d141ce9f5e2ac9323c1b756f24f383e584f859a826a9debccfad02ecb1a1b491c9e58efd6e0de015e2d39ca01_1280.jpg" onerror="
+          <img id="destination-image" title="" alt="Destination" src="https://pixabay.com/get/g8759da611d36a6b701e88e141354b9ac9ea2bd40fa861cc9cb6961588abdaafe9a1e42ea5bb9b0373af8c6d4e62639c6_1280.jpg" onerror="
             this.src = encodeURI('https://via.placeholder.com/1280x854.png/7cda9c/97f7b6?text= ');
           ">
           <div id="destination-name" class="box5">London</div>
@@ -91,7 +93,7 @@
       <!-- Current weather -->
       <div id="weather-current-container" class="weather-container box3">
         <h5 id="weather-current-title" class="weather-title box4">Current weather in London</h5>
-        <div id="weather-current-main-grid" class="box4">
+        <div id="weather-current-main-grid" class="weather-main-grid box4">
           <div id="weather-current-temp-grid" class="box5">
             <div id="current-minmax-temp">Max 10° Min 6°</div>
             <h1 id="current-temp">9°C</h1>
@@ -129,9 +131,39 @@
       <!-- Arrival weather -->
       <div id="weather-arrival-container" class="weather-container box3">
         <h5 id="weather-arrival-title" class="weather-title box4">Weather on arrival in London</h5>
-        <div class="weather-main-grid box4">
+        <div id="weather-arrival-main-grid" class="weather-main-grid box4">
+          <div id="weather-arrival-temp-grid" class="box5">
+            <div id="current-minmax-temp">Max 10° Min 6°</div>
+            <h1 id="current-temp">9°C</h1>
+            <div id="current-feels-like-temp">(Average temperature)</div>
+          </div>
+          <div id="weather-arrival-icon-grid" class="box5">
+            <img id="current-icon" title="" alt="Weather" src="https://www.weatherbit.io/static/img/icons/t04d.png">
+            <div id="current-description">Thunderstorm with heavy drizzle</div>
+          </div>
+          <div id="weather-arrival-details-grid" class="box5">
+            <div><strong>Details</strong></div>
+            <div>&nbsp;</div>
+            <div>Chance of rain</div>
+            <div id="arrival-chance-of-rain"><strong>50%</strong></div>
+            <div>Wind speed</div>
+            <div id="arrival-wind-speed"><strong>15 km/h</strong></div>
+            <div>Wind gust speed</div>
+            <div id="arrival-wind-gust-speed"><strong>30 km/h</strong></div>
+            <div>Wind direction</div>
+            <div id="arrival-wind-direction"><strong>South west</strong></div>
+            <div>Cloud coverage</div>
+            <div id="arrival-cloud-coverage"><strong>80%</strong></div>
+            <div>UV index (0-11+)</div>
+            <div id="arrival-uv-index"><strong>2</strong></div>
+            <div>Humidity</div>
+            <div id="arrival-humidity"><strong>60%</strong></div>
+            <div>Sunrise time</div>
+            <div id="arrival-sunrise-time"><strong>06:30</strong></div>
+            <div>Sunset time</div>
+            <div id="arrival-sunset-time"><strong>18:30</strong></div>
+          </div>
         </div>
       </div>
-    </div>
   </body>
 </html>
