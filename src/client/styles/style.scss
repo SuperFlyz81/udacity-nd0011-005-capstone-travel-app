@@ -58,7 +58,7 @@ h7 {
   margin: 0;
 }
 
-/* IMPORTANT - Change all the 1px border width values below to 1px to see all your grid and flex boxes.
+/* IMPORTANT - Change all the 0px border width values below to 1px to see all your grid and flex boxes.
 This is very handy for element positioning and alignment. */
 .box1 {
   border: 1px solid yellow;
@@ -97,5 +97,6 @@ This is very handy for element positioning and alignment. */
     "header destination"
     "weather-current destination"
     "weather-arrival destination";
+    grid-template-columns: auto 0; /* See the related "post submit", grid-template-columns styling code at the bottom of the retrieveData function in the src/client/js/app.js JavaScript file. */
   }
 }
