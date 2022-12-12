@@ -42,6 +42,32 @@ const convertUnixTimestampToTime = (unixTimestamp) => {
   return formattedTime;
 }
 
+// Function expression - Convert a number to thousands, millions, billions, etc.
+const numberFormatter = (num, digits) => {
+  // Code adapted from: https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
+  const lookup = [
+    {value: 1, symbol: ""},
+    {value: 1e3, symbol: " thousand"},
+    {value: 1e6, symbol: " million"},
+    {value: 1e9, symbol: " billion"},
+    {value: 1e12, symbol: " trillion"},
+    {value: 1e15, symbol: " quadrillion"},
+    {value: 1e18, symbol: " quintillion"}
+  ];
+
+  const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+  var item = lookup.slice().reverse().find(function(item) {
+    return num >= item.value;
+  });
+
+  return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
+}
+
+// Function expression - Convert meters per second to kilometers per hour.
+const mpsToKmph = (mps, digits) => {
+  return (mps * 3.6).toFixed(digits);
+}
+
 /*
 Main function expressions
 */
@@ -202,7 +228,7 @@ const getWeatherAndImageData = async (geoData) => {
     // console.log(dataImage); // Debug code.
     // console.log(dataImage.hits[0]); // Debug code.
     
-    destinationImageURL = dataImage.total > 0 ? dataImage.hits[0].webformatURL : '';
+    destinationImageURL = dataImage.total > 0 ? dataImage.hits[0].largeImageURL : '';
   } catch(err) {
     // Catches http, connection, and other errors.
     /* If an error occurs while fetching image data from Pixabay (let's say the Pixabay site or API is down), then just set the destinationImageURL to blank.
@@ -228,12 +254,12 @@ const getWeatherAndImageData = async (geoData) => {
         description: dataWeatherCurrent.data[0].weather.description,
         temp: dataWeatherCurrent.data[0].temp,
         feelslikeTemp: dataWeatherCurrent.data[0].app_temp,
-        maxTemp: dataWeatherForecast.data[arrivalDayIndex].max_temp,
-        minTemp: dataWeatherForecast.data[arrivalDayIndex].min_temp,
-        chanceOfRain: dataWeatherForecast.data[arrivalDayIndex].pop,
+        maxTemp: dataWeatherForecast.data[0].max_temp,
+        minTemp: dataWeatherForecast.data[0].min_temp,
+        chanceOfRain: dataWeatherForecast.data[0].pop,
         windSpeed: dataWeatherCurrent.data[0].wind_spd,
         windGustSpeed: dataWeatherCurrent.data[0].gust,
-        windDirection: dataWeatherCurrent.data[0].wind_cdir_full,
+        windDirection: dataWeatherCurrent.data[0].wind_cdir,
         cloudCoverage: dataWeatherCurrent.data[0].clouds,
         uvIndex: dataWeatherCurrent.data[0].uv,
         humidity: dataWeatherCurrent.data[0].rh,
@@ -251,7 +277,7 @@ const getWeatherAndImageData = async (geoData) => {
         chanceOfRain: dataWeatherForecast.data[arrivalDayIndex].pop,
         windSpeed: dataWeatherForecast.data[arrivalDayIndex].wind_spd,
         windGustSpeed: dataWeatherForecast.data[arrivalDayIndex].wind_gust_spd,
-        windDirection: dataWeatherForecast.data[arrivalDayIndex].wind_cdir_full,
+        windDirection: dataWeatherForecast.data[arrivalDayIndex].wind_cdir,
         cloudCoverage: dataWeatherForecast.data[arrivalDayIndex].clouds,
         uvIndex: dataWeatherForecast.data[arrivalDayIndex].uv,
         humidity: dataWeatherForecast.data[arrivalDayIndex].rh,
@@ -299,30 +325,71 @@ const retrieveData = async () => {
   const data = await response.json();
 
   // Update the UI by assigning the fetched data to DOM elements.
+  // Update destination elements.
+  document.getElementById('destination-image').src = data.destinationImageURL;
   document.getElementById('destination-name').innerHTML = data.destinationName;
-  document.getElementById('arrival-date').innerHTML = data.arrivalDate;
-  document.getElementById('region-name').innerHTML = data.regionName;
+  data.regionName ? document.getElementById('region-name').innerHTML = data.regionName : document.getElementById('region-name').style.display = 'none';
   document.getElementById('country-name').innerHTML = data.countryName;
-  document.getElementById('latitude').innerHTML = data.latitude;
-  document.getElementById('longitude').innerHTML = data.longitude;
-  document.getElementById('population').innerHTML = data.population;
-  document.getElementById('arrival-date-countdown').innerHTML = data.arrivalCountdown + ' day(s) until your trip';
-  
-  document.getElementById('current-icon').innerHTML = data.weatherData[0].icon;
+  document.getElementById('population').innerHTML = `Population: ${numberFormatter(data.population, 1)}`;
+
+  let countdownText = '';
+  switch (data.arrivalCountdown) {
+    case 0:
+      countdownText = '<strong>today</strong>';
+      break;
+
+    case 1:
+      countdownText = '<strong>tomorrow</strong>';
+      break;      
+      
+    default:
+      countdownText = 'in <strong>' + data.arrivalCountdown + ' days</strong>';
+      break;
+  }
+
+  document.getElementById('date-countdown').innerHTML = `<span>You will arrive in ${data.destinationName}, ${data.countryName} ${countdownText}.</span>`;
+
+  // Update current weather elements.
+  document.getElementById('weather-current-title').innerHTML = `Current weather in ${data.destinationName}`;
+  document.getElementById('current-minmax-temp').innerHTML = `Max ${data.weatherData[0].maxTemp}° Min ${data.weatherData[0].minTemp}°`;
+  document.getElementById('current-temp').innerHTML = `${data.weatherData[0].temp}°C`;
+  document.getElementById('current-feels-like-temp').innerHTML = `Feels like ${data.weatherData[0].feelslikeTemp}°`;
+  if (data.weatherData[0].icon) {
+    document.getElementById('current-icon').src = `https://www.weatherbit.io/static/img/icons/${data.weatherData[0].icon}.png`;
+  }
   document.getElementById('current-description').innerHTML = data.weatherData[0].description;
-  document.getElementById('current-temp').innerHTML = data.weatherData[0].temp;
-  document.getElementById('current-feels-like-temp').innerHTML = data.weatherData[0].feelslikeTemp;
-  document.getElementById('current-max-temp').innerHTML = data.weatherData[0].maxTemp;
-  document.getElementById('current-min-temp').innerHTML = data.weatherData[0].minTemp;
-  document.getElementById('current-chance-of-rain').innerHTML = data.weatherData[0].chanceOfRain;
-  document.getElementById('current-wind-speed').innerHTML = data.weatherData[0].windSpeed;
-  document.getElementById('current-wind-gust-speed').innerHTML = data.weatherData[0].windGustSpeed;
+  document.getElementById('current-chance-of-rain').innerHTML = `${data.weatherData[0].chanceOfRain}%`;
+  document.getElementById('current-wind-speed').innerHTML = `${mpsToKmph(data.weatherData[0].windSpeed, 1)} km/h`;
+  document.getElementById('current-wind-gust-speed').innerHTML = `${mpsToKmph(data.weatherData[0].windGustSpeed, 1)} km/h`;
   document.getElementById('current-wind-direction').innerHTML = data.weatherData[0].windDirection;
-  document.getElementById('current-cloud-coverage').innerHTML = data.weatherData[0].cloudCoverage;
-  document.getElementById('current-uv-index').innerHTML = data.weatherData[0].uvIndex;
-  document.getElementById('current-humidity').innerHTML = data.weatherData[0].humidity;
+  document.getElementById('current-cloud-coverage').innerHTML = `${data.weatherData[0].cloudCoverage}%`;
+  document.getElementById('current-uv-index').innerHTML = data.weatherData[0].uvIndex.toFixed(2);
+  document.getElementById('current-humidity').innerHTML = `${data.weatherData[0].humidity}%`;
   document.getElementById('current-sunrise-time').innerHTML = data.weatherData[0].sunriseTime;
   document.getElementById('current-sunset-time').innerHTML = data.weatherData[0].sunsetTime;
+
+  // Update arrival weather elements.
+  document.getElementById('weather-arrival-title').innerHTML = `Weather on arrival in ${data.destinationName}`;
+  document.getElementById('arrival-minmax-temp').innerHTML = `Max ${data.weatherData[1].maxTemp}° Min ${data.weatherData[1].minTemp}°`;
+  document.getElementById('arrival-temp').innerHTML = `${data.weatherData[1].temp}°C`;
+  if (data.weatherData[1].icon) {
+    document.getElementById('arrival-icon').src = `https://www.weatherbit.io/static/img/icons/${data.weatherData[1].icon}.png`;
+  }
+  document.getElementById('arrival-description').innerHTML = data.weatherData[1].description;
+  document.getElementById('arrival-chance-of-rain').innerHTML = `${data.weatherData[1].chanceOfRain}%`;
+  document.getElementById('arrival-wind-speed').innerHTML = `${mpsToKmph(data.weatherData[1].windSpeed, 1)} km/h`;
+  document.getElementById('arrival-wind-gust-speed').innerHTML = `${mpsToKmph(data.weatherData[1].windGustSpeed, 1)} km/h`;
+  document.getElementById('arrival-wind-direction').innerHTML = data.weatherData[1].windDirection;
+  document.getElementById('arrival-cloud-coverage').innerHTML = `${data.weatherData[1].cloudCoverage}%`;
+  document.getElementById('arrival-uv-index').innerHTML = data.weatherData[1].uvIndex.toFixed(2);
+  document.getElementById('arrival-humidity').innerHTML = `${data.weatherData[1].humidity}%`;
+  document.getElementById('arrival-sunrise-time').innerHTML = data.weatherData[1].sunriseTime;
+  document.getElementById('arrival-sunset-time').innerHTML = data.weatherData[1].sunsetTime;
+
+  /*
+  document.getElementById('arrival-date').innerHTML = data.arrivalDate;
+  document.getElementById('latitude').innerHTML = data.latitude;
+  document.getElementById('longitude').innerHTML = data.longitude;
 
   document.getElementById('arrival-icon').innerHTML = data.weatherData[1].icon;
   document.getElementById('arrival-description').innerHTML = data.weatherData[1].description;
@@ -340,7 +407,8 @@ const retrieveData = async () => {
   document.getElementById('arrival-sunrise-time').innerHTML = data.weatherData[1].sunriseTime;
   document.getElementById('arrival-sunset-time').innerHTML = data.weatherData[1].sunsetTime;
 
-  document.getElementById('destination-image-url').innerHTML = data.destinationImageURL;
+  
+  */
 };
 
 /*

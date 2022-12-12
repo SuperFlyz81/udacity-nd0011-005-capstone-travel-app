@@ -47,7 +47,6 @@ Destination content CSS styles
   "countryname"
   "population"
   "countdown";
-  justify-items: right;
   padding: var(--spacing) var(--spacing) 0 var(--spacing);
   overflow: hidden;
 }
@@ -73,7 +72,7 @@ Destination content CSS styles
   overflow: hidden;
 }
 
-#arrival-date-countdown {
+#date-countdown {
   grid-area: countdown;
   display: flex;
   align-items: center;
@@ -102,7 +101,7 @@ Destination content CSS styles
     column-gap: 2.5rem;
   }
 
-  #arrival-date-countdown {
+  #date-countdown {
     margin-top: 0;
   }
 }

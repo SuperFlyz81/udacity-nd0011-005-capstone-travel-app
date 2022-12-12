@@ -27,6 +27,10 @@ Weather content CSS styles
   align-items: flex-start;
 }
 
+.weather-details {
+  font-weight: bold;
+}
+
 #weather-current-container {
   grid-area: weather-current;
 }

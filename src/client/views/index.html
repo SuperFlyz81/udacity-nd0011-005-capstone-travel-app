@@ -77,91 +77,97 @@
         <div id="destination-image-container" class="box4">
           <!-- A bit of inline JavaScript below to display a blank placeholder image from placeholder.com
           if a destination image from Pixabay could not be found or was not set by our code. -->
-          <img id="destination-image" title="" alt="Destination" src="https://pixabay.com/get/g8759da611d36a6b701e88e141354b9ac9ea2bd40fa861cc9cb6961588abdaafe9a1e42ea5bb9b0373af8c6d4e62639c6_1280.jpg" onerror="
+          <img id="destination-image" title="" alt="Destination" src="" onerror="
             this.src = encodeURI('https://via.placeholder.com/1280x854.png/7cda9c/97f7b6?text= ');
           ">
-          <div id="destination-name" class="box5">London</div>
+          <div id="destination-name" class="box5"></div>
         </div>
         <div id="geo-container" class="box4">
-          <h5 id="region-name" class="box5">England</h5>
-          <h4 id="country-name" class="box5">United Kingdom</h4>
-          <h6 id="population" class="box5">Population: 56000000</h6>
-          <div id="arrival-date-countdown" class="box5"><span>You will arrive in London, United Kingdom in <strong>200</strong> days.</span></div>
+          <h5 id="region-name" class="box5"></h5>
+          <h4 id="country-name" class="box5"></h4>
+          <h6 id="population" class="box5"></h6>
+          <div id="date-countdown" class="box5"></div>
         </div>
       </div>      
 
       <!-- Current weather -->
       <div id="weather-current-container" class="weather-container box3">
-        <h5 id="weather-current-title" class="weather-title box4">Current weather in London</h5>
+        <h5 id="weather-current-title" class="weather-title box4"></h5>
         <div id="weather-current-main-grid" class="weather-main-grid box4">
           <div id="weather-current-temp-grid" class="box5">
-            <div id="current-minmax-temp">Max 10° Min 6°</div>
-            <h1 id="current-temp">9°C</h1>
-            <div id="current-feels-like-temp">Feels like 4°</div>
+            <div id="current-minmax-temp"></div>
+            <h1 id="current-temp"></h1>
+            <div id="current-feels-like-temp"></div>
           </div>
           <div id="weather-current-icon-grid" class="box5">
-            <img id="current-icon" title="" alt="Weather" src="https://www.weatherbit.io/static/img/icons/t04d.png">
-            <div id="current-description">Thunderstorm with heavy drizzle</div>
+            <!-- Insert a transparent gif below as the default src for the weather icon image (will be overwritten later using JavaScript).
+            This is to avoid the default "broken" placeholder image in most browsers when an image tag is set without a src value or with a blank src value.
+            See the following URL for more details on this method: https://stackoverflow.com/questions/5775469/whats-the-valid-way-to-include-an-image-with-no-src -->
+            <img id="current-icon" title="" alt="Weather" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+            <div id="current-description"></div>
           </div>
           <div id="weather-current-details-grid" class="box5">
-            <div><strong>Details</strong></div>
+            <div class="weather-details">Details</div>
             <div>&nbsp;</div>
             <div>Chance of rain</div>
-            <div id="current-chance-of-rain"><strong>50%</strong></div>
+            <div id="current-chance-of-rain" class="weather-details"></div>
             <div>Wind speed</div>
-            <div id="current-wind-speed"><strong>15 km/h</strong></div>
+            <div id="current-wind-speed" class="weather-details"></div>
             <div>Wind gust speed</div>
-            <div id="current-wind-gust-speed"><strong>30 km/h</strong></div>
+            <div id="current-wind-gust-speed" class="weather-details"></div>
             <div>Wind direction</div>
-            <div id="current-wind-direction"><strong>South west</strong></div>
+            <div id="current-wind-direction" class="weather-details"></div>
             <div>Cloud coverage</div>
-            <div id="current-cloud-coverage"><strong>80%</strong></div>
+            <div id="current-cloud-coverage" class="weather-details"></div>
             <div>UV index (0-11+)</div>
-            <div id="current-uv-index"><strong>2</strong></div>
+            <div id="current-uv-index" class="weather-details"></div>
             <div>Humidity</div>
-            <div id="current-humidity"><strong>60%</strong></div>
+            <div id="current-humidity" class="weather-details"></div>
             <div>Sunrise time</div>
-            <div id="current-sunrise-time"><strong>06:30</strong></div>
+            <div id="current-sunrise-time" class="weather-details"></div>
             <div>Sunset time</div>
-            <div id="current-sunset-time"><strong>18:30</strong></div>
+            <div id="current-sunset-time" class="weather-details"></div>
           </div>
         </div>
       </div>
 
       <!-- Arrival weather -->
       <div id="weather-arrival-container" class="weather-container box3">
-        <h5 id="weather-arrival-title" class="weather-title box4">Weather on arrival in London</h5>
+        <h5 id="weather-arrival-title" class="weather-title box4"></h5>
         <div id="weather-arrival-main-grid" class="weather-main-grid box4">
           <div id="weather-arrival-temp-grid" class="box5">
-            <div id="current-minmax-temp">Max 10° Min 6°</div>
-            <h1 id="current-temp">9°C</h1>
-            <div id="current-feels-like-temp">(Average temperature)</div>
+            <div id="arrival-minmax-temp"></div>
+            <h1 id="arrival-temp"></h1>
+            <div id="arrival-feels-like-temp">(Average temperature)</div>
           </div>
           <div id="weather-arrival-icon-grid" class="box5">
-            <img id="current-icon" title="" alt="Weather" src="https://www.weatherbit.io/static/img/icons/t04d.png">
-            <div id="current-description">Thunderstorm with heavy drizzle</div>
+            <!-- Insert a transparent gif below as the default src for the weather icon image (will be overwritten later using JavaScript).
+            This is to avoid the default "broken" placeholder image in most browsers when an image tag is set without a src value or with a blank src value.
+            See the following URL for more details on this method: https://stackoverflow.com/questions/5775469/whats-the-valid-way-to-include-an-image-with-no-src -->
+            <img id="arrival-icon" title="" alt="Weather" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+            <div id="arrival-description"></div>
           </div>
           <div id="weather-arrival-details-grid" class="box5">
-            <div><strong>Details</strong></div>
+            <div class="weather-details">Details</div>
             <div>&nbsp;</div>
             <div>Chance of rain</div>
-            <div id="arrival-chance-of-rain"><strong>50%</strong></div>
+            <div id="arrival-chance-of-rain" class="weather-details"></div>
             <div>Wind speed</div>
-            <div id="arrival-wind-speed"><strong>15 km/h</strong></div>
+            <div id="arrival-wind-speed" class="weather-details"></div>
             <div>Wind gust speed</div>
-            <div id="arrival-wind-gust-speed"><strong>30 km/h</strong></div>
+            <div id="arrival-wind-gust-speed" class="weather-details"></div>
             <div>Wind direction</div>
-            <div id="arrival-wind-direction"><strong>South west</strong></div>
+            <div id="arrival-wind-direction" class="weather-details"></div>
             <div>Cloud coverage</div>
-            <div id="arrival-cloud-coverage"><strong>80%</strong></div>
+            <div id="arrival-cloud-coverage" class="weather-details"></div>
             <div>UV index (0-11+)</div>
-            <div id="arrival-uv-index"><strong>2</strong></div>
+            <div id="arrival-uv-index" class="weather-details"></div>
             <div>Humidity</div>
-            <div id="arrival-humidity"><strong>60%</strong></div>
+            <div id="arrival-humidity" class="weather-details"></div>
             <div>Sunrise time</div>
-            <div id="arrival-sunrise-time"><strong>06:30</strong></div>
+            <div id="arrival-sunrise-time" class="weather-details"></div>
             <div>Sunset time</div>
-            <div id="arrival-sunset-time"><strong>18:30</strong></div>
+            <div id="arrival-sunset-time" class="weather-details"></div>
           </div>
         </div>
       </div>
