@@ -32,12 +32,12 @@ const convertUnixTimestampToTime = (unixTimestamp) => {
   // Hours part from the timestamp.
   const hours = date.getHours();
   // Minutes part from the timestamp.
-  const minutes = "0" + date.getMinutes();
+  const minutes = '0' + date.getMinutes();
   // Seconds part from the timestamp.
-  //const seconds = "0" + date.getSeconds();
+  //const seconds = '0' + date.getSeconds();
 
   // Will display the ime in hh:mm format.
-  const formattedTime = ("0" + hours).slice(-2) + ':' + ("0" + minutes).slice(-2); // + ':' + ("0" + seconds).slice(-2);
+  const formattedTime = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2); // + ':' + ('0' + seconds).slice(-2);
 
   return formattedTime;
 }
@@ -46,21 +46,21 @@ const convertUnixTimestampToTime = (unixTimestamp) => {
 const numberFormatter = (num, digits) => {
   // Code adapted from: https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
   const lookup = [
-    {value: 1, symbol: ""},
-    {value: 1e3, symbol: " thousand"},
-    {value: 1e6, symbol: " million"},
-    {value: 1e9, symbol: " billion"},
-    {value: 1e12, symbol: " trillion"},
-    {value: 1e15, symbol: " quadrillion"},
-    {value: 1e18, symbol: " quintillion"}
+    {value: 1, symbol: ''},
+    {value: 1e3, symbol: ' thousand'},
+    {value: 1e6, symbol: ' million'},
+    {value: 1e9, symbol: ' billion'},
+    {value: 1e12, symbol: ' trillion'},
+    {value: 1e15, symbol: ' quadrillion'},
+    {value: 1e18, symbol: ' quintillion'}
   ];
 
   const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
-  var item = lookup.slice().reverse().find(function(item) {
+  const item = lookup.slice().reverse().find(function(item) {
     return num >= item.value;
   });
 
-  return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
+  return item ? (num / item.value).toFixed(digits).replace(rx, '$1') + item.symbol : '0';
 }
 
 // Function expression - Convert meters per second to kilometers per hour.
@@ -486,13 +486,13 @@ function createSubmitButtonEventListener() {
 
 // The same wrapped EventListener function in conjunction with export and IIFE pattern as described above is used below.
 function createEnterKeyEventListener() {
-  document.addEventListener("keypress", event => {
+  document.addEventListener('keypress', event => {
     // If the user presses the "Enter" key on the keyboard.
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       // Cancel the default action, if needed.
       event.preventDefault();
       // Trigger the button element with a click.
-      document.getElementById("submit-button").click();
+      document.getElementById('submit-button').click();
     }
   });
 }

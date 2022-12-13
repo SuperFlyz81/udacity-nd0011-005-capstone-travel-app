@@ -38,7 +38,7 @@ app.use(express.static('dist'));
 const port = 8081;
 
 // Spin up the Express server.
-const server = app.listen(port, () => console.log(`Listening on port: ${port}`));
+app.listen(port, () => console.log(`Listening on port: ${port}`));
 
 // Configure local environment variables (for API key retrieval from the local .env file that is never uploaded to GitHub).
 dotenv.config();

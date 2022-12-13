@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 /* Old Webpack v4 optimize-css-assets-webpack-plugin code commented out below.
 Now replaced with the css-minimizer-webpack-plugin in Webpack v5. */
 // const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
