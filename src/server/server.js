@@ -84,3 +84,8 @@ app.post('/postdata', (req, res) => {
   res.send(projectData);
   // console.log('Posted', projectData); // Debug code.
 });
+
+/*
+Exports
+*/
+module.exports = app; // Export for Jest testing only.

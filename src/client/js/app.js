@@ -87,7 +87,7 @@ const validateInput = async (destinationName, arrivalDate) => {
     // A valid date has been entered, but it is in the past.
     throw `The arrival date entered is in the past.\n\nPlease enter a present or future-dated arrival date and then try again.`;
   } else if (calcDayDifference(undefined, arrivalDate) > 6) {
-    // A valid date has been entered, but it is more than 7 days in the future (so more than the Weatherbit API supports for future forecasts).
+    // A valid date has been entered, but it is more than 7 days in the future (so more than the Weatherbit API supports for free future forecasts).
     throw `The arrival date entered is more than 7 days in the future. We can only provide weather forecasts for 7 days from the present date.\n\nPlease enter a arrival date within 7 days from today's date and then try again.`;
   }
 }
@@ -509,5 +509,6 @@ Exports
 export {
   performActions,
   createSubmitButtonEventListener,
-  createEnterKeyEventListener
+  createEnterKeyEventListener,
+  validateInput // Export for Jest testing only.
 };
