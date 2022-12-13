@@ -20,7 +20,7 @@ Weather content CSS styles
 .weather-main-grid {
   display: grid;
   color: var(--on-tertiary-container);
-  padding: 2rem;
+  padding: 1.5rem;
   background-color: var(--tertiary-container);
   border-radius: 2rem;
   gap: var(--spacing);
@@ -33,6 +33,7 @@ Weather content CSS styles
 
 #weather-current-container {
   grid-area: weather-current;
+  /* display: flex */
   display: none; /* Top-level flex container is hidden by default and only displayed when submit button is clicked. */
 }
 
@@ -63,6 +64,7 @@ Weather content CSS styles
 
 #weather-arrival-container {
   grid-area: weather-arrival;
+  /* display: flex */
   display: none; /* Top-level flex container is hidden by default and only displayed when submit button is clicked. */
 }
 

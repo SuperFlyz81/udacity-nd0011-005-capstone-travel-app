@@ -393,7 +393,7 @@ const retrieveData = async () => {
     document.getElementById('arrival-sunset-time').innerHTML = data.weatherData[1].sunsetTime;
 
     // Unhide the arrival weather section if the arrival date is a date in the future, i.e. not today.
-    document.getElementById('weather-arrival-container').style.display = 'initial';
+    document.getElementById('weather-arrival-container').style.display = 'flex';
   } else {
     /// Hide the arrival weather section if the arrival date is the same as today's date (since there's no use in showing the current and forecast weather for the same day/for today).
     document.getElementById('weather-arrival-container').style.display = 'none';
@@ -401,8 +401,8 @@ const retrieveData = async () => {
 
   // Unhide the various other sections if they contain data.
   document.getElementById('page-container').style.gridTemplateColumns = 'initial'; // See the related "on page load", widest responsive design, grid-template-columns styling at the bottom of the retrieveData function in the src/client/styles/style.scss stylesheet file.
-  document.getElementById('destination-container').style.display = 'initial';
-  document.getElementById('weather-current-container').style.display = 'initial';
+  document.getElementById('destination-container').style.display = 'flex';
+  document.getElementById('weather-current-container').style.display = 'flex';
 };
 
 /*
