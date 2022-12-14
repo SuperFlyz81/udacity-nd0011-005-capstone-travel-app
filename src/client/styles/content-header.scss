@@ -1,0 +1,89 @@
+/*
+Header content CSS styles
+*/
+#header-container {
+  grid-area: header;
+  display: flex;
+  flex-direction: column;
+  color: var(--on-primary-container);
+  padding: var(--spacing);
+}
+
+#logo-container {
+  display: grid;
+  grid-template-columns: min-content auto;
+  align-items: center;
+  column-gap: var(--spacing);
+  margin-top: var(--spacing);
+}
+
+#logo {
+  filter: drop-shadow(0.125rem 0.125rem 0 var(--on-primary-container));
+}
+
+#header-title {
+  font-family: 'Lobster', cursive;
+  color: var(--primary);
+  text-shadow: 0.125rem 0.125rem var(--on-primary-container);
+}
+
+.header-input {
+  font-size: var(--font-size-medium);
+  -webkit-text-fill-color: var(--on-primary-container); /* Fixed the input type date with min and max placeholder color as per: https://stackoverflow.com/questions/72089144/how-to-change-color-of-input-type-date-with-min-and-max-locked-month-or-year-o */
+  margin-top: var(--spacing);
+  padding: 1rem;  
+  border-radius: 2rem;
+  border-color: var(--primary);
+  border-style: solid;
+  border-width: 0.125rem;
+}
+
+.header-input:focus {
+  outline-color: var(--primary);
+  outline-style: solid;
+  outline-width: 0;
+}
+
+.header-input::placeholder {
+  color: var(--secondary);
+  -webkit-text-fill-color: var(--secondary); /* Fixed the input type date with min and max placeholder color as per: https://stackoverflow.com/questions/72089144/how-to-change-color-of-input-type-date-with-min-and-max-locked-month-or-year-o */
+  opacity: 1; /* Firefox */
+}
+
+#datesubmit-container {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto auto;
+  column-gap: var(--spacing);
+}
+
+#submit-button {
+  font-size: var(--font-size-medium);
+  font-weight: bold;
+  color: var(--on-primary);
+  background-color: var(--primary);
+  margin-top: var(--spacing);
+  padding: 1rem 1.75rem 1rem 1.75rem;
+  border-radius: 2rem;
+  border : 0;
+  min-width: 240px;
+}
+
+#submit-button:focus {
+  outline-color: var(--on-primary);
+  outline-style: solid;
+  outline-width: 0;
+}
+
+#submit-button:hover {
+  color: var(--surface);
+  background-color: var(--on-surface-variant);
+}
+
+/* Responsive design for wider and the widest displays (e.g. tablets, monitors, and laptop screens). */
+@media(min-width: 720px) {
+  #datesubmit-container {
+    grid-template-columns: auto min-content;
+    grid-template-rows: auto;
+  }
+}

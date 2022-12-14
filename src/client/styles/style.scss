@@ -1,0 +1,104 @@
+/*
+Global CSS styles
+*/
+/* The "*" below refers to all elements. */
+* {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+}
+
+#page-container {
+  display: grid;
+  /* gap: var(--spacing); */
+  /* Default responsive design for narrow displays (e.g. mobile phones). */
+  grid-template-areas:
+  "header"
+  "destination"
+  "weather-current"
+  "weather-arrival";
+}
+
+h1 {
+  font-size: var(--font-size-super);
+  margin: 0;
+}
+
+h2 {
+  font-size: var(--font-size-xxxl);
+  margin: 0;
+}
+
+h3 {
+  font-size: var(--font-size-xxl);
+  margin: 0;
+}
+
+h4 {
+  font-size: var(--font-size-xl);
+  margin: 0;
+}
+
+h5 {
+  font-size: var(--font-size-large);
+  margin: 0;
+}
+
+h6 {
+  font-size: var(--font-size-medium);
+  margin: 0;
+}
+
+h7 {
+  font-size: var(--font-size-normal);
+  margin: 0;
+}
+
+/* IMPORTANT - Change all the 0px border width values below to 1px to see all your grid and flex boxes.
+This is very handy for element positioning and alignment. */
+.box1 {
+  border: 0px solid yellow;
+}
+
+.box2 {
+  border: 0px solid red;
+}
+
+.box3 {
+  border: 0px solid green;
+}
+
+.box4 {
+  border: 0px solid blue;
+}
+
+.box5 {
+  border: 0px solid cyan;
+}
+
+/* Responsive design for wider displays (e.g. tablets). */
+@media(min-width: 720px) {
+  #page-container {
+    grid-template-areas:
+    "header header"
+    "destination destination"
+    "weather-current weather-arrival";
+  }
+}
+
+/* Responsive design for the widest displays (e.g. monitors and laptop screens). */
+@media(min-width: 1280px) {
+  #page-container {
+    grid-template-areas:
+    "header destination"
+    "weather-current destination"
+    "weather-arrival destination";
+     /* See the related post-submit, grid-template-columns and column-gap styling code at the bottom of the retrieveData function in the src/client/js/app.js JavaScript file. */
+    grid-template-columns: auto 0;
+    column-gap: 0;
+  }
+}

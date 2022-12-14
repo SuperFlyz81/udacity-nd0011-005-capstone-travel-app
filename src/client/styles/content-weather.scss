@@ -1,0 +1,117 @@
+/*
+Weather content CSS styles
+*/
+.weather-container {
+  display: flex;
+  flex-direction: column;
+  color: var(--on-tertiary-container);
+  padding: var(--spacing);
+  justify-content: flex-end;
+}
+
+.weather-title {
+  font-family: 'Lobster', cursive;
+  color: var(--tertiary);
+  text-shadow: 0.0625rem 0.0625rem var(--on-tertiary-container);
+  padding: 0 0.075em 0.075em 0; /* Fixes Lobster font getting cut off on the right and bottom edges. */
+  margin-bottom: 0.5rem;
+}
+
+.weather-main-grid {
+  display: grid;
+  color: var(--on-tertiary-container);
+  padding: 1.5rem;
+  background-color: var(--tertiary-container);
+  border-radius: 2rem;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.weather-details {
+  font-weight: bold;
+}
+
+#weather-current-container {
+  grid-area: weather-current;
+  /* display: flex */
+  display: none; /* Top-level flex container is hidden by default and only displayed when submit button is clicked. */
+}
+
+#weather-current-main-grid {
+  grid-template-areas:
+  "weathercurrenttemp weathercurrenticon"
+  "weathercurrentdetails weathercurrentdetails";
+}
+
+#weather-current-temp-grid {
+  grid-area: weathercurrenttemp;
+  display: grid;
+}
+
+#weather-current-icon-grid {
+  grid-area: weathercurrenticon;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+#weather-current-details-grid {
+  grid-area: weathercurrentdetails;
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: var(--spacing);
+}
+
+#weather-arrival-container {
+  grid-area: weather-arrival;
+  /* display: flex */
+  display: none; /* Top-level flex container is hidden by default and only displayed when submit button is clicked. */
+}
+
+#weather-arrival-main-grid {
+  grid-template-areas:
+  "weatherarrivaltemp weatherarrivalicon"
+  "weatherarrivaldetails weatherarrivaldetails";
+}
+
+#weather-arrival-temp-grid {
+  grid-area: weatherarrivaltemp;
+  display: grid;
+}
+
+#weather-arrival-icon-grid {
+  grid-area: weatherarrivalicon;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+#weather-arrival-details-grid {
+  grid-area: weatherarrivaldetails;
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: var(--spacing);
+}
+
+/* Responsive design for the widest displays (e.g. monitors and laptop screens). */
+@media(min-width: 1280px) {
+  #weather-current-main-grid {
+    grid-template-areas:
+    "weathercurrenttemp weathercurrentdetails"
+    "weathercurrenticon weathercurrentdetails";
+  }
+
+  #weather-current-icon-grid {
+    grid-auto-columns: min-content;
+  }
+
+  #weather-arrival-main-grid {
+    grid-template-areas:
+    "weatherarrivaltemp weatherarrivaldetails"
+    "weatherarrivalicon weatherarrivaldetails";
+  }
+
+  #weather-arrival-icon-grid {
+    grid-auto-columns: min-content;
+  }
+}

@@ -1,0 +1,70 @@
+/*
+Theme CSS styles
+*/
+/*
+    Using the CSS variables (part of CSS custom properties) as documented here:
+    https://developer.mozilla.org/en-US/docs/Web/CSS/--*
+
+    Theme colors obtained from Google's Meterial Design 3 Theme Builder here:
+    https://material-foundation.github.io/material-theme-builder/#/custom
+
+    Basic implementation of CSS variables:
+        In CSS, you can declare your variables in the root block:
+        :root {
+        --main-bg-color: #1596A7;
+        }
+
+        And implement it using with the var() method:
+        .panel-header {
+            background: var(--main-bg-color);
+            color: ...
+    }
+*/
+
+:root {
+  --primary: #4b9b69;
+  --on-primary: #ffffff;
+  --primary-container: #97f7b6;
+  --on-primary-container: #00210f;
+  --secondary: #819684;
+  --on-secondary: #ffffff;
+  --secondary-container: #d2e8d4;
+  --on-secondary-container: #0d1f13;
+  --tertiary: #6d97a3;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #beeaf7;
+  --on-tertiary-container: #001f26;
+  --error: #ba1a1a;
+  --error-container: #ffdad6;
+  --on-error: #ffffff;
+  --on-error-container: #410002;
+  --background: #fbfdf8;
+  --on-background: #191c19;
+  --surface: #fbfdf8;
+  --on-surface: #191c19;
+  --surface-variant: #dce5db;
+  --on-surface-variant: #414942;
+  --outline: #717971;
+  --inverse-on-surface: #f0f1ec;
+  --inverse-surface: #2e312e;
+  --inverse-primary: #7cda9c;
+  --shadow: #000000;
+  --surface-tint: #4b9b69;
+  --outline-variant: #c0c9bf;
+  --scrim: #000000;
+
+  /* My additions below. */
+  --spacing: 1.25rem; /* 20px based on the default root element value of 16px in most browsers. */
+
+  --font-size-small: 0.75rem; /* 12px */
+  --font-size-normal: 1rem; /* 16px */
+  --font-size-medium: 1.5rem; /* 24px */
+  --font-size-large: 2rem; /* 32px */
+  --font-size-xl: 2.5rem; /* 40px */
+  --font-size-xxl: 3rem; /* 48px */
+  --font-size-xxxl: 3.5rem; /* 56px */
+  --font-size-super: 4rem; /* 64px */
+  --font-size-ultra: 5rem; /* 80px */
+  --font-size-superultra: 6rem; /* 96px */
+  --font-size-humongous: 7rem; /* 112px */
+}
