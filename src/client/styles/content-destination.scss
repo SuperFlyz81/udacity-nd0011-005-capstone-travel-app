@@ -9,7 +9,6 @@ Destination content CSS styles
   color: var(--on-tertiary-container);
   padding: var(--spacing);
 }
-  
 
 #destination-image-container {
   /* Position text over image method adapted from:
@@ -51,10 +50,6 @@ Destination content CSS styles
   "countdown";
   padding: var(--spacing) var(--spacing) 0 var(--spacing);
   overflow: hidden;
-  /* Setting the grid rows' heights to minmax(0, auto) below essentially hides the region name and population rows if they don't have any values.
-  This is done by setting row's height to a minimum of "0" if it doesn't have a value, and to a maximum of "auto" if it does have a value.
-  This works alongside the "document.getElementById('[region-name] or [population]').style.display = '[initial] or [none]'" code at the bottom of the retrieveData function in the src/client/js/app.js JavaScript file. */
-  grid-template-rows: minmax(0, auto) auto minmax(0, auto);
 }
 
 #region-name {
@@ -95,7 +90,7 @@ Destination content CSS styles
 /* Responsive design for wider and the widest displays (e.g. tablets, monitors, and laptop screens). */
 @media(min-width: 720px) {
   #destination-name {
-    font-size: var(--font-size-humongous);
+    font-size: var(--font-size-superultra);
     margin: 0 0.55em 0.2em 0.55em;
   }
 

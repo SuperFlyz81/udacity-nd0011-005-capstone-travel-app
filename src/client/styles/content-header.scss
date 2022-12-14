@@ -40,6 +40,8 @@ Header content CSS styles
 
 .header-input:focus {
   outline-color: var(--primary);
+  outline-style: solid;
+  outline-width: 0;
 }
 
 .header-input::placeholder {
@@ -68,6 +70,8 @@ Header content CSS styles
 }
 
 #submit-button:focus {
+  outline-color: var(--on-primary);
+  outline-style: solid;
   outline-width: 0;
 }
 

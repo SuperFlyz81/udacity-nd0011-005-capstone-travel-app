@@ -137,7 +137,7 @@ npm run test
 Please note the following regarding the Jest tests for this project:
 * Server-side Jest tests will only complete successfully if the Express web server is not already running. To stop the Express web server hit Ctrl+C in the terminal window where the Express web server is running (i.e., in the terminal window where you originally ran "npm start").
 * You might receive a warning after the server-side Jest tests have completed stating that: *"A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them."*
-  * This is to be expected due to the way we are testing our server-side code/Express routing. We are instructing Jest to fire up an entire Express web server instance and then perform its server-side tests. And Jest then forcibly closes that web server instance after it has completed all its tests, hence the warning message above. So, in summary, you can ignore this warning when running the Jest tests for this project.
+  * This is to be expected due to the way we are testing our server-side code/Express routing. We are instructing Jest to fire up an entire Express web server instance using our existing src/server/server.js code and to then perform its server-side tests. And Jest then forcibly closes that web server instance after it has completed all its tests, hence the warning message above. So, in summary, you can ignore this warning when running the Jest tests for this project.
 
 ## Browser compatibility
 This web app was tested and should work fine with the following web browsers:

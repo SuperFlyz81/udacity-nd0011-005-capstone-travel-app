@@ -332,13 +332,30 @@ const retrieveData = async () => {
   // Update the destination elements.
   document.getElementById('destination-image').src = data.destinationImageURL;
   document.getElementById('destination-name').innerHTML = data.destinationName;
-  // Show or hide the region-name HTML element based on whether or not a value for it has been returned by the GeoNames API.
-  data.regionName ? document.getElementById('region-name').style.display = 'initial' : document.getElementById('region-name').style.display = 'none';
-  document.getElementById('region-name').innerHTML = data.regionName
+
+  /* Set the value of, and hide or show the region-name HTML element based on whether or not a value for it has been returned by the GeoNames API.
+  Setting the height to 0 or auto to hide/show the HTML element works better here from a whitespace/spacing point of view than usign element.style.display = '[none] or [initial]' */
+  const regionNameElement = document.getElementById('region-name');
+  if (data.regionName) {
+    regionNameElement.innerHTML = data.regionName;
+    regionNameElement.style.height = 'auto';
+  } else {
+    regionNameElement.innerHTML = '';
+    regionNameElement.style.height = '0';
+  }
+  
   document.getElementById('country-name').innerHTML = data.countryName;
-  // Show or hide the population HTML element based on whether or not a value for it has been returned by the GeoNames API.
-  data.population ? document.getElementById('population').style.display = 'initial' : document.getElementById('population').style.display = 'none';
-  document.getElementById('population').innerHTML = `Population: ${numberFormatter(data.population, 1)}`
+  
+  /* Set the value of, and hide or show the population HTML element based on whether or not a value for it has been returned by the GeoNames API.
+  Setting the height to 0 or auto to hide/show the HTML element works better here from a whitespace/spacing point of view than usign element.style.display = '[none] or [initial]' */
+  const populationElement = document.getElementById('population');
+  if (data.population) {
+    populationElement.innerHTML = `Population: ${numberFormatter(data.population, 1)}`;
+    populationElement.style.height = 'auto';
+  } else {
+    populationElement.innerHTML = '';
+    populationElement.style.height = '0';
+  }
 
   let countdownText = '';
   switch (data.arrivalCountdown) {
@@ -396,17 +413,22 @@ const retrieveData = async () => {
     document.getElementById('arrival-sunrise-time').innerHTML = data.weatherData[1].sunriseTime;
     document.getElementById('arrival-sunset-time').innerHTML = data.weatherData[1].sunsetTime;
 
-    // Unhide the arrival weather section if the arrival date is a date in the future, i.e. not today.
+    // Unhide the arrival weather section post-submit, if the arrival date is a date in the future, i.e. not today.
     document.getElementById('weather-arrival-container').style.display = 'flex';
   } else {
-    /// Hide the arrival weather section if the arrival date is the same as today's date (since there's no use in showing the current and forecast weather for the same day/for today).
+    /// Hide the arrival weather section post-submit, if the arrival date is the same as today's date (since there's no use in showing the current and forecast weather for the same day/for today).
     document.getElementById('weather-arrival-container').style.display = 'none';
   }
 
-  // Unhide the various other sections if they contain data.
-  document.getElementById('page-container').style.gridTemplateColumns = 'initial'; // See the related "on page load", widest responsive design, grid-template-columns styling at the bottom of the retrieveData function in the src/client/styles/style.scss stylesheet file.
+  // Unhide various other sections post-submit, if they contain data.
+  const pageContainerElement = document.getElementById('page-container');
+  pageContainerElement.style.gridTemplateColumns = 'initial'; // See the related "on page load", widest responsive design, grid-template-columns and column-gap styling at the bottom of the src/client/styles/style.scss stylesheet file.
+  
   document.getElementById('destination-container').style.display = 'flex';
   document.getElementById('weather-current-container').style.display = 'flex';
+
+    // Style various other sections post-submit.
+  pageContainerElement.style.columnGap = 'var(--spacing)';
 };
 
 /*
