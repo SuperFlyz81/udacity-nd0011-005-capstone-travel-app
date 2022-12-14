@@ -1,4 +1,4 @@
-# Capstone Travel App PLACEHOLDER TITLEs
+# Travel App (Capstone Project)
 
 ## Table of Contents
 * [Overview](#overview)
@@ -9,19 +9,30 @@
 * [Development](#development)
 
 ## Overview
-This is my fourth project in the Udacity front end web developer course. The project requirement was to evaluate the sentiment of an online news article (or any web page on the web) using natural language processing.
+This is my fifth and final project in the Udacity front end web developer course. The requirement for this capstone project was to create a travel planner web application. This web app should allow a user to enter a travel destination and an arrival date. The app should then show the user a picture of their destination, the current weather at their destination, as well as the forecasted weather on arrival at their destination.
 
-The goal of this project was to give us practice with:
-  * Setting up Webpack.
-  * Sass styles.
-  * Webpack Loaders and Plugins.
-  * Creating layouts and page design.
-  * Service workers.
-  * Using APIs and creating requests to external urls.
+The above might sound relatively straightforward, but it requires fetching data from three different web APIs including:
+  * **The GeoNames web API** - for fetching geo location information for the destination including the location name, and latitude and longitude coordinates.
+    * https://www.geonames.org/export/geonames-search.html
+  * **The Weatherbit web API** - for fetching current and forecast weather data (using the latitude and longitude coordinates from the GeoNames API).
+    * https://www.weatherbit.io/api/weather-current
+    * https://www.weatherbit.io/api/weather-forecast-16-day
+  * **The Pixabay API** - for fetching a picture of the destination (using the location name from the GeoNames API).
+    * https://pixabay.com/api/docs
 
-We were tasked with creating a client/server web app that uses the MeaningCloud Sentiment Analysis API to evaluate the text in any website address entered by the user. Our web app should then analyse the text in that website and determine if the sentiment of that text is strongly positive, positive, strongly negative, negative, or neutral. The app also evaluates if the subjectivity of the text is objective or subjective. And we also display a text snippet (the first 10 sentences) or the text that was evaluated.
+There was also a requirement to implement at least one special feature to make our project stand out. For this I chose to incorporate weather icons into my weather forecasts (the weather icons are also provided by the Weatherbit web API).
 
-Our web app uses the Webpack build tool to package our website for development and production purposes. Additionally, our web app uses Jest for JavaScript code testing purposes. And finally, we use service workers for offline website functionality.
+Additionally, our web app also incorporates many design and code elements, as learnt from the previous four Udacity front end web developer lessons and projects.
+
+These include:
+* **HTML, CSS, and JavaScript** which are the basic building blocks of any website.
+* **Responsive web design** using CSS media queries to change the website appearance and layout depending on the device and screen size that it is being viewed on.
+* **Input validation** to validate that all input into our web app is in the correct format and inside acceptable ranges.
+* **Chained JavaScript promises** to enable the use of asynchronous JavaScript code, especially when fetching data from various web APIs that are dependent on one another.
+* **Webpack** to bundle, transform, and deploy all our web assets into smaller, quicker loading website builds.
+* **Node and Express** to allow us to run server-side JavaScript code, use Node modules, spin up a web server, and handle HTTP routing.
+* **Service workers** to provide client-side, offline browsing capability.
+* **The Jest JavaScript testing framework** to allow us to perform unit testing on our server-side and client-side JavaScript code.
 
 [(Back to top)](#table-of-contents)
 
@@ -34,10 +45,10 @@ Our web app uses the Webpack build tool to package our website for development a
   * a Back-end web application framework for Node.js. Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications. Basically, Express allows you to spin up a web server and then add additional features and middleware to that web server. Express also handles all HTTP routing (a.k.a. client requests) on our behalf.
   * https://expressjs.com
 * **Webpack**
-  * Webpack is a module bundler. Its main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging just about any resource or asset. It supports many loaders and plugins to allow you to, for example, transpile SASS (a CSS extension language) to CSS, minify your JavaScript, HTML, and style sheet files into smaller files for quicker website load times, create production and development specific website builds, and provide offline functionality to your website using service workers.
+  * Webpack is a module bundler. Its main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging just about any resource or asset. It supports many loaders and plugins to allow you to, for example, transpile SASS (a CSS extension language) to CSS, minify your JavaScript, HTML, and style sheet files into smaller files for quicker website load times, create production and development specific website builds, and provide offline functionality to your website using service workers. Webpack also includes the webpack-dev-server. This provides you with a rudimentary web server and the ability to use live reloading. Live reloading greatly assists with web design and web development since it allows you to see your client-side design and code changes in real-time.
   * https://webpack.js.org
 * **Other dependencies**
-  * Please see the project's package.json, webpack.dev.js, and webpack.prod.js files for all other Node, Express, and Webpack dependencies that were used in this project. Details on most of these dependencies can be found be searching for the dependency package's name in the search bar at the Node Package Manager website at:
+  * Please see the project's package.json, webpack.dev.js, and webpack.prod.js files for all other Node, Express, and Webpack dependencies that were used in this project. Details on most of these dependencies can be found by searching for the dependency package's name in the search bar at the Node Package Manager website at:
   * https://www.npmjs.com
 
 [(Back to top)](#table-of-contents)
@@ -45,7 +56,7 @@ Our web app uses the Webpack build tool to package our website for development a
 ## Usage
 * **Node.js**
   * Uninstall any pre-existing installations of Node.js:
-    * This project and its dependencies were built and tested on Node version 16.18.0, the latest long term support (LTS) version of Node at the time this project was created. Subsequently you will need to install Node.js v16.18.0 on your Mac or PC before being able to use this project.
+    * This project and its dependencies were built and tested on Node version 16.18.0, the latest long-term support (LTS) version of Node at the time this project was created. Subsequently you will need to install Node.js v16.18.0 on your Mac or PC before being able to use this project.
     * Subsequently, you might first need to uninstall the current version of Node.js that is installed on your Mac or PC before installing Node.js v16.18.0, which is required for this project.
     * To uninstall a prior/newer version of Node.js from your Mac that was previously installed using the Node.js Mac pkg installer, run the following two commands (taken from https://github.com/nodejs/node-v0.x-archive/issues/4058) in the macOS terminal:
       ```
@@ -70,16 +81,22 @@ Our web app uses the Webpack build tool to package our website for development a
     ```
   * Note that the dependency files installation can take a couple of minutes to complete.
 
-* **Obtain a MeaningCloud Sentiment Analysis API key**
-  * Register for a free MeaningCloud account at: https://www.meaningcloud.com/developer/create-account
+* **Obtain and enter API keys**
+  * Register for free GeoNames, Weatherbit, and Pixabay API accounts at:
+    * https://www.geonames.org/login
+    * https://www.weatherbit.io/account/create
+    * https://pixabay.com/api/docs (use the "join" link in the top right-hand corner to register for a Pixabay API account)
   * Create a new file named ".env" in the root of your project folder.
-  * Then copy your MeaningCloud license key from https://www.meaningcloud.com/developer/account/subscriptions
-  into this new .env file in the following format:
+  * Then copy and paste your API keys from the GeoNames, Weatherbit, and Pixabay websites into this new .env file in the following format:
     ```
-    API_KEY=[Your_MeaningCloud_License_Key]
+    GEONAMES_API_USERNAME=[geonames username]
+    WEATHERBIT_API_KEY=[weatherbit api key]
+    PIXABAY_API_KEY=[pixabay api key]
 
     For example:
-    API_KEY=e2a4862b3df6086dd41b95da3b2a7520
+    GEONAMES_API_USERNAME=yourusername
+    WEATHERBIT_API_KEY=788d327eff065a244edb69234b0f629e
+    PIXABAY_API_KEY=73105429-7b5d8ea13a6241f8bdc89173d
     ```
   * Finally, save your .env file.
 * **Launch the project**
@@ -104,17 +121,23 @@ Our web app uses the Webpack build tool to package our website for development a
         ```
         npm run dev
         ```
-      * The development site is then accessible at http://localhost:8080 (a browser window with this URL should automatically be opened by the Webpack dev server when you run the "npm run build-dev" command above).
-* **Sentiment Analysis**
-  * You can now enter a URL on the Sentiment Analyser page and click the "Analyse" button to evaluate the sentiment of any article on the web.
+      * The development site is then accessible at http://localhost:8080 (a browser window with this URL should automatically be opened by the Webpack dev server when you run the "npm run dev" command above).
+* **Web app usage**
+  * You can now enter a destination name and arrival date (within 7 days from today's date) in the travel planner web app and click the Submit button. You will then be presented with a picture of your destination, as well the current weather and the forecasted weather on arrival at your destination.
+  
+  * Please note that the Pixabay free image library might not contain images for more obscure locations, in which case you will not be presented with a picture for your destination.
 
 [(Back to top)](#table-of-contents)
 
 ## Testing
-Code testing is provided by the Jest JavaScript testing framework (https://jestjs.io). The Jest testing specification files can be found in the "\_\_test\_\_" subfolder in the root folder of the project. To test the various client-side JavaScript functions in this project, execute the Jest tests by running the following command in the Visual Studio Code terminal, macOS/Unix terminal, or Windows command line:
+Code testing is provided by the Jest JavaScript testing framework (https://jestjs.io). The Jest testing specification files can be found in the "\_\_test\_\_" subfolder in the root folder of the project. To test the various server-side and client-side JavaScript functions in this project, execute the Jest tests by running the following command in the Visual Studio Code terminal, macOS/Unix terminal, or Windows command line:
 ```
 npm run test
 ```
+Please note the following regarding the Jest tests for this project:
+* Server-side Jest tests will only complete successfully if the Express web server is not already running. To stop the Express web server hit Ctrl+C in the terminal window where the Express web server is running (i.e., in the terminal window where you originally ran "npm start").
+* You might receive a warning after the server-side Jest tests have completed stating that: *"A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them."*
+  * This is to be expected due to the way we are testing our server-side code/Express routing. We are instructing Jest to fire up an entire Express web server instance and then perform its server-side tests. And Jest then forcibly closes that web server instance after it has completed all its tests, hence the warning message above. So, in summary, you can ignore this warning when running the Jest tests for this project.
 
 ## Browser compatibility
 This web app was tested and should work fine with the following web browsers:

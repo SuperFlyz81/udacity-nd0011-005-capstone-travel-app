@@ -214,7 +214,7 @@ const getWeatherAndImageData = async (geoData) => {
   }
 
   // Get image data.
-  // See https://pixabay.com/api/docs/ for the Pixabay API documentation and an example request and response.
+  // See https://pixabay.com/api/docs for the Pixabay API documentation and an example request and response.
   baseURL = 'https://pixabay.com/api/?safesearch=true&per_page=3&q=' + encodeURIComponent(geoData.destinationName);
 
   let destinationImageURL = '';
@@ -228,7 +228,7 @@ const getWeatherAndImageData = async (geoData) => {
     // console.log(dataImage); // Debug code.
     // console.log(dataImage.hits[0]); // Debug code.
     
-    destinationImageURL = dataImage.total > 0 ? dataImage.hits[0].largeImageURL : '';
+    destinationImageURL = dataImage.total > 0 ? dataImage.hits[0].webformatURL : '';
   } catch(err) {
     // Catches http, connection, and other errors.
     /* If an error occurs while fetching image data from Pixabay (let's say the Pixabay site or API is down), then just set the destinationImageURL to blank.
@@ -332,9 +332,13 @@ const retrieveData = async () => {
   // Update the destination elements.
   document.getElementById('destination-image').src = data.destinationImageURL;
   document.getElementById('destination-name').innerHTML = data.destinationName;
-  data.regionName ? document.getElementById('region-name').innerHTML = data.regionName : document.getElementById('region-name').style.display = 'none';
+  // Show or hide the region-name HTML element based on whether or not a value for it has been returned by the GeoNames API.
+  data.regionName ? document.getElementById('region-name').style.display = 'initial' : document.getElementById('region-name').style.display = 'none';
+  document.getElementById('region-name').innerHTML = data.regionName
   document.getElementById('country-name').innerHTML = data.countryName;
-  document.getElementById('population').innerHTML = `Population: ${numberFormatter(data.population, 1)}`;
+  // Show or hide the population HTML element based on whether or not a value for it has been returned by the GeoNames API.
+  data.population ? document.getElementById('population').style.display = 'initial' : document.getElementById('population').style.display = 'none';
+  document.getElementById('population').innerHTML = `Population: ${numberFormatter(data.population, 1)}`
 
   let countdownText = '';
   switch (data.arrivalCountdown) {

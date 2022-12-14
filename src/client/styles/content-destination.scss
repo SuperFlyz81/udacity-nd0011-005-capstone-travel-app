@@ -51,10 +51,10 @@ Destination content CSS styles
   "countdown";
   padding: var(--spacing) var(--spacing) 0 var(--spacing);
   overflow: hidden;
-    /* Setting the first grid row's height to minmax(0, auto) below essentially hides the region name row if it doesn't have a value.
-  This is done by setting region name row's height to a minimum of "0" if it doesn't have a value,
-  and to a maximum of "auto" if it does have a value. */
-  grid-template-rows: minmax(0, auto) auto auto;
+  /* Setting the grid rows' heights to minmax(0, auto) below essentially hides the region name and population rows if they don't have any values.
+  This is done by setting row's height to a minimum of "0" if it doesn't have a value, and to a maximum of "auto" if it does have a value.
+  This works alongside the "document.getElementById('[region-name] or [population]').style.display = '[initial] or [none]'" code at the bottom of the retrieveData function in the src/client/js/app.js JavaScript file. */
+  grid-template-rows: minmax(0, auto) auto minmax(0, auto);
 }
 
 #region-name {
