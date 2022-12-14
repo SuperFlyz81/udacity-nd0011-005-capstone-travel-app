@@ -63,10 +63,11 @@
           See the following URL for more info on adding days to a date (including the addDays prototype function below):
           https://stackoverflow.com/questions/563406/how-to-add-days-to-date -->
           <input id="arrival-date-input" class="header-input" type="text" placeholder="Arrival date" onfocus="
-            this.type='date';
-            this.min = new Date().toISOString().split('T')[0];
+            this.type = 'date';
+            this.value = new Date().toISOString().split('T')[0]; // Default date value = today's date.
+            this.min = new Date().toISOString().split('T')[0]; // Minimum date value = today's date.
             Date.prototype.addDays = function(d){return new Date(this.valueOf()+864E5*d);};
-            this.max = new Date().addDays(6).toISOString().split('T')[0];
+            this.max = new Date().addDays(6).toISOString().split('T')[0]; // Maximum date value = today's date + 6 days.
           ">
           <button id="submit-button" type="submit">Submit</button>
         </div>
